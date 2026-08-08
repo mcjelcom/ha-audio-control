@@ -1,0 +1,65 @@
+# Xantech ZPR68-10 — 6 Zone, 8 Source Pre-Amplifier/Controller
+# Different command set from MRC-88 family
+name: "Xantech ZPR68-10"
+manufacturer: "Xantech"
+models: ["ZPR68-10"]
+
+zones: 6
+sources: 8
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 100
+  command_prefix: "!"
+  command_suffix: "+"
+  response_prefix: ""
+  response_terminator: "\r"
+
+commands:
+  status:      "{zone:02d}ZS"
+  power_on:    "{zone:02d}CY"
+  power_off:   "{zone:02d}CN"
+  volume_set:  "{zone:02d}V{volume:02d}"
+  volume_up:   "{zone:02d}LU"
+  volume_down: "{zone:02d}LD"
+  mute_on:     "{zone:02d}QY"
+  mute_off:    "{zone:02d}QN"
+  source_set:  "{zone:02d}I{source:1d}"
+  all_off:     "00CN"
+
+response:
+  status_pattern: "Z(?P<zone>\\d{2}) PR(?P<power>\\d) MU(?P<mute>\\d) SS(?P<source>\\d) VO(?P<volume>\\d{2})"
+  error_response: "ERR"
+  global_patterns:
+    all_off: "00CN OK"
+
+  mapping:
+    power:
+      field: "power"
+      type: "bool"
+      on_value: "1"
+    mute:
+      field: "mute"
+      type: "bool"
+      on_value: "1"
+    volume:
+      field: "volume"
+      type: "int"
+    source:
+      field: "source"
+      type: "int"
+
+volume:
+  min: 0
+  max: 40
+  inverted: false
+
+features:
+  has_tone_controls: true
+  has_group_mode: false
+  has_all_off: true
+  has_balance: false
+  unsolicited_updates: false

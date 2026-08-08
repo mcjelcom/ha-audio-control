@@ -1,0 +1,46 @@
+# Rotel Michi M8 / S5 — Power Amplifier (power-only RS232)
+name: "Rotel Michi M8 / S5"
+manufacturer: "Rotel"
+models: ["Michi M8", "Michi S5"]
+
+zones: 1
+sources: 1
+
+serial:
+  baud_rate: 115200
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 50
+  command_prefix: ""
+  command_suffix: "!"
+  response_prefix: ""
+  response_terminator: "$"
+
+commands:
+  status:       "power?"
+  power_on:     "power_on"
+  power_off:    "power_off"
+  power_toggle: "power_toggle"
+
+response:
+  status_pattern: "power=(?P<power>on|standby)"
+  error_response: "error"
+
+  mapping:
+    power:
+      field: "power"
+      type: "string_bool"
+      on_value: "on"
+
+volume:
+  min: 0
+  max: 0
+  inverted: false
+
+features:
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  unsolicited_updates: false

@@ -1,0 +1,93 @@
+# Monoprice 6-Zone Amplifier (Model 10761 / 31028)
+name: "Monoprice 6-Zone"
+manufacturer: "Monoprice"
+models: ["10761", "39261", "44519", "44518", "WS66i", "DAX66", "Factor V-66"]
+
+zones: 6
+sources: 6
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 100
+  command_prefix: ""
+  command_suffix: "\r"
+  response_prefix: ""
+  response_terminator: "\r\n"
+
+commands:
+  # Zone addressing: 1{zone} = unit 1 + zone (e.g., zone 1 → "11", zone 6 → "16")
+  # For multi-unit: unit 2 = 2{zone}, unit 3 = 3{zone}
+  status:      "?1{zone:1d}"
+  power_on:    "<1{zone:1d}PR01"
+  power_off:   "<1{zone:1d}PR00"
+  volume_set:  "<1{zone:1d}VO{volume:02d}"
+  volume_up:   "<1{zone:1d}VO+"
+  volume_down: "<1{zone:1d}VO-"
+  mute_on:     "<1{zone:1d}MU01"
+  mute_off:    "<1{zone:1d}MU00"
+  source_set:  "<1{zone:1d}CH{source:02d}"
+  bass_set:    "<1{zone:1d}BS{level:02d}"
+  treble_set:  "<1{zone:1d}TR{level:02d}"
+  balance_set: "<1{zone:1d}BL{level:02d}"
+
+response:
+  # Response format: >xxaabbccddeeffgghh\r\n
+  # xx=zone (11-16 for unit 1), aa=PA, bb=power, cc=mute, dd=DT
+  # ee=volume(00-38), ff=treble(00-14), gg=bass(00-14), hh=balance(00-20), ii=source(01-06)
+  zone_offset: -10  # Wire zone 11 → logical zone 1 (subtract unit prefix)
+  status_pattern: ">(?P<zone>\\d{2})(?P<pa>\\d{2})(?P<power>\\d{2})(?P<mute>\\d{2})(?P<dt>\\d{2})(?P<volume>\\d{2})(?P<treble>\\d{2})(?P<bass>\\d{2})(?P<balance>\\d{2})(?P<source>\\d{2})"
+  error_response: ""
+
+  mapping:
+    power:
+      field: "power"
+      type: "bool"
+      on_value: "01"
+      off_value: "00"
+    mute:
+      field: "mute"
+      type: "bool"
+      on_value: "01"
+      off_value: "00"
+    volume:
+      field: "volume"
+      type: "int"
+      min: 0
+      max: 38
+      inverted: false     # 0=silent, 38=loud
+    source:
+      field: "source"
+      type: "int"
+    bass:
+      field: "bass"
+      type: "int"
+      min: 0
+      max: 14
+      offset: -7          # 0=-7, 7=flat, 14=+7
+    treble:
+      field: "treble"
+      type: "int"
+      min: 0
+      max: 14
+      offset: -7
+    balance:
+      field: "balance"
+      type: "int"
+      min: 0
+      max: 20
+      offset: -10         # 0=full left, 10=center, 20=full right
+
+volume:
+  min: 0
+  max: 38
+  inverted: false
+
+features:
+  has_tone_controls: true
+  has_group_mode: false
+  has_all_off: false
+  has_balance: true
+  unsolicited_updates: false   # Query-only device

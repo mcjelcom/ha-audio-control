@@ -1,0 +1,80 @@
+# AMC X1616e — 16 Zone, 16 Source Audio Matrix Controller
+name: "AMC X1616e"
+manufacturer: "AMC"
+models: ["X1616e"]
+
+zones: 16
+sources: 16
+
+serial:
+  baud_rate: 38400
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 500
+  command_prefix: "*"
+  command_suffix: "\r"
+  response_prefix: "#"
+  response_terminator: "\r"
+
+commands:
+  status:       "ZN{zone:02d}STA00"
+  power_on:     "ZN{zone:02d}PWR01"
+  power_off:    "ZN{zone:02d}PWR00"
+  power_toggle: "ZN{zone:02d}PWR02"
+  volume_set:   "ZN{zone:02d}VOL{volume:02d}"
+  volume_up:    "ZN{zone:02d}VOLUP"
+  volume_down:  "ZN{zone:02d}VOLDN"
+  mute_on:      "ZN{zone:02d}MUT01"
+  mute_off:     "ZN{zone:02d}MUT00"
+  mute_toggle:  "ZN{zone:02d}MUT02"
+  source_set:   "ZN{zone:02d}SRC{source:02d}"
+  bass_set:     "ZN{zone:02d}BAS{sign}{level}"
+  treble_set:   "ZN{zone:02d}TRB{sign}{level}"
+  all_off:      "ZALLPWR00"
+  all_on:       "ZALLPWR01"
+  all_mute_on:  "ZALLMUT01"
+  all_mute_off: "ZALLMUT00"
+  all_source:   "ZALLSRC{source:02d}"
+  group_on:     "ZALLGRP{source:02d}"
+  group_off:    "ZALLGRP00"
+
+response:
+  # Standard status: #zz,p,m,ss,-vv
+  status_pattern: "(?P<zone>\\d{2}),(?P<power>\\d),(?P<mute>\\d),(?P<source>\\d{2}),-(?P<volume>\\d{2})"
+  error_response: "?"
+  global_patterns:
+    all_off: "ZALLOFF"
+    all_on: "ZALLON"
+    mute_all_on: "ZALLMON"
+    mute_all_off: "ZALLMOFF"
+    group_off: "GRPOFF"
+    group_on: "GRPON,STC(?P<source>\\d{2})"
+
+  mapping:
+    power:
+      field: "power"
+      type: "bool"
+      on_value: "1"
+    mute:
+      field: "mute"
+      type: "bool"
+      on_value: "1"
+    volume:
+      field: "volume"
+      type: "int"
+    source:
+      field: "source"
+      type: "int"
+
+volume:
+  min: 0
+  max: 75
+  inverted: true          # 0 = loudest, 75 = mute (-75dB)
+
+features:
+  has_tone_controls: true
+  has_group_mode: true
+  has_all_off: true
+  has_balance: true
+  unsolicited_updates: true

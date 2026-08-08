@@ -1,0 +1,76 @@
+# RTI AD-4x / AD-8x — 4/8 Zone Audio Distribution System
+# Similar command structure to AMC X-Series
+name: "RTI AD-4x / AD-8x"
+manufacturer: "RTI"
+models: ["AD-4x", "AD-8x"]
+
+zones: 8
+sources: 8
+
+serial:
+  baud_rate: 19200
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 200
+  command_prefix: "!"
+  command_suffix: "\r"
+  response_prefix: ">"
+  response_terminator: "\r"
+
+commands:
+  status:      "Z{zone:1d}STATUS"
+  power_on:    "Z{zone:1d}ON"
+  power_off:   "Z{zone:1d}OFF"
+  volume_set:  "Z{zone:1d}VOL{volume:02d}"
+  volume_up:   "Z{zone:1d}VOL+"
+  volume_down: "Z{zone:1d}VOL-"
+  mute_on:     "Z{zone:1d}MUTE"
+  mute_off:    "Z{zone:1d}UNMUTE"
+  source_set:  "Z{zone:1d}SRC{source:1d}"
+  bass_set:    "Z{zone:1d}BASS{level:+d}"
+  treble_set:  "Z{zone:1d}TREBLE{level:+d}"
+  all_off:     "ALLOFF"
+  group_on:    "PARTY{source:1d}"
+  group_off:   "PARTYOFF"
+
+response:
+  status_pattern: "Z(?P<zone>\\d)\\sPWR=(?P<power>ON|OFF)\\sSRC=(?P<source>\\d)\\sVOL=(?P<volume>\\d{2})\\sMUTE=(?P<mute>ON|OFF)"
+  global_patterns:
+    all_off: "ALLOFF OK"
+    group_on: "PARTY=(?P<source>\\d)"
+    group_off: "PARTYOFF OK"
+  error_response: "ERROR"
+
+  mapping:
+    power:
+      field: "power"
+      type: "string_bool"
+      on_value: "ON"
+      off_value: "OFF"
+    mute:
+      field: "mute"
+      type: "string_bool"
+      on_value: "ON"
+      off_value: "OFF"
+    volume:
+      field: "volume"
+      type: "int"
+      min: 0
+      max: 60
+      inverted: false
+    source:
+      field: "source"
+      type: "int"
+
+volume:
+  min: 0
+  max: 60
+  inverted: false
+
+features:
+  has_tone_controls: true
+  has_group_mode: true
+  has_all_off: true
+  has_balance: false
+  unsolicited_updates: true

@@ -1,0 +1,138 @@
+# AMC XCDie — CD / USB / SD / 24192 media player
+#
+# Source: "APPENDIX 5: RS-232 Protocol Specifications for XCDie",
+# XCDie MANUAL.pdf (amchome.com/files/). Protocol Ver 1.0.
+#   Communication : RS232C UART / 9600bps / Data 8bit
+#   Command Format: "CD Play  55_20_AA"   ("_" = blank space)
+#
+# Every frame is exactly three bytes: start 0x55, one opcode, stop 0xAA. There is
+# NO length byte and NO checksum -- hence `has_length_byte: false` and
+# `checksum: none`. Emitting either desynchronises the frame; before the engine
+# gained has_length_byte it produced `55 03 FA AE AA` for Play instead of
+# `55 FA AA`.
+#
+# `escape_byte: null` is required too. The binary engine defaults it to 0xF1
+# whenever end_byte is set (for Russound RNET), but 0xF1 is a real XCDie opcode:
+# TRK/TITLE. With the default in place it emits `55 F1 0E AA` instead of
+# `55 F1 AA`. Only 0xF1 is affected -- _escape_body escapes just the end byte and
+# the escape byte, so RANDOM (0xF0) and the rest survive.
+#
+# This is a transport, not a zone device: no volume, no mute, no power over
+# serial. The four "sources" are media inputs (CD/USB/SD/24192), which is what
+# the manual's Status Code table reports.
+name: "AMC XCDie CD Player"
+manufacturer: "AMC"
+models: ["XCDie"]
+protocol_type: "binary"
+
+zones: 1
+
+# Media inputs from the appendix: CD=F6, USB=F7, SD=F8, 24192=F9. The Status Code
+# table's high nibble matches this ordering (2x=CD, 3x=USB, 4x=SD, 50=24192).
+sources:
+  count: 4
+  names:
+    1: "CD"
+    2: "USB"
+    3: "SD"
+    4: "24192"
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 100
+
+binary:
+  start_byte: 0x55
+  end_byte: 0xAA
+  # No length field and no checksum in the protocol.
+  has_length_byte: false
+  checksum: "none"
+  # Must be explicit: the engine would otherwise default to 0xF1, which is a
+  # real XCDie opcode (TRK/TITLE).
+  escape_byte: null
+
+commands:
+  # Read Status (0xFF) is the documented status probe.
+  status: {opcode: "0xFF"}
+
+  # Transport. The appendix lists both a combined PLAY/PAUSE toggle (0x20) and
+  # discrete PLAY (0xFA) / PAUSE (0xFB); the discrete forms are used here so the
+  # entity's play and pause actions are not the same button.
+  play: {opcode: "0xFA"}
+  pause: {opcode: "0xFB"}
+  play_pause: {opcode: "0x20"}
+  stop: {opcode: "0x21"}
+  next_track: {opcode: "0xF3"}
+  prev_track: {opcode: "0xF2"}
+  search_forward: {opcode: "0xF5"}
+  search_back: {opcode: "0xF4"}
+  repeat: {opcode: "0xFC"}
+  random: {opcode: "0xF0"}
+  track_title: {opcode: "0xF1"}
+  program: {opcode: "0x2E"}
+  enter: {opcode: "0x2C"}
+  a_b: {opcode: "0x2D"}
+  disc_mode: {opcode: "0x2F"}
+
+  # Media input select. Named per-source rather than templated because the
+  # opcodes are not contiguous with the source numbers.
+  source_1: {opcode: "0xF6"}
+  source_2: {opcode: "0xF7"}
+  source_3: {opcode: "0xF8"}
+  source_4: {opcode: "0xF9"}
+
+response:
+  # Status Code table, Appendix 5. Unusually, the status frame carries NO
+  # payload: the whole state is encoded in the reply's own opcode, where the high
+  # nibble is the active input and the low nibble the transport state
+  # (2x=CD, 3x=USB, 4x=SD, 50=24192; x1=PLAY x2=PAUSE x3=STOP x4=REPEAT
+  # x5=RANDOM). Each code is therefore its own named response with a `static`
+  # block, rather than fields read from payload offsets that do not exist.
+  #
+  # 0x50 (24192) breaks the nibble pattern -- it has no transport suffix -- which
+  # is why the codes are enumerated instead of computed.
+  #
+  # `state:` is transcribed from the manual but NOT yet consumed: ZoneState has no
+  # transport field, so _process_response drops it and the entity reports on/off
+  # from `power` only. Kept rather than deleted because it is accurate source data
+  # and showing playing-vs-paused needs only a ZoneState field plus a mapping in
+  # media_player.state. Do not assume it is wired up.
+
+  # CD
+  cd_play:     {opcode: "0x21", static: {power: true, source: 1, state: "playing"}}
+  cd_pause:    {opcode: "0x22", static: {power: true, source: 1, state: "paused"}}
+  cd_stop:     {opcode: "0x23", static: {power: true, source: 1, state: "idle"}}
+  cd_repeat:   {opcode: "0x24", static: {power: true, source: 1, state: "playing"}}
+  cd_random:   {opcode: "0x25", static: {power: true, source: 1, state: "playing"}}
+  # USB
+  usb_play:    {opcode: "0x31", static: {power: true, source: 2, state: "playing"}}
+  usb_pause:   {opcode: "0x32", static: {power: true, source: 2, state: "paused"}}
+  usb_stop:    {opcode: "0x33", static: {power: true, source: 2, state: "idle"}}
+  usb_repeat:  {opcode: "0x34", static: {power: true, source: 2, state: "playing"}}
+  usb_random:  {opcode: "0x35", static: {power: true, source: 2, state: "playing"}}
+  # SD
+  sd_play:     {opcode: "0x41", static: {power: true, source: 3, state: "playing"}}
+  sd_pause:    {opcode: "0x42", static: {power: true, source: 3, state: "paused"}}
+  sd_stop:     {opcode: "0x43", static: {power: true, source: 3, state: "idle"}}
+  sd_repeat:   {opcode: "0x44", static: {power: true, source: 3, state: "playing"}}
+  sd_random:   {opcode: "0x45", static: {power: true, source: 3, state: "playing"}}
+  # 24192 high-resolution mode
+  hires:       {opcode: "0x50", static: {power: true, source: 4}}
+
+# No volume control of any kind over serial, so the span is zero and the entity
+# omits both the slider and the +/- buttons.
+volume:
+  min: 0
+  max: 0
+  inverted: false
+
+features:
+  has_transport: true
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  unsolicited_updates: false

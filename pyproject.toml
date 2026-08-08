@@ -1,0 +1,128 @@
+[project]
+name = "ha-audio-control"
+version = "1.1.0"
+description = "Home Assistant deployment with audio control integrations"
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "pyserial>=3.5",
+    "pyserial-asyncio-fast>=0.11",
+    "pyyaml>=6.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+pythonpath = [
+    # The protocol library is vendored inside the integration, so tests import
+    # it as `audio_control.rs232_protocol` -- or directly as `rs232_protocol`
+    # via the integration dir, which mirrors how HA loads it.
+    "custom_components",
+    "custom_components/audio_control",
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+mypy_path = ["custom_components"]
+plugins = []
+
+[[tool.mypy.overrides]]
+module = "serial.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "serial_asyncio_fast"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "homeassistant.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "voluptuous.*"
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN",      # Type annotations (HA uses gradual typing)
+    "D",        # Docstring style (too noisy for integrations)
+    "TD",       # TODO comments
+    "FIX",      # FIXME comments
+    "COM812",   # Trailing comma (conflicts with formatter)
+    "ISC001",   # Single-line implicit string concat (conflicts with formatter)
+    "T20",      # print() statements (useful in tests)
+    "S",        # Bandit security (too noisy for HA integrations)
+    "ERA",      # Commented-out code
+    "PLR0913",  # Too many arguments
+    "PLR0911",  # Too many return statements
+    "PLR0912",  # Too many branches
+    "PLR2004",  # Magic value in comparison
+    "TRY003",   # Long exception messages
+    "TRY300",   # Consider moving to else block
+    "TRY400",   # Use logging.exception instead of logging.error
+    "EM",       # Exception message formatting
+    "TC",       # Move import into TYPE_CHECKING block (breaks HA runtime)
+    "C901",     # Too complex (protocol parsers are inherently complex)
+    "PERF401",  # Use list comprehension (readability preference)
+    "RUF005",   # Consider iterable unpacking (style preference)
+    "FURB171",  # Single-item membership test (kept for future extensibility)
+    "PTH",      # Use pathlib (HA uses both os.path and pathlib)
+    "FBT",      # Boolean trap (HA entity methods require bool params)
+    "BLE001",   # Blind exception (profile loading needs broad catch)
+    "SIM105",   # contextlib.suppress (explicit try/except is clearer here)
+]
+
+[tool.ruff.lint.isort]
+# `homeassistant` is a third-party dependency, but this repo (and the deploy repo)
+# has a top-level `homeassistant/` directory, so ruff's automatic first-party
+# detection classifies it as local -- which makes the two repos demand OPPOSITE
+# import orders for the same file. Stating it explicitly keeps the source
+# byte-identical across both.
+known-third-party = ["homeassistant"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "PLR2004",  # Magic values in tests are fine
+    "SLF001",   # Private member access in tests
+    "ARG",      # Unused arguments in fixtures
+    "INP001",   # Implicit namespace package (tests aren't installable)
+    "E402",     # Module-level import not at top (sys.path manipulation)
+    "PLC0415",  # Import not at top-level (test helpers)
+    "E501",     # Line too long (test data strings)
+    "ASYNC240", # Blocking Path calls in async tests — no event loop to starve
+]
+"custom_components/audio_control/rs232_protocol/**" = [
+    "INP001",   # Implicit namespace package
+    # The vendored protocol library keeps the exemptions it had as a standalone
+    # package; moving it inside the integration should not change its rules.
+    "PLC0415",  # Lazy imports (avoid import cycles + defer optional deps)
+    "TRY301",   # Explicit raise inside try is clearer than an inner function
+    "PIE810",   # Separate startswith calls read better for framing checks
+]
+"custom_components/**/media_player.py" = [
+    "ARG001",   # Unused 'hass' arg (required by HA platform signature)
+]
+"custom_components/**/binary_sensor.py" = [
+    "ARG001",   # Unused 'hass' arg (required by HA platform signature)
+]
+"custom_components/**/__init__.py" = [
+    "ARG001",   # Unused 'hass' arg (required by HA lifecycle hooks)
+]
+"custom_components/**/config_flow.py" = [
+    "PLC0415",  # Lazy imports inside functions (HA Core convention for hardware libs)
+]
+"custom_components/**/diagnostics.py" = [
+    "ARG001",   # Unused 'hass' arg (required by HA platform signature)
+]
+"custom_components/**/services.py" = [
+    "PLR0915",  # Too many statements (service registration is inherently verbose)
+]

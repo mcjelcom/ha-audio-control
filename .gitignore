@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build logs
+build.log
+
+# Environment
+.env
+*.env.local
+.venv/
+.venv
+.claude/worktrees/
+
+# Symlink for pytest-homeassistant-custom-component discovery
+
+
+# Vendor manuals used for profile authoring — reference only, not redistributable
+.amc-docs/

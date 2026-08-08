@@ -1,0 +1,19 @@
+{
+  "services": {
+    "set_bass": {
+      "service": "mdi:music-clef-bass"
+    },
+    "set_treble": {
+      "service": "mdi:music-clef-treble"
+    },
+    "all_zones_off": {
+      "service": "mdi:power-off"
+    },
+    "group_mode_on": {
+      "service": "mdi:speaker-group"
+    },
+    "group_mode_off": {
+      "service": "mdi:speaker"
+    }
+  }
+}

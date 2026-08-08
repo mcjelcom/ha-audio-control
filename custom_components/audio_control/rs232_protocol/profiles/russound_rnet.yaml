@@ -1,0 +1,108 @@
+# Russound CAS / CAM / MCA Series — RNET Binary Protocol
+# Packet framing: 0xF0 [header] [body] [checksum] 0xF7
+# Escape: 0xF1 followed by inverted byte (for values > 0x7F)
+# Checksum: (sum_of_all_bytes + byte_count) & 0x7F
+protocol_type: binary
+
+name: "Russound CAV / CAS / MCA (RNET)"
+manufacturer: "Russound"
+# CAV6.6 / CAA66 folded in here: they speak binary RNET like the rest of the
+# family. A separate ASCII "Russound CAV6.6" profile used to exist but its
+# command set was not in the RNET spec and could never have worked.
+models: ["CAV6.6", "CAA66", "CAS44", "CAS66", "CAM6.6", "MCA-66", "MCA-88",
+         "MCA-88X", "MCA-C3", "MCA-C5"]
+
+zones: 8
+sources: 8
+
+serial:
+  baud_rate: 19200
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 100
+
+binary:
+  start_byte: 0xF0
+  end_byte: 0xF7
+  length_includes_start: false
+  length_includes_checksum: false
+  checksum: rnet
+  escape_byte: 0xF1
+  flow_control: none
+
+commands:
+  # RNET uses structured packets — opcode is the message type byte
+  # Zone power on: target zone, event type 0x05 (zone on)
+  power_on:
+    opcode: 0x05
+    data: ["{zone}", "0x01"]
+  power_off:
+    opcode: 0x05
+    data: ["{zone}", "0x00"]
+  # Volume set: event type 0x15, value 0-50
+  volume_set:
+    opcode: 0x15
+    data: ["{zone}", "{volume}"]
+  volume_up:
+    opcode: 0x15
+    data: ["{zone}", "0x01"]
+  volume_down:
+    opcode: 0x15
+    data: ["{zone}", "0x00"]
+  # Source select: event type 0x03
+  source_set:
+    opcode: 0x03
+    data: ["{zone}", "{source}"]
+  # Mute: event type 0x1E
+  mute_on:
+    opcode: 0x1E
+    data: ["{zone}", "0x01"]
+  mute_off:
+    opcode: 0x1E
+    data: ["{zone}", "0x00"]
+  # Status request: event type 0x07
+  status:
+    opcode: 0x07
+    data: ["{zone}"]
+  # Bass: event type 0x20
+  bass_set:
+    opcode: 0x20
+    data: ["{zone}", "{level}"]
+  # Treble: event type 0x21
+  treble_set:
+    opcode: 0x21
+    data: ["{zone}", "{level}"]
+  # All off: zone 0xFF
+  all_off:
+    opcode: 0x05
+    data: ["0xFF", "0x00"]
+
+response:
+  # Zone info response (opcode 0x06)
+  # Fixed offsets into body: power@20, source@21, volume@22,
+  # bass@23, treble@24, loudness@25, balance@26, party@29, dnd@30
+  zone_status:
+    opcode: 0x06
+    fields:
+      power: {offset: 20, bit: 0}
+      source: {offset: 21, transform: add1}
+      volume: {offset: 22}
+      # RNET tone/balance are offset-encoded (+10 bias): 0x00=-10, 0x0A=flat,
+      # 0x14=+10. `transform: signed` read flat as +10 (full boost).
+      bass: {offset: 23, transform: bias, bias: 10}
+      treble: {offset: 24, transform: bias, bias: 10}
+      balance: {offset: 26, transform: bias, bias: 10}
+      group: {offset: 29, bit: 0}
+
+volume:
+  min: 0
+  max: 50
+  inverted: false         # 0 = silent, 50 = max
+
+features:
+  has_tone_controls: true
+  has_group_mode: true
+  has_all_off: true
+  has_balance: true
+  unsolicited_updates: true

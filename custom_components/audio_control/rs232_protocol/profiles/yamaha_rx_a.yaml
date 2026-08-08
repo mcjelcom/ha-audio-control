@@ -1,0 +1,81 @@
+# Yamaha RX-A / RX-V Series — AV Receiver (single zone, RS232)
+name: "Yamaha RX-A / RX-V Series"
+manufacturer: "Yamaha"
+models: ["RX-A1080", "RX-A2080", "RX-A3080", "RX-V685", "RX-V6A"]
+
+zones: 1
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 200
+  command_prefix: "@"
+  command_suffix: "\r\n"
+  response_prefix: "@"
+  response_terminator: "\r\n"
+
+commands:
+  status:      "MAIN:PWR=?"
+  power_on:    "MAIN:PWR=On"
+  power_off:   "MAIN:PWR=Standby"
+  volume_set:  "MAIN:VOL={volume:+.1f}"
+  volume_up:   "MAIN:VOL=Up"
+  volume_down: "MAIN:VOL=Down"
+  mute_on:     "MAIN:MUTE=On"
+  mute_off:    "MAIN:MUTE=Off"
+  source_set:  "MAIN:INP={source_name}"
+
+response:
+  status_pattern: "MAIN:(?P<field>PWR|VOL|MUTE|INP)=(?P<value>.+)"
+  error_response: "@UNDEFINED"
+
+  mapping:
+    power:
+      field: "value"
+      type: "string_bool"
+      on_value: "On"
+      off_value: "Standby"
+    volume:
+      field: "value"
+      type: "signed_int"
+    source:
+      field: "value"
+      type: "string"
+
+volume:
+  min: -80
+  max: 16
+  inverted: false   # dB scale: -80.0=silent, +16.0=max
+
+# Single mapping form: a duplicate top-level `sources:` key silently wins
+# in YAML, which discarded the declared count and fell back to 6.
+sources:
+  count: 8
+  names:
+    1: "HDMI 1"
+    2: "HDMI 2"
+    3: "HDMI 3"
+    4: "HDMI 4"
+    5: "Audio 1"
+    6: "Audio 2"
+    7: "Tuner"
+    8: "NET"
+  command_map:
+    1: "HDMI1"
+    2: "HDMI2"
+    3: "HDMI3"
+    4: "HDMI4"
+    5: "AUDIO1"
+    6: "AUDIO2"
+    7: "TUNER"
+    8: "NET RADIO"
+
+features:
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  has_transport: false
+  unsolicited_updates: true

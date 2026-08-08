@@ -1,0 +1,84 @@
+# Marantz PM7000N / SR Series — Integrated Amp / AV Receiver (single zone)
+name: "Marantz PM7000N / SR Series"
+manufacturer: "Marantz"
+models: ["PM7000N", "SR5015", "SR6015", "SR7015", "NR1711"]
+
+zones: 1
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 200
+  command_prefix: ""
+  command_suffix: "\r"
+  response_prefix: ""
+  response_terminator: "\r"
+
+commands:
+  status:      "PW?"
+  power_on:    "PWON"
+  power_off:   "PWSTANDBY"
+  volume_set:  "MV{volume:02d}"
+  volume_up:   "MVUP"
+  volume_down: "MVDOWN"
+  mute_on:     "MUON"
+  mute_off:    "MUOFF"
+  source_set:  "SI{source_name}"
+
+response:
+  status_pattern: "(?P<cmd>PW|MV|MU|SI)(?P<value>.+)"
+  error_response: ""
+
+  mapping:
+    power:
+      field: "value"
+      type: "string_bool"
+      on_value: "ON"
+      off_value: "STANDBY"
+    volume:
+      field: "value"
+      type: "int"
+      min: 0
+      max: 98
+      inverted: false
+    source:
+      field: "value"
+      type: "string"
+
+volume:
+  min: 0
+  max: 98       # Marantz uses 0-98 (half dB steps, 00=−80dB, 98=+18dB)
+  inverted: false
+
+# Single mapping form: a duplicate top-level `sources:` key silently wins
+# in YAML, which discarded the declared count and fell back to 6.
+sources:
+  count: 8
+  names:
+    1: "CD"
+    2: "Tuner"
+    3: "Network"
+    4: "Bluetooth"
+    5: "Optical"
+    6: "HDMI 1"
+    7: "HDMI 2"
+    8: "AUX"
+  command_map:
+    1: "CD"
+    2: "TUNER"
+    3: "NET"
+    4: "BT"
+    5: "OPTICAL"
+    6: "HDMI1"
+    7: "HDMI2"
+    8: "AUX1"
+
+features:
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  has_transport: false
+  unsolicited_updates: true

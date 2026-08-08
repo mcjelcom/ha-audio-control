@@ -1,0 +1,56 @@
+set_bass:
+  name: Set Bass
+  description: Adjust bass level for a zone (requires device with tone controls)
+  target:
+    entity:
+      integration: audio_control
+      domain: media_player
+  fields:
+    level:
+      name: Level
+      description: "Bass level: +8, +6, +4, +2, 0 (flat), -2, -4, -6, -8"
+      required: true
+      selector:
+        number:
+          min: -8
+          max: 8
+          step: 2
+
+set_treble:
+  name: Set Treble
+  description: Adjust treble level for a zone (requires device with tone controls)
+  target:
+    entity:
+      integration: audio_control
+      domain: media_player
+  fields:
+    level:
+      name: Level
+      description: "Treble level: +8, +6, +4, +2, 0 (flat), -2, -4, -6, -8"
+      required: true
+      selector:
+        number:
+          min: -8
+          max: 8
+          step: 2
+
+all_zones_off:
+  name: All Zones Off
+  description: Turn off all zones at once (requires device with all-off support)
+
+group_mode_on:
+  name: Group Mode On
+  description: Enable group mode - all zones play the same source
+  fields:
+    source:
+      name: Source
+      description: "Source number to use for group mode"
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 16
+
+group_mode_off:
+  name: Group Mode Off
+  description: Disable group mode - zones return to independent sources

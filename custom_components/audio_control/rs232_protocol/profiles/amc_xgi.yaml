@@ -1,0 +1,47 @@
+# AMC XGi — 8-Zone (16-Channel) Power Amplifier
+# RS232 is power-control only (no zone/source/volume)
+name: "AMC XGi"
+manufacturer: "AMC"
+models: ["XGi"]
+
+zones: 1
+sources: 1
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 200
+  command_prefix: ""
+  command_suffix: "\r"
+  response_prefix: ""
+  response_terminator: "\r"
+
+commands:
+  status:       "POWER"
+  power_on:     "POWER ON"
+  power_off:    "POWER OFF"
+  power_toggle: "POWER TOGGLE"
+
+response:
+  status_pattern: "POWER (?P<power>ON|OFF)"
+  error_response: "ERROR"
+
+  mapping:
+    power:
+      field: "power"
+      type: "string_bool"
+      on_value: "ON"
+
+volume:
+  min: 0
+  max: 0
+  inverted: false
+
+features:
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  unsolicited_updates: false

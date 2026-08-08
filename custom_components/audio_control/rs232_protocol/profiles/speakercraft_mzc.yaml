@@ -1,0 +1,88 @@
+# SpeakerCraft MZC-64 / MZC-66 / MZC-88 — Multi-Zone Controller
+# Binary protocol: 0x55 start, length, opcode, data, mod256 checksum
+# XON/XOFF flow control (wait for 0x11 before sending)
+protocol_type: binary
+
+name: "SpeakerCraft MZC-66 / MZC-88"
+manufacturer: "SpeakerCraft"
+models: ["MZC-64", "MZC-66", "MZC-88"]
+
+zones: 8
+sources: 8
+
+serial:
+  baud_rate: 57600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 100
+
+binary:
+  start_byte: 0x55
+  length_includes_start: true
+  length_includes_checksum: false
+  checksum: mod256
+  flow_control: xon_xoff
+  xon_byte: 0x11
+  xoff_byte: 0x13
+
+commands:
+  # Zone and source are 0-indexed on wire (profile engine subtracts 1)
+  status:
+    opcode: 0x68
+    data: ["{zone}"]
+  power_on:
+    opcode: 0xA0
+    data: ["{zone}"]
+  power_off:
+    opcode: 0xA1
+    data: ["{zone}"]
+  all_off:
+    opcode: 0xA1
+    data: ["0xFF"]
+  source_set:
+    opcode: 0xA3
+    data: ["{zone}", "{source}"]
+  volume_set:
+    opcode: 0x57
+    data: ["0x00", "0x00", "0x05", "{volume}", "{zone}"]
+  volume_up:
+    opcode: 0x57
+    data: ["0x00", "0x00", "0x01", "0x00", "{zone}"]
+  volume_down:
+    opcode: 0x57
+    data: ["0x00", "0x00", "0x00", "0x00", "{zone}"]
+  mute_on:
+    opcode: 0x57
+    data: ["0x00", "0x00", "0x04", "0x00", "{zone}"]
+  mute_off:
+    opcode: 0x57
+    data: ["0x00", "0x00", "0x03", "0x00", "{zone}"]
+
+response:
+  # Zone status response (opcode 0x20)
+  # Payload: zone, unknown, flags, source, vol%, bass, treble, vol_dB
+  zone_status:
+    opcode: 0x20
+    fields:
+      zone: {offset: 0, transform: add1}
+      power: {offset: 2, bit: 1}
+      mute: {offset: 2, bit: 0}
+      source: {offset: 3, transform: add1}
+      volume: {offset: 7}
+  # Acknowledgment response (opcode 0x95)
+  ack:
+    opcode: 0x95
+    fields: {}
+
+volume:
+  min: 0
+  max: 80
+  inverted: true          # 0 = loudest, 80 = mute (dB attenuation)
+
+features:
+  has_tone_controls: true
+  has_group_mode: false
+  has_all_off: true
+  has_balance: false
+  unsolicited_updates: true

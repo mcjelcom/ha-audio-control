@@ -1,0 +1,59 @@
+# audio_control:managed
+# Starter Audio Control dashboard.
+#
+# The marker on the first line tells the integration it may overwrite this file
+# once zones exist. Delete that line to take ownership and keep your own edits.
+#
+# This file is only a placeholder. Once the integration is configured,
+# generate_dashboard.py replaces it with one built from the live HA registries:
+# one media-control card per zone, with the correct entity ids and your zone
+# names. That regeneration happens on container restart.
+#
+# Why a placeholder rather than real cards: Lovelace YAML has no loops and no
+# entity globbing, and the bundled profiles range from 1 to 16 zones with
+# profile-specific entity id slugs. Any hardcoded card list is wrong for most
+# devices, so this file deliberately hardcodes none.
+#
+# The service buttons below work on any profile that supports them.
+title: Audio Control
+views:
+  - title: Zones
+    path: zones
+    icon: mdi:speaker-multiple
+    type: masonry
+    cards:
+      - type: markdown
+        content: >-
+          ### Audio Control
+
+
+          Waiting for zones. Add the integration under **Settings > Devices &
+          Services > Add Integration > Audio Control**, then restart to have
+          zone cards generated automatically.
+
+
+          Already configured? Restart Home Assistant to populate this
+          dashboard.
+
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: All Off
+            icon: mdi:power-off
+            icon_height: 40px
+            tap_action:
+              action: perform-action
+              perform_action: audio_control.all_zones_off
+
+          - type: button
+            name: Group
+            icon: mdi:speaker-group
+            icon_height: 40px
+            tap_action:
+              action: perform-action
+              perform_action: audio_control.group_mode_on
+              data:
+                source: 1
+            hold_action:
+              action: perform-action
+              perform_action: audio_control.group_mode_off

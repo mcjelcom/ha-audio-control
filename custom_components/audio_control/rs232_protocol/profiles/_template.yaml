@@ -1,0 +1,94 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Custom Device Profile Template
+# ──────────────────────────────────────────────────────────────────────────────
+# Copy this file to /config/audio_control/my_device.yaml and customize.
+# It will appear in the device dropdown when adding the integration.
+# ──────────────────────────────────────────────────────────────────────────────
+
+name: "My Custom Device"           # Display name in the UI
+manufacturer: "Brand Name"
+models: ["Model A", "Model B"]
+
+zones: 4                           # Number of audio zones
+sources: 4                         # Number of input sources
+
+serial:
+  baud_rate: 9600                  # Common: 9600, 19200, 38400, 115200
+  data_bits: 8
+  parity: "none"                   # none, even, odd
+  stop_bits: 1
+  command_delay_ms: 100            # Milliseconds between commands
+  command_prefix: ""               # Prepended to every command (e.g., "*", "!", "<")
+  command_suffix: "\r"             # Appended to every command (e.g., "\r", "\r\n", "+")
+  response_prefix: ""             # Stripped from response start (e.g., "#", ">", "?")
+  response_terminator: "\r"        # Character(s) that end a response line
+
+# ─── Commands ──────────────────────────────────────────────────────────────────
+# Use {zone}, {source}, {volume}, {level}, {sign} as placeholders.
+# Format specs: {zone:02d} = zero-padded 2-digit, {zone:1d} = single digit
+commands:
+  status:      "Z{zone:02d}STA"          # Query zone status
+  power_on:    "Z{zone:02d}PON"
+  power_off:   "Z{zone:02d}POFF"
+  volume_set:  "Z{zone:02d}VOL{volume:02d}"
+  volume_up:   "Z{zone:02d}VU"
+  volume_down: "Z{zone:02d}VD"
+  mute_on:     "Z{zone:02d}MUON"
+  mute_off:    "Z{zone:02d}MUOFF"
+  source_set:  "Z{zone:02d}SRC{source:02d}"
+  # Optional commands (delete if not supported):
+  # bass_set:    "Z{zone:02d}BASS{sign}{level}"
+  # treble_set:  "Z{zone:02d}TREB{sign}{level}"
+  # all_off:     "ALLOFF"
+  # group_on:    "GROUP{source:02d}"
+  # group_off:   "UNGROUP"
+
+# ─── Response Parsing ──────────────────────────────────────────────────────────
+# Use Python regex with named groups (?P<name>pattern)
+response:
+  status_pattern: "Z(?P<zone>\\d{2}) PWR(?P<power>\\d) SRC(?P<source>\\d{2}) VOL(?P<volume>\\d{2}) MUT(?P<mute>\\d)"
+  # tone_pattern: "..."            # Optional: for bass/treble responses
+  error_response: "ERR"            # What the device sends on error
+
+  # Global patterns (not zone-specific)
+  # global_patterns:
+  #   all_off: "ALLOFF"
+  #   group_on: "GRPON(?P<source>\\d{2})"
+
+  # Map regex group names to entity state
+  mapping:
+    power:
+      field: "power"               # Regex group name
+      type: "bool"                 # bool, int, string_bool, threshold, equals, signed_int
+      on_value: "1"                # What value means "on"
+      off_value: "0"
+    mute:
+      field: "mute"
+      type: "bool"
+      on_value: "1"
+      off_value: "0"
+    volume:
+      field: "volume"
+      type: "int"
+      min: 0
+      max: 100                     # Device's raw volume range
+      inverted: false              # true if 0=loud, max=mute (like AMC)
+      # offset: 0                  # Add this to the raw value
+    source:
+      field: "source"
+      type: "int"
+
+# ─── Volume ────────────────────────────────────────────────────────────────────
+volume:
+  min: 0
+  max: 100
+  inverted: false                  # false: 0=silent, max=loud (Monoprice, Russound)
+                                   # true: 0=loud, max=mute (AMC)
+
+# ─── Features ─────────────────────────────────────────────────────────────────
+features:
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  unsolicited_updates: false       # true if device pushes status without being asked

@@ -1,0 +1,112 @@
+# Monoprice 31028 — 70V Commercial 6-Zone Amplifier
+#
+# Protocol differs from the residential 10761 series in more than framing:
+# - Sources are a per-zone BUS/LINE selector (IS0/IS1), not numbered inputs.
+# - Bass/treble span 0-14 = -14..+14 dB at 2 dB per step, so the wire value is
+#   NOT interchangeable with the 10761/Xantech 0-14 = -7..+7 (1 dB) scale even
+#   though both share the same range and flat value of 7.
+#
+# Source: Monoprice manual 31028_Manual_180731.pdf, "RS-232 Commands" and the
+# "Bass/Treble Level" table.
+name: "Monoprice 31028 (Commercial 70V)"
+manufacturer: "Monoprice"
+models: ["31028"]
+
+zones: 6
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 100
+  command_prefix: "!"
+  command_suffix: "+"
+  response_prefix: "#"
+  response_terminator: "+"
+
+commands:
+  # NOTE: the manual documents the query as global "?ZS+", where "?" replaces
+  # the "!" command prefix. The engine applies one prefix to every command, so
+  # that form is not expressible yet and this keeps the per-zone shape used by
+  # the sibling Xantech profiles. UNVERIFIED against hardware -- if a 31028
+  # rejects it, the engine needs a per-command prefix override rather than a
+  # profile change.
+  status:      "{zone:1d}ZS"
+  power_on:    "{zone:1d}PR1"
+  power_off:   "{zone:1d}PR0"
+  volume_set:  "{zone:1d}VO{volume:02d}"
+  volume_up:   "{zone:1d}VI"
+  volume_down: "{zone:1d}VD"
+  mute_on:     "{zone:1d}MU1"
+  mute_off:    "{zone:1d}MU0"
+  # Input select: 0 = BUS, 1 = LINE.
+  source_set:  "{zone:1d}IS{source:1d}"
+  bass_set:    "{zone:1d}BS{level:02d}"
+  treble_set:  "{zone:1d}TR{level:02d}"
+  balance_set: "{zone:1d}BA{level:02d}"
+  all_off:     "AO"
+
+response:
+  # Volume is NOT zero-padded in responses -- the manual's own example is
+  # "#6ZS VO8 PO1 MU0 IS0+". Requiring \d{2} made every single-digit volume
+  # fail to parse at all (parse_response returned None).
+  status_pattern: "(?P<zone>\\d)ZS VO(?P<volume>\\d{1,2}) PO(?P<power>\\d) MU(?P<mute>\\d) IS(?P<source>\\d)"
+  error_response: "ERR"
+  global_patterns:
+    all_off: "AO OK"
+
+  mapping:
+    power:
+      field: "power"
+      type: "bool"
+      on_value: "1"
+    mute:
+      field: "mute"
+      type: "bool"
+      on_value: "1"
+    volume:
+      field: "volume"
+      type: "int"
+    source:
+      field: "source"
+      type: "int"
+    # Wire 0-14 maps to -14..+14 dB in 2 dB steps (0=-14, 7=flat, 14=+14).
+    # The offset here is in wire units, so the engine's offset encoding treats
+    # `level` as a step number rather than dB. See tone_step_db below.
+    bass:
+      field: "bass"
+      type: "int"
+      offset: -7
+      max: 14
+    treble:
+      field: "treble"
+      type: "int"
+      offset: -7
+      max: 14
+
+# Each tone step is 2 dB on this model (vs 1 dB on the 10761/Xantech), so a
+# `level` of +7 is +14 dB here. Recorded for documentation; the engine encodes
+# `level` as a step offset and does not convert dB.
+tone_step_db: 2
+
+# BUS and LINE, selected per zone via IS0/IS1 -- not numbered inputs.
+# Single mapping form: a second top-level `sources:` key would silently win in
+# YAML and drop the count.
+sources:
+  count: 2
+  names:
+    1: "BUS"
+    2: "LINE"
+
+volume:
+  min: 0
+  max: 38
+  inverted: false
+
+features:
+  has_tone_controls: true
+  has_group_mode: false
+  has_all_off: true
+  has_balance: true
+  unsolicited_updates: false

@@ -1,0 +1,97 @@
+# Integration Quality Scale - https://developers.home-assistant.io/docs/integration_quality_scale_index
+# Self-assessed for HACS custom component (not yet submitted to HA Core)
+
+rules:
+  # Bronze (minimum for HA Core)
+  action-setup:
+    status: done
+  appropriate-polling:
+    status: done
+    comment: Polls every 60s via _periodic_refresh
+  brands:
+    status: done
+  common-modules:
+    status: done
+    comment: Uses entity.py base class, shared serial_manager
+  config-flow:
+    status: done
+  config-flow-test-coverage:
+    status: done
+    comment: 9 tests in test_config_flow.py
+  dependency-transparency:
+    status: done
+    comment: >-
+      Protocol library is vendored in-tree (rs232_protocol/); the only external
+      requirements are pyserial and pyserial-asyncio-fast, both declared in the
+      manifest.
+  docs-actions:
+    status: done
+  docs-high-level-description:
+    status: done
+  docs-installation-instructions:
+    status: done
+  docs-removal-instructions:
+    status: done
+  entity-event-setup:
+    status: done
+    comment: async_added_to_hass / async_will_remove_from_hass
+  entity-unique-id:
+    status: done
+    comment: ac_{entry_id}_zone_{N}
+  has-entity-name:
+    status: done
+  runtime-data:
+    status: done
+    comment: entry.runtime_data = SerialManager
+  test-before-configure:
+    status: done
+    comment: _test_port validates port/network access
+  test-before-setup:
+    status: done
+  unique-config-entry:
+    status: done
+    comment: Unique ID based on connection port/URL
+
+  # Silver
+  config-entry-unloading:
+    status: done
+  diagnostics:
+    status: done
+  discovery:
+    status: done
+    comment: USB discovery via manifest usb field
+  entity-category:
+    status: done
+    comment: binary_sensor sets EntityCategory.DIAGNOSTIC
+  entity-disabled-by-default:
+    status: exempt
+  exception-translations:
+    status: done
+    comment: services.py and media_player.py raise with translation keys
+  icon-translations:
+    status: done
+    comment: icons.json for services
+  reconfiguration-flow:
+    status: done
+  repair-issues:
+    status: todo
+  stale-devices:
+    status: exempt
+    comment: Static device (serial/network connection)
+
+  # Gold
+  devices:
+    status: done
+  entity-translations:
+    status: todo
+  log-when-unavailable:
+    status: done
+  parallel-updates:
+    status: exempt
+    comment: Serial is inherently sequential (command_lock)
+  reauthentication-flow:
+    status: done
+    comment: >-
+      The JSON engine authenticates (RTI AD-810 ships admin/admin), so the
+      previous "exempt -- no auth needed" was wrong. async_step_reauth prompts
+      for credentials on ConfigEntryAuthFailed.

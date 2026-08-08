@@ -1,0 +1,106 @@
+# AMC XIA100e / XIA150e — 2-channel integrated amplifier
+#
+# Source: AMC "XIA100e/XIA150e RS-232 Protocol" appendix, XIA100e-150e MANUAL.pdf
+# (amchome.com/files/, PN 21R-XIA150e-1). The appendix lists exactly six
+# commands; everything below comes from that table verbatim.
+#
+# The command set is deliberately small, and the gaps are real, not omissions:
+#   * NO power command. The appendix has no *POWER/*PWR entry at all -- the XIA
+#     is powered from the front panel / remote trigger, not over serial. Every
+#     RETURN begins "#ON,", so power is *reported* but not settable.
+#   * NO mute command. "MUTE OFF" appears only inside RETURN strings, i.e. it is
+#     status, never a command.
+#   * NO absolute volume. Only *VOLUP / *VOLDN, so volume is relative-only and
+#     the device never reports a level -- there is nothing to put on a slider.
+#
+# Declaring commands the device lacks would render dead buttons that fail
+# silently (send_command returns False and only logs), so they are left out and
+# the entity's feature gates omit the matching controls.
+name: "AMC XIA100e / XIA150e"
+manufacturer: "AMC"
+models: ["XIA100e", "XIA150e"]
+
+zones: 1
+
+# Six inputs on the XIA100e/XIA150e. The same protocol serves a 4-input variant
+# that reports "#306D" to *MODEL, whose map is AUX/TUNER/CD/OPTION -- a separate
+# profile rather than a guess baked into this one.
+sources:
+  count: 6
+  names:
+    1: "Aux"
+    2: "Video"
+    3: "Tuner"
+    4: "CD"
+    5: "iPad"
+    6: "Option"
+
+serial:
+  # "Baud Rate : 38400, Data : 8 bit, Parity : none, Stop : 1 bit,
+  #  Flow Control : none, Transient delay : 0"
+  baud_rate: 38400
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  # The appendix specifies "Transient delay : 0" and states no inter-command
+  # delay, unlike the X-Series manual which mandates 500ms. Kept small but
+  # non-zero so a burst cannot outpace the amplifier's parser.
+  command_delay_ms: 100
+  command_prefix: "*"
+  command_suffix: "\r"
+  response_prefix: "#"
+  response_terminator: "\r"
+
+commands:
+  # No status command exists in the appendix. *MODEL is the only harmless probe
+  # that elicits a reply, so it doubles as the reachability check the connection
+  # layer performs on connect.
+  status: "MODEL"
+  source_set: "SRC{source:02d}"
+  volume_up: "VOLUP"
+  volume_down: "VOLDN"
+
+response:
+  # "#ON,SRCbb,MUTE OFF" and "#ON,SRCbb,MUTE OFF,VOLUP". The response_prefix
+  # strips the leading "#", so the pattern starts at "ON". VOLUP/VOLDN is
+  # optional because plain source-select replies omit it.
+  status_pattern: "(?P<power>ON|OFF),SRC(?P<source>\\d{2}),MUTE (?P<mute>ON|OFF)"
+  error_response: ""
+
+  # The status probe is *MODEL, whose reply the manual prints as
+  # "#XIA100/XIA150 or # 306D" (and as "#XIA100e/XIA150e" in the REMARK column,
+  # hence the optional 'e'). Without a pattern for it the reply never parses, so
+  # _wait_for_response times out, connect() leaves _device_responded False, and
+  # the reconnect loop -- which exits only on a real reply -- retries forever.
+  # A global pattern is the right shape: it acknowledges the probe without
+  # claiming to describe a zone, and a probe must not mutate device state.
+  global_patterns:
+    model: "^\\s*(XIA100e?/XIA150e?|306D)\\s*$"
+
+  mapping:
+    power:
+      field: "power"
+      type: "string_bool"
+      on_value: "ON"
+    mute:
+      field: "mute"
+      type: "string_bool"
+      on_value: "ON"
+    source:
+      field: "source"
+      type: "int"
+
+# No absolute volume command and no reported level, so the span is zero. This is
+# what tells the entity layer to omit VOLUME_SET; VOLUME_STEP is gated separately
+# on volume_up/volume_down both existing, which they do.
+volume:
+  min: 0
+  max: 0
+  inverted: false
+
+features:
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  unsolicited_updates: false

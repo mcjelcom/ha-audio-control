@@ -1,0 +1,62 @@
+# Oppo UDP-203 / UDP-205 — Universal Disc Player (Blu-ray/DVD/CD)
+name: "Oppo UDP-203 / UDP-205"
+manufacturer: "Oppo"
+models: ["UDP-203", "UDP-205", "BDP-103", "BDP-105"]
+
+zones: 1
+sources: 1
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 100
+  command_prefix: "#"
+  command_suffix: "\r"
+  response_prefix: "@"
+  response_terminator: "\r"
+
+commands:
+  status:      "QPL"
+  power_on:    "PON"
+  power_off:   "POF"
+  play:        "PLA"
+  pause:       "PAU"
+  stop:        "STP"
+  next_track:  "NXT"
+  prev_track:  "PRE"
+  eject:       "EJT"
+  # Volume (UDP-205 has variable output)
+  volume_set:  "SVL {volume:03d}"
+  volume_up:   "VUP"
+  volume_down: "VDN"
+  mute_on:     "MUT"
+  mute_off:    "UMT"
+
+response:
+  status_pattern: "(?P<cmd>\\w+) (?P<status>OK|\\w+)"
+  error_response: "ER"
+
+  mapping:
+    power:
+      field: "status"
+      type: "string_bool"
+      on_value: "OK"
+    transport:
+      field: "cmd"
+      type: "string"
+
+volume:
+  min: 0
+  max: 100
+  inverted: false
+
+features:
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  has_transport: true
+  unsolicited_updates: true
+  device_type: "player"

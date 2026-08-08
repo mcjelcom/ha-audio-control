@@ -1,0 +1,60 @@
+# Rotel RSP-1576 / RSP-1582 — Surround Sound Processor
+# Protocol V1.0: same baud but `!` response terminator (not `$`)
+name: "Rotel RSP-1576 / RSP-1582"
+manufacturer: "Rotel"
+models: ["RSP-1576", "RSP-1576MKII", "RSP-1582"]
+
+zones: 1
+sources: 8
+
+serial:
+  baud_rate: 115200
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 50
+  command_prefix: ""
+  command_suffix: "!"
+  response_prefix: ""
+  response_terminator: "!"
+
+commands:
+  status:      "get_current_power"
+  power_on:    "power_on"
+  power_off:   "power_off"
+  power_toggle: "power_toggle"
+  volume_set:  "vol_{volume:02d}"
+  volume_up:   "vol_up"
+  volume_down: "vol_dwn"
+  mute_on:     "mute_on"
+  mute_off:    "mute_off"
+  mute_toggle: "mute"
+  source_set:  "source_{source_name}"
+
+response:
+  status_pattern: "(?P<key>\\w+)=(?P<value>.+)"
+  error_response: "error"
+
+  mapping:
+    power:
+      field: "value"
+      type: "string_bool"
+      on_value: "on"
+    volume:
+      field: "value"
+      type: "int"
+    source:
+      field: "value"
+      type: "string"
+
+volume:
+  min: 0
+  max: 96
+  inverted: false
+
+features:
+  has_tone_controls: true
+  has_group_mode: false
+  has_all_off: false
+  has_balance: true
+  unsolicited_updates: true

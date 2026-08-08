@@ -1,0 +1,96 @@
+# Rotel RA-1572 / RA-1592 — Stereo Integrated Amplifier (single zone)
+name: "Rotel RA-1572 / RA-1592"
+manufacturer: "Rotel"
+models: ["RA-1572", "RA-1592", "RA-1572MKII", "A14", "A14MKII"]
+
+zones: 1
+
+serial:
+  baud_rate: 115200
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 50
+  command_prefix: ""
+  command_suffix: "!"
+  response_prefix: ""
+  response_terminator: "$"
+
+commands:
+  status:      "get_current_power"
+  power_on:    "power_on"
+  power_off:   "power_off"
+  volume_set:  "vol_{volume:02d}"
+  volume_up:   "vol_up"
+  volume_down: "vol_dwn"
+  mute_on:     "mute_on"
+  mute_off:    "mute_off"
+  source_set:  "{source_name}"
+  bass_set:    "bass_{level:+d}"
+  treble_set:  "treble_{level:+d}"
+  # Transport controls (if source is CD)
+  play:        "play"
+  pause:       "pause"
+  stop:        "stop"
+  next_track:  "track_fwd"
+  prev_track:  "track_back"
+
+response:
+  status_pattern: "power=(?P<power>on|standby),source=(?P<source>\\w+),volume=(?P<volume>\\d{2}),mute=(?P<mute>on|off)"
+  error_response: "Command Error"
+
+  mapping:
+    power:
+      field: "power"
+      type: "string_bool"
+      on_value: "on"
+      off_value: "standby"
+    mute:
+      field: "mute"
+      type: "string_bool"
+      on_value: "on"
+      off_value: "off"
+    volume:
+      field: "volume"
+      type: "int"
+      min: 0
+      max: 96
+      inverted: false
+    source:
+      field: "source"
+      type: "string"
+
+volume:
+  min: 0
+  max: 96
+  inverted: false
+
+# Single mapping form: a duplicate top-level `sources:` key silently wins
+# in YAML, which discarded the declared count and fell back to 6.
+sources:
+  count: 7
+  names:
+    1: "CD"
+    2: "Coax 1"
+    3: "Coax 2"
+    4: "Optical 1"
+    5: "Optical 2"
+    6: "Aux"
+    7: "Bluetooth"
+  # Source command uses name, not number
+  command_map:
+    1: "cd"
+    2: "coax1"
+    3: "coax2"
+    4: "opt1"
+    5: "opt2"
+    6: "aux"
+    7: "bluetooth"
+
+features:
+  has_tone_controls: true
+  has_group_mode: false
+  has_all_off: false
+  has_balance: true
+  has_transport: true
+  unsolicited_updates: false

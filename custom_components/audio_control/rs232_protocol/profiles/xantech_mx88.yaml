@@ -1,0 +1,81 @@
+# Xantech MX88 / MX88a / MX88ai — 8x8 Matrix Switch (57600 baud)
+# Same commands as MRC-88 but at 57600 baud
+name: "Xantech MX88 / MX88a"
+manufacturer: "Xantech"
+models: ["MX88", "MX88a", "MX88ai"]
+
+zones: 8
+sources: 8
+
+serial:
+  baud_rate: 57600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 100
+  command_prefix: "!"
+  command_suffix: "+"
+  response_prefix: "?"
+  response_terminator: "+"
+
+commands:
+  status:      "{zone:1d}ZD"
+  power_on:    "{zone:1d}PR1"
+  power_off:   "{zone:1d}PR0"
+  power_toggle: "{zone:1d}PT"
+  volume_set:  "{zone:1d}VO{volume:02d}"
+  volume_up:   "{zone:1d}VI"
+  volume_down: "{zone:1d}VD"
+  mute_on:     "{zone:1d}MU1"
+  mute_off:    "{zone:1d}MU0"
+  mute_toggle: "{zone:1d}MT"
+  source_set:  "{zone:1d}SS{source:1d}"
+  bass_set:    "{zone:1d}BS{level:02d}"
+  treble_set:  "{zone:1d}TR{level:02d}"
+  all_off:     "AO"
+
+response:
+  status_pattern: "(?P<zone>\\d)ZS PR(?P<power>\\d) SS(?P<source>\\d) VO(?P<volume>\\d{2}) MU(?P<mute>\\d) TR(?P<treble>\\d{2}) BS(?P<bass>\\d{2}) BA(?P<balance>\\d{2})"
+  error_response: "ERR"
+  global_patterns:
+    all_off: "AO"
+
+  mapping:
+    power:
+      field: "power"
+      type: "bool"
+      on_value: "1"
+    mute:
+      field: "mute"
+      type: "bool"
+      on_value: "1"
+    volume:
+      field: "volume"
+      type: "int"
+    source:
+      field: "source"
+      type: "int"
+    bass:
+      field: "bass"
+      type: "int"
+      offset: -7
+    treble:
+      field: "treble"
+      type: "int"
+      offset: -7
+    balance:
+      field: "balance"
+      type: "int"
+      offset: -10
+
+volume:
+  min: 0
+  max: 38
+  inverted: false
+
+features:
+  has_tone_controls: true
+  has_group_mode: false
+  has_all_off: true
+  has_balance: true
+  unsolicited_updates: true

@@ -1,0 +1,106 @@
+# AMC XIA / 306D — 2-channel integrated amplifier, 4-input variant
+#
+# Source: AMC "XIA100e/XIA150e RS-232 Protocol" appendix, XIA100e-150e MANUAL.pdf
+# (amchome.com/files/, PN 21R-XIA150e-1). The appendix documents ONE protocol
+# serving two input counts, and gives both source maps verbatim:
+#
+#   6 Input ; bb = 01~06 ; 01=AUX,02=VIDEO,03=TUNER,04=CD,05=iPAD,06=OPTION/PHONO/OPT/COAX
+#   4 Input ; bb = 01~04 ; 01=AUX,02=TUNER,03=CD,04=OPTION/PHONO/OPT/COAX
+#
+# This profile is the 4-input map; amc_xia100e.yaml is the 6-input one. They are
+# separate profiles rather than one guessed superset because the input NUMBERS
+# differ, not just the count: CD is 04 on the 6-input and 03 here. A single
+# profile would silently select the wrong input on one of the two families.
+#
+# Identify which you have with *MODEL\r: 4-input replies "#306D", 6-input replies
+# "#XIA100e/XIA150e".
+#
+# Corroborated by the same manual's "AMC Amps Remote Code List" (customer code
+# 07FC), which lists Video (C8) and iPod/DAC (CB) as "XIA100e/XIA150e" only,
+# while Tuner/CD/Option/Aux are shared with "306d,XIA" -- an independent
+# confirmation that the 4-input models lack exactly VIDEO and iPAD.
+#
+# The command set is identical to the 6-input model, including its real gaps:
+# no power command (front-panel powered; every RETURN begins "#ON,"), no mute
+# command ("MUTE OFF" appears only inside RETURN strings), and no absolute
+# volume (relative *VOLUP/*VOLDN only, with no level ever reported).
+name: "AMC XIA / 306D (4-input)"
+manufacturer: "AMC"
+models: ["XIA", "306D"]
+
+zones: 1
+
+sources:
+  count: 4
+  names:
+    1: "Aux"
+    2: "Tuner"
+    3: "CD"
+    4: "Option"
+
+serial:
+  # "Baud Rate : 38400, Data : 8 bit, Parity : none, Stop : 1 bit,
+  #  Flow Control : none, Transient delay : 0"
+  baud_rate: 38400
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  # The appendix specifies no inter-command delay ("Transient delay : 0"), unlike
+  # the X-Series manual's mandatory 500ms. Kept small but non-zero so a burst
+  # cannot outpace the amplifier's parser.
+  command_delay_ms: 100
+  command_prefix: "*"
+  command_suffix: "\r"
+  response_prefix: "#"
+  response_terminator: "\r"
+
+commands:
+  # No status command exists in the appendix. *MODEL is the only harmless probe
+  # that elicits a reply, so it doubles as the connect-time reachability check.
+  status: "MODEL"
+  source_set: "SRC{source:02d}"
+  volume_up: "VOLUP"
+  volume_down: "VOLDN"
+
+response:
+  # "#ON,SRCbb,MUTE OFF" and "#ON,SRCbb,MUTE OFF,VOLUP". response_prefix strips
+  # the leading "#", so the pattern starts at "ON". The VOLUP/VOLDN suffix is
+  # optional because a plain source-select reply omits it.
+  status_pattern: "(?P<power>ON|OFF),SRC(?P<source>\\d{2}),MUTE (?P<mute>ON|OFF)"
+  error_response: ""
+
+  # The status probe is *MODEL. A 4-input unit replies "#306D" (the 6-input one
+  # replies "#XIA100e/XIA150e"); both are accepted here because one protocol
+  # serves both and a user may pick either profile. Without this the reply never
+  # parses, so the probe times out and the reconnect loop -- which exits only on
+  # a real reply -- retries forever.
+  global_patterns:
+    model: "^\\s*(XIA100e?/XIA150e?|306D)\\s*$"
+
+  mapping:
+    power:
+      field: "power"
+      type: "string_bool"
+      on_value: "ON"
+    mute:
+      field: "mute"
+      type: "string_bool"
+      on_value: "ON"
+    source:
+      field: "source"
+      type: "int"
+
+# No absolute volume command and no reported level, so the span is zero. This is
+# what tells the entity layer to omit VOLUME_SET; VOLUME_STEP is gated separately
+# on volume_up/volume_down, which do exist.
+volume:
+  min: 0
+  max: 0
+  inverted: false
+
+features:
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  unsolicited_updates: false

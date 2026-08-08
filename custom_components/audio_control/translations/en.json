@@ -1,0 +1,116 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Audio Control",
+        "description": "Select a device profile and enter the connection. Use a local serial port (e.g. /dev/ttyUSB0), a network URL (e.g. socket://192.168.1.50:4999), or 'demo' to try the integration with a simulated device and no hardware. Detected locally: {suggested_ports}.",
+        "data": {
+          "device_profile": "Device",
+          "port": "Connection (serial port, socket://host:port, or 'demo')"
+        }
+      },
+      "custom_basic": {
+        "title": "Custom Device - Basic Info",
+        "description": "Name your device and configure zones, sources, and serial speed.",
+        "data": {
+          "device_name": "Device Name",
+          "zones": "Number of Zones",
+          "sources": "Number of Sources",
+          "baud_rate": "Baud Rate"
+        }
+      },
+      "custom_serial": {
+        "title": "Custom Device - Serial Framing",
+        "description": "Define how commands are wrapped for the connection. Use \\r for carriage return, \\n for newline.",
+        "data": {
+          "command_prefix": "Command Prefix (before command, e.g., * or !)",
+          "command_suffix": "Command Suffix (after command, e.g., \\r)",
+          "response_prefix": "Response Prefix (stripped from responses, e.g., # or >)",
+          "response_terminator": "Response Terminator (end of response, e.g., \\r)",
+          "command_delay_ms": "Delay Between Commands (ms)"
+        }
+      },
+      "custom_commands": {
+        "title": "Custom Device - Commands",
+        "description": "Define the device commands. Placeholders are written in braces: zone, source and volume. A format spec may follow a colon, so a zero-padded 2-digit zone is zone:02d in braces. See the docs for examples.",
+        "data": {
+          "status": "Status Query",
+          "power_on": "Power ON",
+          "power_off": "Power OFF",
+          "volume_set": "Volume Set",
+          "volume_up": "Volume Up",
+          "volume_down": "Volume Down",
+          "mute_on": "Mute ON",
+          "mute_off": "Mute OFF",
+          "source_set": "Source Select"
+        }
+      },
+      "custom_response": {
+        "title": "Custom Device - Response Parsing",
+        "description": "Define how to parse the device's response using a Python regular expression with named groups for zone, power, volume, source and mute. Example: a 2-digit zone group followed by PWR and a 1-digit power group. See the docs for a full pattern.",
+        "data": {
+          "status_pattern": "Status Response Regex Pattern",
+          "volume_min": "Volume Minimum (device raw value)",
+          "volume_max": "Volume Maximum (device raw value)",
+          "volume_inverted": "Volume Inverted (0=loud, max=mute)",
+          "error_response": "Error Response String"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Audio Control",
+        "description": "Change the connection for this device without removing it. Use a local serial port, a network URL (e.g., socket://192.168.1.50:4999 or rfc2217://192.168.1.50:4999), or 'demo'. Detected locally: {suggested_ports}.",
+        "data": {
+          "port": "Connection"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-enter device credentials",
+        "description": "The device rejected the stored credentials, or did not answer the login. Enter the current username and password for {device}. Leave a field blank to keep its stored value.",
+        "data": {
+          "login_username": "Username",
+          "login_password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to device. Check connection.",
+      "invalid_profile": "Selected device profile could not be loaded.",
+      "invalid_regex": "Invalid regular expression. Check for unmatched brackets or parentheses, and that each named group appears only once.",
+      "credentials_required": "Enter a username or a password. Submitting both blank would retry the credentials that just failed."
+    },
+    "abort": {
+      "already_configured": "This connection is already configured.",
+      "reconfigure_successful": "Connection updated successfully.",
+      "reauth_successful": "Credentials updated and the device reconnected."
+    }
+  },
+  "exceptions": {
+    "not_valid_zone": {
+      "message": "Entity '{entity_id}' is not a valid Audio Control zone."
+    },
+    "command_failed": {
+      "message": "Failed to send '{command}' for zone {zone}. Check device connection."
+    },
+    "integration_unavailable": {
+      "message": "Audio Control integration is not available."
+    },
+    "feature_unsupported": {
+      "message": "This device does not support {feature}."
+    },
+    "unknown_source": {
+      "message": "Source '{source}' is not available on this device. Available: {available}."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Rename Zones & Sources",
+        "description": "Customize names for your zones and sources.",
+        "data": {
+          "login_username": "Device username (leave blank to keep the profile default)",
+          "login_password": "Device password (leave blank to keep the profile default)"
+        }
+      }
+    }
+  }
+}

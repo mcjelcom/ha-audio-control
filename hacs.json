@@ -1,0 +1,9 @@
+{
+  "name": "Audio Control",
+  "hacs": "1.6.0",
+  "homeassistant": "2024.1.0",
+  "render_readme": true,
+  "zip_release": false,
+  "filename": "audio_control.zip",
+  "content_in_root": false
+}

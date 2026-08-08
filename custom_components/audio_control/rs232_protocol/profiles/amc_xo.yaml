@@ -1,0 +1,83 @@
+# AMC XO — 8 Zone, 8 Source Audio Digital Home System
+name: "AMC XO"
+manufacturer: "AMC"
+models: ["XO"]
+
+zones: 8
+sources: 8
+
+serial:
+  baud_rate: 38400
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 500
+  command_prefix: "*"
+  command_suffix: "\r"
+  response_prefix: "#"
+  response_terminator: "\r"
+
+# Zone prefix auto-detection: tries "ZN" first, falls back to "Z"
+zone_prefix: "ZN"
+zone_prefix_fallback: "Z"
+
+commands:
+  status:      "{zp}{zone:02d}STA00"
+  tone_status: "{zp}{zone:02d}SET00"
+  power_on:    "{zp}{zone:02d}PWR01"
+  power_off:   "{zp}{zone:02d}PWR00"
+  volume_set:  "{zp}{zone:02d}VOL{volume:02d}"
+  volume_up:   "{zp}{zone:02d}VOLUP"
+  volume_down: "{zp}{zone:02d}VOLDN"
+  mute_on:     "{zp}{zone:02d}MUT01"
+  mute_off:    "{zp}{zone:02d}MUT00"
+  source_set:  "{zp}{zone:02d}SRC{source:02d}"
+  bass_set:    "{zp}{zone:02d}BAS{sign}{level}"
+  treble_set:  "{zp}{zone:02d}TRB{sign}{level}"
+  all_off:     "ZALLPWR00"
+  group_on:    "ZALLGRP{source:02d}"
+  group_off:   "ZALLGRP00"
+
+response:
+  status_pattern: "ZN(?P<zone>\\d{2}),SRC(?P<source>\\d{2}),GRP(?P<group>\\d),VOL-(?P<volume>\\d{2})"
+  tone_pattern: "ZN(?P<zone>\\d{2}),BASS(?P<bass>[+-]?\\d+),TREB(?P<treble>[+-]?\\d+),GRP(?P<group>\\d)"
+  global_patterns:
+    all_off: "ZALLOFF"
+    group_off: "GRPOFF"
+    group_on: "GRPON,STC(?P<source>\\d{2})"
+  error_response: "?"
+
+  mapping:
+    power:
+      field: "volume"
+      type: "threshold"
+      off_value: 62
+    mute:
+      field: "volume"
+      type: "equals"
+      mute_value: 62
+    volume:
+      field: "volume"
+      type: "int"
+      min: 0
+      max: 62
+      inverted: true
+    source:
+      field: "source"
+      type: "int"
+    group:
+      field: "group"
+      type: "bool"
+      on_value: "1"
+
+volume:
+  min: 0
+  max: 62
+  inverted: true
+
+features:
+  has_tone_controls: true
+  has_group_mode: true
+  has_all_off: true
+  has_balance: false
+  unsolicited_updates: true

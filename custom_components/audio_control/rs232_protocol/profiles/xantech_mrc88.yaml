@@ -1,0 +1,80 @@
+# Xantech MRC-88 — 8 Zone, 8 Source Audio Matrix
+name: "Xantech MRC-88"
+manufacturer: "Xantech"
+models: ["MRC-88", "MRC-88m", "MRAUDIO8x8", "MX88vi", "CM8X8", "CM8X8DR"]
+
+zones: 8
+sources: 8
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 200
+  command_prefix: "!"
+  command_suffix: "+"
+  response_prefix: "?"
+  response_terminator: "+"
+
+commands:
+  status:      "{zone:1d}ZS"
+  power_on:    "{zone:1d}PR1"
+  power_off:   "{zone:1d}PR0"
+  volume_set:  "{zone:1d}VO{volume:02d}"
+  mute_on:     "{zone:1d}MU1"
+  mute_off:    "{zone:1d}MU0"
+  source_set:  "{zone:1d}SS{source:1d}"
+  bass_set:    "{zone:1d}BS{level:02d}"
+  treble_set:  "{zone:1d}TR{level:02d}"
+  all_off:     "AO"
+
+response:
+  # Response: ?x,y where x=zone, then key=value pairs
+  status_pattern: "(?P<zone>\\d)ZS PR(?P<power>\\d) SS(?P<source>\\d) VO(?P<volume>\\d{2}) MU(?P<mute>\\d) TR(?P<treble>\\d{2}) BS(?P<bass>\\d{2}) BL(?P<balance>\\d{2})"
+  error_response: "ERR"
+
+  mapping:
+    power:
+      field: "power"
+      type: "bool"
+      on_value: "1"
+      off_value: "0"
+    mute:
+      field: "mute"
+      type: "bool"
+      on_value: "1"
+      off_value: "0"
+    volume:
+      field: "volume"
+      type: "int"
+      min: 0
+      max: 38
+      inverted: false
+    source:
+      field: "source"
+      type: "int"
+    bass:
+      field: "bass"
+      type: "int"
+      min: 0
+      max: 14
+      offset: -7
+    treble:
+      field: "treble"
+      type: "int"
+      min: 0
+      max: 14
+      offset: -7
+
+volume:
+  min: 0
+  max: 38
+  inverted: false
+
+features:
+  has_tone_controls: true
+  has_group_mode: false
+  has_all_off: true
+  has_balance: true
+  unsolicited_updates: false

@@ -1,0 +1,87 @@
+# RTI AD-46-100 / AD-810-100 / AD-1616 — New Generation Audio Distribution
+# JSON-over-serial protocol with login authentication
+protocol_type: json
+
+name: "RTI AD-810-100 / AD-46-100"
+manufacturer: "RTI / AVPro Global"
+models: ["AD-46-100", "AD-810-100", "AD-1616"]
+
+zones: 10
+sources: 8
+
+serial:
+  baud_rate: 9600
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 50
+
+json:
+  delimiter: "\n"
+  login:
+    username: "admin"
+    password: "admin"
+  status_field: "status"
+  success_codes: [200, 901]
+
+commands:
+  status:
+    type: get_outputvol
+    value_template: [{"index": "{zone}"}]
+  power_on:
+    type: set_powerstate
+    value: true
+  power_off:
+    type: set_powerstate
+    value: false
+  volume_set:
+    type: set_outputvol
+    value_template: [{"index": "{zone}", "value": "{volume}"}]
+  volume_up:
+    type: set_outputvolup
+    value_template: "{zone}"
+  volume_down:
+    type: set_outputvoldown
+    value_template: "{zone}"
+  mute_on:
+    type: set_muteoutput
+    value_template: [{"index": "{zone}", "value": true}]
+  mute_off:
+    type: set_muteoutput
+    value_template: [{"index": "{zone}", "value": false}]
+  source_set:
+    type: set_outputsource1
+    value_template: [{"index": "{zone}", "value": "{source}"}]
+  all_off:
+    type: set_powerstate
+    value: false
+
+response:
+  mappings:
+    set_outputvol:
+      zone_field: index
+      fields:
+        volume: value
+    set_powerstate:
+      fields:
+        power: value
+    set_muteoutput:
+      zone_field: index
+      fields:
+        mute: value
+    set_outputsource1:
+      zone_field: index
+      fields:
+        source: value
+
+volume:
+  min: 0
+  max: 100
+  inverted: false         # 0 = silent, 100 = loudest (maps to -80dB to 0dB)
+
+features:
+  has_tone_controls: true
+  has_group_mode: true
+  has_all_off: true
+  has_balance: false
+  unsolicited_updates: true

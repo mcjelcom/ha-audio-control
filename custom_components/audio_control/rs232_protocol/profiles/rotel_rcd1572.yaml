@@ -1,0 +1,60 @@
+# Rotel RCD-1572 — CD Player (single zone, transport controls)
+name: "Rotel RCD-1572 CD Player"
+manufacturer: "Rotel"
+models: ["RCD-1572", "RCD-1572MKII", "CD14"]
+
+zones: 1
+sources: 1    # CD players have no source select (they ARE the source)
+
+serial:
+  baud_rate: 115200
+  data_bits: 8
+  parity: "none"
+  stop_bits: 1
+  command_delay_ms: 50
+  command_prefix: ""
+  command_suffix: "!"
+  response_prefix: ""
+  response_terminator: "$"
+
+commands:
+  status:      "get_play_status"
+  power_on:    "power_on"
+  power_off:   "power_off"
+  # Transport controls
+  play:        "play"
+  pause:       "pause"
+  stop:        "stop"
+  next_track:  "track_fwd"
+  prev_track:  "track_back"
+  # No volume (CD players output fixed level)
+
+response:
+  status_pattern: "play_status=(?P<transport>play|pause|stop|open|close),track=(?P<track>\\d+),time=(?P<time>[\\d:]+)"
+  error_response: "Command Error"
+
+  mapping:
+    power:
+      field: "transport"
+      type: "threshold"
+      off_value: "stop"
+    transport:
+      field: "transport"
+      type: "string"
+    track:
+      field: "track"
+      type: "int"
+
+volume:
+  min: 0
+  max: 0
+  inverted: false
+
+features:
+  has_tone_controls: false
+  has_group_mode: false
+  has_all_off: false
+  has_balance: false
+  has_transport: true
+  unsolicited_updates: false
+  device_type: "player"    # Hint: this is a source device, not an amplifier
