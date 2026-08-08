@@ -25,6 +25,9 @@ dev = [
     "pyyaml>=6.0",
     "ruff==0.15.21",
     "mypy==2.2.0",
+    # mypy --strict needs the stubs; present in my local venv but never
+    # declared, so CI hit "Library stubs not installed for yaml".
+    "types-PyYAML>=6.0",
 ]
 
 [tool.pytest.ini_options]
