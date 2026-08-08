@@ -1,13 +1,13 @@
 {
   "domain": "audio_control",
   "name": "Audio Control",
+  "after_dependencies": [
+    "usb"
+  ],
   "codeowners": [
     "@mcjelcom"
   ],
   "config_flow": true,
-  "dependencies": [
-    "usb"
-  ],
   "documentation": "https://github.com/mcjelcom/ha-audio-control",
   "integration_type": "hub",
   "iot_class": "local_polling",
