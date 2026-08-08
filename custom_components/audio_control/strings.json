@@ -86,10 +86,10 @@
   },
   "exceptions": {
     "not_valid_zone": {
-      "message": "Entity '{entity_id}' is not a valid Audio Control zone."
+      "message": "Entity {entity_id} is not a valid Audio Control zone."
     },
     "command_failed": {
-      "message": "Failed to send '{command}' for zone {zone}. Check device connection."
+      "message": "Failed to send {command} for zone {zone}. Check the device connection."
     },
     "integration_unavailable": {
       "message": "Audio Control integration is not available."
@@ -98,7 +98,7 @@
       "message": "This device does not support {feature}."
     },
     "unknown_source": {
-      "message": "Source '{source}' is not available on this device. Available: {available}."
+      "message": "Source {source} is not available on this device. Available: {available}."
     }
   },
   "options": {

@@ -1,8 +1,13 @@
 {
   "domain": "audio_control",
   "name": "Audio Control",
-  "codeowners": ["@mcjelcom"],
+  "codeowners": [
+    "@mcjelcom"
+  ],
   "config_flow": true,
+  "dependencies": [
+    "usb"
+  ],
   "documentation": "https://github.com/mcjelcom/ha-audio-control",
   "integration_type": "hub",
   "iot_class": "local_polling",
@@ -12,9 +17,21 @@
     "pyserial-asyncio-fast>=0.11"
   ],
   "usb": [
-    {"vid": "0403", "pid": "6001", "description": "*rs232*"},
-    {"vid": "0403", "pid": "6015", "description": "*rs232*"},
-    {"vid": "067B", "pid": "2303", "description": "*rs232*"}
+    {
+      "vid": "0403",
+      "pid": "6001",
+      "description": "*rs232*"
+    },
+    {
+      "vid": "0403",
+      "pid": "6015",
+      "description": "*rs232*"
+    },
+    {
+      "vid": "067B",
+      "pid": "2303",
+      "description": "*rs232*"
+    }
   ],
   "version": "2.0.0"
 }

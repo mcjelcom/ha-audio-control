@@ -12,6 +12,20 @@ test = [
     "pyserial-asyncio-fast>=0.11",
     "pyyaml>=6.0",
 ]
+# Everything CI needs. The `test` extra above deliberately stays minimal for a
+# bare protocol-library run; `dev` adds the linters, the type checker and the HA
+# test harness. CI installs `.[dev]` -- it previously did so against an extra
+# that did not exist, which is why `ruff: command not found`.
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "pytest-homeassistant-custom-component>=0.13",
+    "pyserial>=3.5",
+    "pyserial-asyncio-fast>=0.11",
+    "pyyaml>=6.0",
+    "ruff>=0.6",
+    "mypy>=1.11",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
