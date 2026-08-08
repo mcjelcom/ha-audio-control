@@ -23,8 +23,8 @@ dev = [
     "pyserial>=3.5",
     "pyserial-asyncio-fast>=0.11",
     "pyyaml>=6.0",
-    "ruff>=0.6",
-    "mypy>=1.11",
+    "ruff==0.15.21",
+    "mypy==2.2.0",
 ]
 
 [tool.pytest.ini_options]
@@ -67,6 +67,9 @@ line-length = 88
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
+    "CPY001",   # Missing copyright notice -- the LICENSE file covers the
+                # whole repository; a per-file header adds noise. Preview
+                # rule, so it only appears on newer ruff.
     "ANN",      # Type annotations (HA uses gradual typing)
     "D",        # Docstring style (too noisy for integrations)
     "TD",       # TODO comments
