@@ -1,0 +1,20 @@
+# Development and CI dependencies.
+#
+# A plain requirements file rather than a `pip install -e ".[dev]"` extra: an
+# editable install writes an __editable__ path hook into sys.path, and Home
+# Assistant's component loader stat()s sys.path entries as directories, so every
+# config-flow test failed with FileNotFoundError on the hook. This integration is
+# a custom_components drop-in, not an importable distribution -- the tests import
+# it by path from the repo root, so only the dependencies are ever needed.
+#
+# Linters are PINNED. An unpinned ruff enabled preview rules (62 CPY001, one
+# PLR0917) and failed CI on a commit that was green locally.
+pytest>=7.0
+pytest-asyncio>=0.21
+pytest-homeassistant-custom-component>=0.13
+pyserial>=3.5
+pyserial-asyncio-fast>=0.11
+pyyaml>=6.0
+types-PyYAML>=6.0
+ruff==0.15.21
+mypy==2.2.0
