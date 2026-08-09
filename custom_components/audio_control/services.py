@@ -26,7 +26,22 @@ from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import entity_registry as er
-from homeassistant.helpers.service import async_extract_referenced_entity_ids
+
+try:
+    # HA 2025.x moved target expansion out of helpers.service into
+    # helpers.target. Importing only from helpers.service made the WHOLE
+    # integration fail to load on 2026.8.1 with "cannot import name
+    # async_extract_referenced_entity_ids" -- every entity went unavailable.
+    # The local test harness pins HA 2024.12.5, where it still lives in
+    # helpers.service, so the suite could not see this.
+    from homeassistant.helpers.target import async_extract_referenced_entity_ids
+except ImportError:  # pragma: no cover - depends on HA version
+    # No `type: ignore` here: which branch type-checks depends on the installed
+    # HA, so a blanket ignore is "unused" on one version and required on the
+    # other. mypy resolves whichever path exists in the pinned harness.
+    from homeassistant.helpers.service import (
+        async_extract_referenced_entity_ids,
+    )
 
 from .const import DOMAIN
 from .serial_manager import SerialManager
