@@ -34,6 +34,10 @@ class _Unresolved:
 
 _UNRESOLVED = _Unresolved()
 
+# ZoneState field types, for coercing values pulled through response.mappings.
+_BOOL_KEYS = frozenset({"power", "mute", "group"})
+_INT_KEYS = frozenset({"volume", "source", "bass", "treble", "balance"})
+
 
 def _contains_unresolved(value: Any) -> bool:
     """Whether a resolved template still holds an unresolved placeholder.
@@ -360,7 +364,80 @@ class JsonProtocolEngine(BaseProtocolEngine):
             elif isinstance(value, bool):
                 result["power"] = value
 
+        mapping = self._responses.get("mappings", {}).get(obj.get("type"))
+        if isinstance(mapping, dict) and value is not None:
+            self._apply_mapping(mapping, value, result)
+
         return result
+
+    def _apply_mapping(
+        self, mapping: dict[str, Any], value: Any, result: dict[str, Any]
+    ) -> None:
+        """Translate a reply's value into zone-state keys via response.mappings.
+
+        Without this, a mapped reply only carried `zone` / `raw_value`, which
+        _process_response does not consume -- so changes made on a keypad or the
+        unit itself never reached Home Assistant.
+
+        Array values are scanned for the item carrying `zone_field`; a scalar
+        value (e.g. set_powerstate's bare bool) is treated as the item itself.
+        """
+        fields: dict[str, str] = mapping.get("fields", {})
+        zone_field: str | None = mapping.get("zone_field")
+
+        item: dict[str, Any] | None = None
+        if isinstance(value, list):
+            item = next(
+                (
+                    v
+                    for v in value
+                    if isinstance(v, dict) and (zone_field is None or zone_field in v)
+                ),
+                None,
+            )
+        elif isinstance(value, dict):
+            item = value
+
+        # The generic scan above only knows "index"; honour a custom zone_field.
+        if item is not None and zone_field and "zone" not in result:
+            try:
+                zone = int(item[zone_field])
+            except (KeyError, TypeError, ValueError):
+                zone = 0
+            if zone > 0:
+                result["zone"] = zone
+
+        for state_key, src_field in fields.items():
+            if item is not None:
+                if src_field not in item:
+                    continue
+                raw = item[src_field]
+            elif src_field == "value":
+                raw = value  # scalar reply: the bare value IS the field
+            else:
+                continue
+            coerced = self._coerce(state_key, raw)
+            if coerced is not None:
+                result[state_key] = coerced
+
+    @staticmethod
+    def _coerce(state_key: str, raw: Any) -> Any:
+        """Coerce a mapped value to the type ZoneState expects.
+
+        bool is checked before int because bool is an int subclass: a stray
+        `true` for volume must not become volume 1.
+        """
+        if state_key in _BOOL_KEYS:
+            return raw if isinstance(raw, bool) else None
+        if state_key in _INT_KEYS:
+            if isinstance(raw, bool):
+                return None
+            try:
+                return int(raw)
+            except (TypeError, ValueError):
+                _LOGGER.debug("Ignoring non-numeric %s: %r", state_key, raw)
+                return None
+        return raw
 
     def extract_frames(self, buffer: bytes) -> tuple[list[bytes], bytes]:
         """Extract complete JSON frames (delimiter-separated)."""

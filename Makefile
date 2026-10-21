@@ -5,7 +5,7 @@ help:  ## Show this help
 
 setup:  ## One-time: create the venv and install dev deps
 	uv venv --python 3.12
-	.venv/bin/pip install -r requirements-dev.txt
+	uv pip install --python .venv -r requirements-dev.txt
 
 lint:  ## ruff check
 	.venv/bin/ruff check custom_components/audio_control/ tests/
