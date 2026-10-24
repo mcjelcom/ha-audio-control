@@ -11,7 +11,12 @@
 # PLR0917) and failed CI on a commit that was green locally.
 pytest>=7.0
 pytest-asyncio>=0.21
-pytest-homeassistant-custom-component>=0.13
+# The test harness pins Home Assistant itself, so it is PINNED to the release
+# that bundles the HA version the devices run. Left as `>=0.13` it silently
+# resolved to HA 2024.12.5 (the last harness supporting Python 3.12) while the
+# devices ran 2026.x -- that gap hid a real import break. Bump this together
+# with the deploy repo's HA base image.
+pytest-homeassistant-custom-component==0.13.373  # -> homeassistant==2026.10.2 (Python >=3.14)
 pyserial>=3.5
 pyserial-asyncio-fast>=0.11
 pyyaml>=6.0

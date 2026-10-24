@@ -4,7 +4,7 @@ help:  ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
 
 setup:  ## One-time: create the venv and install dev deps
-	uv venv --python 3.12
+	uv venv --python 3.14
 	uv pip install --python .venv -r requirements-dev.txt
 
 lint:  ## ruff check

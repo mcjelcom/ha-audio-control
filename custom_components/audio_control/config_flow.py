@@ -7,17 +7,20 @@ import logging
 import re
 from typing import TYPE_CHECKING, Any
 
-import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.config_entries import ConfigFlowResult
 from homeassistant.const import CONF_PORT
+
+from ._schema import vol
 
 try:
     # HA 2025.x moved this to helpers.service_info.usb; older releases and the
     # re-export both live under components.usb. Prefer the new location.
     from homeassistant.helpers.service_info.usb import UsbServiceInfo
 except ImportError:  # pragma: no cover - depends on HA version
-    from homeassistant.components.usb import UsbServiceInfo
+    from homeassistant.components.usb import (  # type: ignore[attr-defined]
+        UsbServiceInfo,
+    )
 
 from .const import (
     CONF_BAUD_RATE,

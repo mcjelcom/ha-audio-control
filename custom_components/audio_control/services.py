@@ -21,27 +21,32 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-import voluptuous as vol
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import entity_registry as er
+
+from ._schema import vol
 
 try:
     # HA 2025.x moved target expansion out of helpers.service into
     # helpers.target. Importing only from helpers.service made the WHOLE
     # integration fail to load on 2026.8.1 with "cannot import name
     # async_extract_referenced_entity_ids" -- every entity went unavailable.
-    # The local test harness pins HA 2024.12.5, where it still lives in
-    # helpers.service, so the suite could not see this.
     from homeassistant.helpers.target import async_extract_referenced_entity_ids
 except ImportError:  # pragma: no cover - depends on HA version
-    # No `type: ignore` here: which branch type-checks depends on the installed
-    # HA, so a blanket ignore is "unused" on one version and required on the
-    # other. mypy resolves whichever path exists in the pinned harness.
-    from homeassistant.helpers.service import (
+    from homeassistant.helpers.service import (  # type: ignore[attr-defined,no-redef]
         async_extract_referenced_entity_ids,
     )
+
+try:
+    # HA 2026.x takes a TargetSelection rather than the ServiceCall itself.
+    # Passing the call raised "'ServiceCall' object has no attribute
+    # 'has_any_target'", so set_bass / set_treble failed on every invocation.
+    # HA core builds it the same way: TargetSelection(service_call.data).
+    from homeassistant.helpers.target import TargetSelection
+except ImportError:  # pragma: no cover - older HA accepts the call directly
+    TargetSelection = None  # type: ignore[assignment,misc]
 
 from .const import DOMAIN
 from .serial_manager import SerialManager
@@ -124,7 +129,16 @@ def _resolve_targets(hass: HomeAssistant, call: ServiceCall) -> list[str]:
     integration's own media_player entities so that targeting a whole area
     containing unrelated players does not produce spurious not_valid_zone errors.
     """
-    referenced = async_extract_referenced_entity_ids(hass, call, expand_group=True)
+    if TargetSelection is not None:
+        referenced = async_extract_referenced_entity_ids(
+            hass, TargetSelection(call.data), expand_group=True
+        )
+    else:  # pragma: no cover - HA before 2026.x takes the call itself
+        referenced = async_extract_referenced_entity_ids(
+            hass,
+            call,  # type: ignore[arg-type]
+            expand_group=True,
+        )
     candidates = referenced.referenced | referenced.indirectly_referenced
     registry = er.async_get(hass)
     ours = []

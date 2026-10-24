@@ -129,7 +129,9 @@ async def test_entity_name_no_longer_repeats_the_device_name(
     so every row under "AMC X86 / X86i" read "AMC X86 / X86i Zone 1".
     """
     entry = await setup_amc(hass)
-    device = dr.async_get(hass).async_get_device(identifiers={(DOMAIN, entry.entry_id)})
+    # async_get_device(identifiers=...) is deprecated in HA 2026.x (identifiers are
+    # no longer unique across entries); look the device up by its config entry.
+    (device,) = dr.async_entries_for_config_entry(dr.async_get(hass), entry.entry_id)
     assert device is not None
     device_name = device.name
     assert device_name == "AMC X86 / X86i"

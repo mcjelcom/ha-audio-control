@@ -24,8 +24,8 @@ import re
 from pathlib import Path
 from typing import Any
 
+import probatio as vol
 import pytest
-import voluptuous as vol
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import area_registry as ar
 from homeassistant.helpers import device_registry as dr
@@ -160,7 +160,9 @@ async def test_area_target_reaches_the_zone(hass: HomeAssistant) -> None:
 async def test_device_target_reaches_the_zone(hass: HomeAssistant) -> None:
     """A device target must expand to that device's zone entities."""
     entry = await setup_entry(hass)
-    device = dr.async_get(hass).async_get_device(identifiers={(DOMAIN, entry.entry_id)})
+    # async_get_device(identifiers=...) is deprecated in HA 2026.x (identifiers are
+    # no longer unique across entries); look the device up by its config entry.
+    (device,) = dr.async_entries_for_config_entry(dr.async_get(hass), entry.entry_id)
     assert device is not None
     await hass.services.async_call(
         DOMAIN, "set_treble", {"device_id": device.id, "level": -2}, blocking=True

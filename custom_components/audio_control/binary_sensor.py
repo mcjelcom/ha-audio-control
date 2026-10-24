@@ -2,10 +2,17 @@
 
 from __future__ import annotations
 
-from homeassistant.components.binary_sensor import (
-    BinarySensorDeviceClass,
-    BinarySensorEntity,
-)
+from homeassistant.components.binary_sensor import BinarySensorEntity
+
+try:
+    # HA 2026.x defines it in binary_sensor.const and no longer exports it from
+    # the package (still importable there, but not a public name).
+    from homeassistant.components.binary_sensor.const import BinarySensorDeviceClass
+except ImportError:  # pragma: no cover - older HA
+    from homeassistant.components.binary_sensor import (  # type: ignore[attr-defined]
+        BinarySensorDeviceClass,
+    )
+
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback

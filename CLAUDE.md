@@ -19,13 +19,13 @@ custom_components/audio_control/
     ├── connection.py                      ← AsyncSerialConnection, _process_response → ZoneState
     ├── profile_loader.py                  ← load_builtin_profiles()
     └── profiles/*.yaml                    ← 27 device profiles
-tests/audio_control/                       ← pytest (877)
+tests/audio_control/                       ← pytest (879)
 ```
 
 ## Commands
 
 ```bash
-make setup   # uv venv --python 3.12 + uv pip install --python .venv -r requirements-dev.txt
+make setup   # uv venv --python 3.14 + uv pip install --python .venv -r requirements-dev.txt
 make ci      # ruff check + ruff format --check + mypy --strict + pytest
 ```
 
@@ -41,7 +41,9 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
 - HA Core style: `entry.runtime_data`, `has_entity_name`, translation keys for errors,
   `PARALLEL_UPDATES = 0`, `async_migrate_entry` (config entry VERSION 3, uid prefix `ac_`).
 - `usb` is an `after_dependencies`, not a `dependencies` entry.
-- ruff `ALL` (0.15.21), mypy `--strict` (2.2.0), Python 3.12+.
+- ruff `ALL` (0.15.21), mypy `--strict` (2.2.0). Dev/CI on Python 3.14 (required by the HA 2026.10 harness).
+- **Schemas:** import `vol` from `._schema` (probatio on HA 2026.10+, voluptuous before). Never `import voluptuous` directly — HA no longer depends on it.
+- **Service targets:** build `TargetSelection(call.data)` for `async_extract_referenced_entity_ids` (HA 2026.x); fall back to passing the call on older HA.
 
 ## Releasing
 
@@ -59,8 +61,11 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
   reflected keypad changes.
 - **A tag can lag the fix** — v2.0.0 shipped without the `helpers.target` import fix.
   Verify the tag's content, not just `main`.
-- The test harness (`pytest-homeassistant-custom-component`) trails real HA by a lot;
-  import-surface tests guard relocated HA symbols.
+- **Pin the test harness to the HA the devices run.** `pytest-homeassistant-custom-component`
+  pins HA itself; unpinned on Python 3.12 it resolved to HA 2024.12.5 while devices ran
+  2026.x. Moving to the 2026.10.2 harness exposed a live bug (tone services raised
+  `'ServiceCall' object has no attribute 'has_any_target'`) and the voluptuous → probatio
+  move. Bump it together with the deploy repo's HA base image.
 - Never `pip install -e` this package (the editable path hook breaks HA's loader).
 
 ## Known gaps
