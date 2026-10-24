@@ -1,7 +1,7 @@
 # Audio Control — Home Assistant Integration
 
 [![CI](https://github.com/mcjelcom/ha-audio-control/actions/workflows/ci.yml/badge.svg)](https://github.com/mcjelcom/ha-audio-control/actions/workflows/ci.yml)
-[![hacs](https://img.shields.io/badge/HACS-custom-41BDF5.svg)](https://hacs.xyz)
+[![hacs](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
 
 Control RS232 and network-attached audio hardware from Home Assistant —
 multi-zone amplifiers, integrated amplifiers, receivers, CD players and power
@@ -57,15 +57,101 @@ arrives.
 
 ### HACS (recommended)
 
-1. HACS → Integrations → ⋮ → **Custom repositories**
-2. Add `https://github.com/mcjelcom/ha-audio-control`, category **Integration**
-3. Install **Audio Control**, then restart Home Assistant
-4. Settings → Devices & Services → **Add Integration** → *Audio Control*
+Audio Control is in the HACS default store — no custom repository needed.
+
+[![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=mcjelcom&repository=ha-audio-control&category=integration)
+
+1. HACS → search for **Audio Control** → **Download**
+2. Restart Home Assistant
+3. Settings → Devices & Services → **Add Integration** → *Audio Control*
 
 ### Manual
 
-Copy `custom_components/audio_control/` into your `config/custom_components/`
-directory and restart Home Assistant.
+Copy `custom_components/audio_control/` from the
+[latest release](https://github.com/mcjelcom/ha-audio-control/releases/latest) into
+your `config/custom_components/` directory and restart Home Assistant.
+
+## Configuration
+
+Everything is set up in the UI; there is no YAML configuration.
+
+### Add the device
+
+| Field | What to enter |
+|---|---|
+| **Device** | The profile for your model, or *>> Custom Device (define via UI)* for the wizard |
+| **Connection** | A serial port, `socket://host:port`, `rfc2217://host:port`, or `demo` (see [Connection types](#connection-types)). Detected local ports are listed in the form. |
+
+Zone and source counts come from the profile. One `media_player` is created per
+zone, plus a connection `binary_sensor`.
+
+**Tip:** on Home Assistant OS, prefer the stable `/dev/serial/by-id/...` path over
+`/dev/ttyUSB0`, which can change between reboots. In Docker, pass the adapter in
+with `--device`.
+
+### After setup
+
+| Where | Use it to |
+|---|---|
+| Device → **Configure** | Rename zones and sources; set the device **username/password** for profiles that log in (e.g. RTI). A blank credential field keeps the stored value. |
+| Device → ⋮ → **Reconfigure** | Change the connection (e.g. move from `demo` to the real port) without losing entities or automations |
+| Re-authentication prompt | Appears if the device rejects the login; enter the current credentials |
+
+## Services
+
+| Service | Target | Does |
+|---|---|---|
+| `audio_control.set_bass` | zone entities, devices, areas, floors, labels | Bass `-8`…`+8` in steps of 2 (`0` = flat) |
+| `audio_control.set_treble` | same | Treble, same scale |
+| `audio_control.all_zones_off` | **none — all Audio Control devices** that support it | Turns every zone off |
+| `audio_control.group_mode_on` | **none — all devices** with group support | All zones play `source` |
+| `audio_control.group_mode_off` | **none — all devices** with group support | Zones return to independent sources |
+
+Tone and group services only do anything on profiles that support them; power,
+volume, mute and source are the standard `media_player` actions.
+
+```yaml
+# Kitchen a bit warmer at dinner
+- action: audio_control.set_bass
+  target:
+    area_id: kitchen
+  data:
+    level: 4
+
+# Everything off at midnight
+- alias: Audio off at night
+  triggers:
+    - trigger: time
+      at: "00:00:00"
+  actions:
+    - action: audio_control.all_zones_off
+
+# Party mode: every zone on source 3
+- action: audio_control.group_mode_on
+  data:
+    source: 3
+```
+
+## Troubleshooting
+
+| Symptom | Check |
+|---|---|
+| Connection sensor **off** / entities unavailable | Port path, cable, and that nothing else holds the port. The integration reconnects with backoff on its own. |
+| Entities exist but never change state | Wrong profile or baud rate — the device is ignoring commands or the replies don't match. Try `demo` to confirm the entity layer, then compare the profile with your manual. |
+| Controls missing (e.g. no bass) | Intentional: controls appear only if the profile defines the command. |
+| Changes made on the device's keypad show up late | Devices that don't push state are polled — every zone every 60 s by default (a profile can shorten this with `serial.heartbeat_interval_s`). |
+| Re-authentication keeps appearing | Wrong username/password — set them under **Configure**. |
+
+Debug logging (protocol traffic included):
+
+```yaml
+logger:
+  logs:
+    custom_components.audio_control: debug
+```
+
+When opening an issue, attach **Download diagnostics** from the device page —
+the connection string and credentials are redacted automatically.
 
 ## Adding a device
 
@@ -77,12 +163,18 @@ Three routes, in increasing order of effort:
    regex before creating the entry.
 3. **Write a YAML profile.** Copy `custom_components/audio_control/rs232_protocol/profiles/_template.yaml`
    into `config/audio_control/`, edit it, and restart. It appears in the
-   dropdown suffixed `(Custom)`.
+   dropdown suffixed `(Custom)`. Full guide: [docs/adding-a-device.md](docs/adding-a-device.md).
 
 Profiles are transcribed from manufacturer RS232 documentation. Contributions
 are welcome — please cite the manual and, ideally, confirm against real hardware.
 A profile that looks plausible but was never verified is worse than none, because
 the controls appear to work.
+
+## Documentation
+
+- [Adding a device](docs/adding-a-device.md) — profile format, placeholders, response mapping
+- [Protocol types](docs/protocol-types.md) — text, binary and JSON engines
+- [Network transport](docs/network-transport.md) — `socket://` / `rfc2217://`, native-IP amplifiers, serial-to-Ethernet gateways
 
 ## Development
 
@@ -91,7 +183,7 @@ make setup   # uv venv --python 3.12 + dev deps
 make ci      # ruff (ALL rules) + ruff format + mypy --strict + pytest
 ```
 
-846 tests. `ruff` runs with `select = ["ALL"]`, and `mypy --strict` covers the
+877 tests. `ruff` runs with `select = ["ALL"]`, and `mypy --strict` covers the
 whole integration including the vendored protocol library.
 
 ## Architecture
