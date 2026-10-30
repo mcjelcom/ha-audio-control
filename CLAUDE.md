@@ -42,7 +42,7 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
   `PARALLEL_UPDATES = 0`, `async_migrate_entry` (config entry VERSION 3, uid prefix `ac_`).
 - `usb` is an `after_dependencies`, not a `dependencies` entry.
 - ruff `ALL` (0.15.21), mypy `--strict` (2.2.0). Dev/CI on Python 3.14 (required by the HA 2026.10 harness).
-- **Schemas:** import `vol` from `._schema` (probatio on HA 2026.10+, voluptuous before). Never `import voluptuous` directly — HA no longer depends on it.
+- **Schemas:** import `vol` from `._schema` (probatio on HA 2026.10+, voluptuous before). Don't `import voluptuous` directly — HA no longer depends on it (it currently aliases it to probatio, but don't rely on that).
 - **Service targets:** build `TargetSelection(call.data)` for `async_extract_referenced_entity_ids` (HA 2026.x); fall back to passing the call on older HA.
 
 ## Releasing
@@ -65,7 +65,7 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
   pins HA itself; unpinned on Python 3.12 it resolved to HA 2024.12.5 while devices ran
   2026.x. Moving to the 2026.10.2 harness exposed a live bug (tone services raised
   `'ServiceCall' object has no attribute 'has_any_target'`) and the voluptuous → probatio
-  move. Bump it together with the deploy repo's HA base image.
+  move (HA aliases voluptuous, so that one was a precaution, not a break). Bump it together with the deploy repo's HA base image.
 - Never `pip install -e` this package (the editable path hook breaks HA's loader).
 
 ## Known gaps
