@@ -43,7 +43,7 @@ commands:
 
 response:
   status_pattern: "ZN(?P<zone>\\d{2}),SRC(?P<source>\\d{2}),GRP(?P<group>\\d),VOL-(?P<volume>\\d{2})"
-  tone_pattern: "ZN(?P<zone>\\d{2}),BASS(?P<bass>[+-]?\\d+),TREB(?P<treble>[+-]?\\d+),GRP(?P<group>\\d)"
+  tone_pattern: "ZN(?P<zone>\\d{2}),BASS(?P<bass>[+-]?\\d+),TREB(?P<treble>[+-]?\\d+)(?:,GRP(?P<group>\\d))?"  # real X86i omits ,GRP (manual shows it)
   global_patterns:
     all_off: "ZALLOFF"
     mute_all_on: "ZALLMON"
@@ -54,9 +54,9 @@ response:
 
   mapping:
     power:
-      field: "volume"
+      field: "source"  # VOL-62 means BOTH muted and off; SRC00 is off
       type: "threshold"
-      off_value: 62       # VOL-62 = mute/off
+      off_value: 0
     mute:
       field: "volume"
       type: "equals"
@@ -80,6 +80,12 @@ response:
     treble:
       field: "treble"
       type: "signed_int"
+
+# Verified on a real X86i (2026-11-01): only these levels are accepted, and the
+# amp answers "?" to a tone command on a zone that is OFF.
+tone:
+  levels: [-8, -6, -4, 0, 4, 6, 8]
+  requires_power: true
 
 volume:
   min: 0

@@ -40,7 +40,7 @@ commands:
 
 response:
   status_pattern: "ZN(?P<zone>\\d{2}),SRC(?P<source>\\d{2}),GRP(?P<group>\\d),VOL-(?P<volume>\\d{2})"
-  tone_pattern: "ZN(?P<zone>\\d{2}),BASS(?P<bass>[+-]?\\d+),TREB(?P<treble>[+-]?\\d+),GRP(?P<group>\\d)"
+  tone_pattern: "ZN(?P<zone>\\d{2}),BASS(?P<bass>[+-]?\\d+),TREB(?P<treble>[+-]?\\d+)(?:,GRP(?P<group>\\d))?"  # real X86i omits ,GRP (manual shows it)
   global_patterns:
     all_off: "ZALLOFF"
     group_off: "GRPOFF"
@@ -49,9 +49,9 @@ response:
 
   mapping:
     power:
-      field: "volume"
+      field: "source"  # VOL-62 means BOTH muted and off; SRC00 is off
       type: "threshold"
-      off_value: 62
+      off_value: 0
     mute:
       field: "volume"
       type: "equals"
@@ -69,6 +69,10 @@ response:
       field: "group"
       type: "bool"
       on_value: "1"
+
+# Per the X-Series RS232 manual v3.3: bass/treble take +/- 0,4,6,8.
+tone:
+  levels: [-8, -6, -4, 0, 4, 6, 8]
 
 volume:
   min: 0

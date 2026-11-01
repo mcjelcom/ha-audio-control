@@ -101,7 +101,7 @@ with `--device`.
 
 | Service | Target | Does |
 |---|---|---|
-| `audio_control.set_bass` | zone entities, devices, areas, floors, labels | Bass `-8`…`+8` in steps of 2 (`0` = flat) |
+| `audio_control.set_bass` | zone entities, devices, areas, floors, labels | Bass `-8`…`+8` (`0` = flat). Some devices accept fewer levels — the AMC X86/XO take only −8, −6, −4, 0, +4, +6, +8 — and the AMC X86 needs the zone **on** |
 | `audio_control.set_treble` | same | Treble, same scale |
 | `audio_control.all_zones_off` | **none — all Audio Control devices** that support it | Turns every zone off |
 | `audio_control.group_mode_on` | **none — all devices** with group support | All zones play `source` |
@@ -139,6 +139,7 @@ volume, mute and source are the standard `media_player` actions.
 | Connection sensor **off** / entities unavailable | Port path, cable, and that nothing else holds the port. The integration reconnects with backoff on its own. |
 | Entities exist but never change state | Wrong profile or baud rate — the device is ignoring commands or the replies don't match. Try `demo` to confirm the entity layer, then compare the profile with your manual. |
 | Controls missing (e.g. no bass) | Intentional: controls appear only if the profile defines the command. |
+| Bass/treble fails with "zone is off" or "level not supported" | The device itself refuses it (e.g. the AMC X86 only changes tone on a powered-on zone). Turn the zone on, or pick one of the listed levels. |
 | Changes made on the device's keypad show up late | Devices that don't push state are polled — every zone every 60 s by default (a profile can shorten this with `serial.heartbeat_interval_s`). |
 | Re-authentication keeps appearing | Wrong username/password — set them under **Configure**. |
 

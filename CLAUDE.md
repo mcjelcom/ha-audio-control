@@ -19,7 +19,7 @@ custom_components/audio_control/
     ├── connection.py                      ← AsyncSerialConnection, _process_response → ZoneState
     ├── profile_loader.py                  ← load_builtin_profiles()
     └── profiles/*.yaml                    ← 27 device profiles
-tests/audio_control/                       ← pytest (879)
+tests/audio_control/                       ← pytest (920)
 ```
 
 ## Commands
@@ -67,6 +67,12 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
   `'ServiceCall' object has no attribute 'has_any_target'`) and the voluptuous → probatio
   move (HA aliases voluptuous, so that one was a precaution, not a break). Bump it together with the deploy repo's HA base image.
 - Never `pip install -e` this package (the editable path hook breaks HA's loader).
+
+- **Trust captured replies over manuals.** The AMC RS232 manual v3.3 shows `,GRP` in the tone
+  reply; a real X86i omits it, so an accepted bass change failed (fixed 2.0.5). AMC `VOL-62`
+  means both muted and off — power comes from `SRC00`. Manuals: amchome.com/smart/amc-x86i/.
+- **YAML keeps the last duplicate key silently** — `test_profile_yaml_no_duplicate_keys.py`
+  guards profiles (an edit left `off_value: 62` below `off_value: 0`).
 
 ## Known gaps
 

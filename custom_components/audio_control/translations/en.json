@@ -99,6 +99,12 @@
     },
     "unknown_source": {
       "message": "Source {source} is not available on this device. Available: {available}."
+    },
+    "unsupported_tone_level": {
+      "message": "Tone level {level} is not supported by this device. Allowed levels: {allowed}."
+    },
+    "zone_off_tone": {
+      "message": "Zone {zone} is off. Turn the zone on before changing bass or treble."
     }
   },
   "options": {

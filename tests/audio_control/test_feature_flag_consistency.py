@@ -191,7 +191,11 @@ async def test_tone_service_still_works_where_supported(hass: HomeAssistant) -> 
     """
     entry = await setup_profile(hass, "AMC X86 / X86i")
     eid = zone_entity(hass, entry.entry_id)
-    # Demo mode ACKs, so a supported call must not raise.
+    # The AMC X86 refuses tone on an OFF zone (verified on hardware), so turn the
+    # zone on first -- as a user must. Demo mode ACKs, so the call must not raise.
+    await hass.services.async_call(
+        "media_player", "turn_on", {"entity_id": eid}, blocking=True
+    )
     await hass.services.async_call(
         DOMAIN, "set_bass", {"entity_id": eid, "level": 4}, blocking=True
     )

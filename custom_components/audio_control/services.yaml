@@ -1,6 +1,6 @@
 set_bass:
   name: Set Bass
-  description: Adjust bass level for a zone (requires device with tone controls)
+  description: Adjust bass level for a zone (requires device with tone controls). Some devices accept only some levels (AMC X86/XO - -8, -6, -4, 0, +4, +6, +8) and the AMC X86 requires the zone to be on.
   target:
     entity:
       integration: audio_control
@@ -18,7 +18,7 @@ set_bass:
 
 set_treble:
   name: Set Treble
-  description: Adjust treble level for a zone (requires device with tone controls)
+  description: Adjust treble level for a zone (requires device with tone controls). Some devices accept only some levels (AMC X86/XO - -8, -6, -4, 0, +4, +6, +8) and the AMC X86 requires the zone to be on.
   target:
     entity:
       integration: audio_control

@@ -89,6 +89,25 @@ class BaseProtocolEngine(ABC):
     def has_unsolicited_updates(self) -> bool:
         """Whether device pushes state without polling."""
 
+    @property
+    def tone_levels(self) -> tuple[int, ...] | None:
+        """Bass/treble levels the device accepts, or None if any level is fine.
+
+        From the profile's optional `tone: levels:` list. The AMC X86i answers
+        "?" to anything outside -8,-6,-4,0,+4,+6,+8 (no +/-2), so a level the
+        device can never accept is rejected before it is sent.
+        """
+        levels = (self._profile.get("tone") or {}).get("levels")
+        return tuple(int(v) for v in levels) if levels else None
+
+    @property
+    def tone_requires_power(self) -> bool:
+        """Whether tone commands are only accepted on a zone that is ON.
+
+        Verified on a real AMC X86i: a tone command to an OFF zone returns "?".
+        """
+        return bool((self._profile.get("tone") or {}).get("requires_power", False))
+
     # ─── Command Formatting ──────────────────────────────────────────────────
 
     @abstractmethod

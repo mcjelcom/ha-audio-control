@@ -421,6 +421,12 @@ class ProtocolEngine(BaseProtocolEngine):
                 continue
 
             raw_value = raw_groups[field]
+            # An optional group that did not participate in the match is None.
+            # Skip it: mapping it would turn "absent" into a value -- e.g. the
+            # X86i's tone reply omits ,GRP, and a bool mapping of None would
+            # switch group mode OFF on every bass/treble change.
+            if raw_value is None:
+                continue
             map_type = mapping.get("type", "int")
 
             try:

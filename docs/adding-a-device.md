@@ -93,6 +93,12 @@ response:
       field: "treble"
       type: "signed_int"
 
+# Optional: tone limits the device enforces (rejected before sending, with a
+# clear message, instead of a failed command).
+tone:
+  levels: [-8, -6, -4, 0, 4, 6, 8]  # omit to allow any level the service accepts
+  requires_power: true              # device refuses tone on an OFF zone
+
 volume:
   min: 0
   max: 38
@@ -134,6 +140,8 @@ features:
 | `string` | Keep as string | `"cd"` → `"cd"` |
 
 Add `offset: -7` to shift raw values (e.g., Xantech bass 0-14 → -7 to +7).
+
+Make fields that a device sometimes omits **optional** in the pattern, e.g. `(?:,GRP(?P<group>\\d))?` — an optional group that doesn't match is skipped, not mapped to a default. Base patterns on replies captured from real hardware: the AMC manual shows `,GRP` in the tone reply, but a real X86i leaves it out.
 
 ## Validation
 
