@@ -184,7 +184,7 @@ make setup   # uv venv --python 3.12 + dev deps
 make ci      # ruff (ALL rules) + ruff format + mypy --strict + pytest
 ```
 
-877 tests. `ruff` runs with `select = ["ALL"]`, and `mypy --strict` covers the
+937 tests, run against Home Assistant 2026.10.2. `ruff` runs with `select = ["ALL"]`, and `mypy --strict` covers the
 whole integration including the vendored protocol library.
 
 ## Architecture
@@ -208,6 +208,15 @@ custom_components/audio_control/
 vendored rather than published to PyPI because Home Assistant resolves manifest
 requirements against PyPI only, so a local distribution could never satisfy them
 on a HACS install.
+
+## Release history
+
+| Version | Highlights |
+|---|---|
+| 2.0.7 | Fixes from a four-model code review: RTI multi-zone replies no longer mix zones; bass/treble across several zones applies to all valid zones; AMC XO/XOir tone state updates; no "Source 0" for off AMC zones |
+| 2.0.5 / 2.0.6 | Verified on a real AMC X86i: accepted tone changes no longer report failure; muting no longer shows a zone as off; clear errors for off-zone tone and unsupported levels; manifest drops `pyserial` (hassfest) |
+| 2.0.4 | Bass/treble fixed on Home Assistant 2026.x; ready for HA's move from voluptuous to probatio; tested against HA 2026.10.2 |
+| 2.0.3 | RTI (JSON) state follows keypad/unit changes; accepted into the HACS default store |
 
 ## Licence
 
