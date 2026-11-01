@@ -141,6 +141,8 @@ features:
 
 Add `offset: -7` to shift raw values (e.g., Xantech bass 0-14 → -7 to +7).
 
+Add `skip_values: [0]` to ignore raw values that carry no state for that key — e.g. AMC reports `SRC00` for an OFF zone, which must not become "Source 0" (power still reads the same field via `threshold`).
+
 Make fields that a device sometimes omits **optional** in the pattern, e.g. `(?:,GRP(?P<group>\\d))?` — an optional group that doesn't match is skipped, not mapped to a default. Base patterns on replies captured from real hardware: the AMC manual shows `,GRP` in the tone reply, but a real X86i leaves it out.
 
 ## Validation

@@ -39,8 +39,8 @@ commands:
   group_off:   "ZALLGRP00"
 
 response:
-  status_pattern: "ZN(?P<zone>\\d{2}),SRC(?P<source>\\d{2}),GRP(?P<group>\\d),VOL-(?P<volume>\\d{2})"
-  tone_pattern: "ZN(?P<zone>\\d{2}),BASS(?P<bass>[+-]?\\d+),TREB(?P<treble>[+-]?\\d+)(?:,GRP(?P<group>\\d))?"  # real X86i omits ,GRP (manual shows it)
+  status_pattern: "ZN?(?P<zone>\\d{2}),SRC(?P<source>\\d{2}),GRP(?P<group>\\d),VOL-(?P<volume>\\d{2})"
+  tone_pattern: "ZN?(?P<zone>\\d{2}),BASS(?P<bass>[+-]?\\d+),TREB(?P<treble>[+-]?\\d+)(?:,GRP(?P<group>\\d))?"  # real X86i omits ,GRP (manual shows it)
   global_patterns:
     all_off: "ZALLOFF"
     group_off: "GRPOFF"
@@ -65,10 +65,17 @@ response:
     source:
       field: "source"
       type: "int"
+      skip_values: [0]  # SRC00 = zone off, not a source
     group:
       field: "group"
       type: "bool"
       on_value: "1"
+    bass:
+      field: "bass"
+      type: "signed_int"
+    treble:
+      field: "treble"
+      type: "signed_int"
 
 volume:
   min: 0

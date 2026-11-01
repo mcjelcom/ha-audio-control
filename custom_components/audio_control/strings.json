@@ -105,6 +105,9 @@
     },
     "zone_off_tone": {
       "message": "Zone {zone} is off. Turn the zone on before changing bass or treble."
+    },
+    "no_target_zones": {
+      "message": "The target does not include any Audio Control zones."
     }
   },
   "options": {

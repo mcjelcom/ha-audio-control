@@ -19,7 +19,7 @@ custom_components/audio_control/
     ├── connection.py                      ← AsyncSerialConnection, _process_response → ZoneState
     ├── profile_loader.py                  ← load_builtin_profiles()
     └── profiles/*.yaml                    ← 27 device profiles
-tests/audio_control/                       ← pytest (920)
+tests/audio_control/                       ← pytest (937)
 ```
 
 ## Commands
@@ -74,8 +74,21 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
 - **YAML keeps the last duplicate key silently** — `test_profile_yaml_no_duplicate_keys.py`
   guards profiles (an edit left `off_value: 62` below `off_value: 0`).
 
+- **Multi-target services: command every valid zone, then raise ONE error** (like
+  `_broadcast`). Raising inside the loop left area targets half-applied.
+- **JSON mappings: zone and fields must come from the SAME array item** (a 2-item reply
+  wrote zone 1's volume into zone 2 until 2.0.7).
+- **Review with several models.** A 4-model review (Opus/Sonnet/Haiku/Fable) of
+  v2.0.3..2.0.6 found the JSON zone mix-up, missing XO/XOir tone mappings and the
+  half-applied tone service; each model caught things others missed.
+
 ## Known gaps
 
 - RTI `set_powerstate` replies carry no zone → dropped on the 10-zone profile (needs a
   global power event).
 - RTI `get_outputvol` (status poll) reply has no mapping yet — add once a real reply is captured.
+- AMC XOir tone encoding: the manual gives XOir an absolute two-digit form (`ZNzzBASnn`,
+  00-12 / 22-32); the profile still uses the X86 `{sign}{level}` form. Unverified on hardware.
+- Offset-encoded tone devices (Monoprice/Xantech, ±7) only get even levels via the
+  service's global `-8..+8 step 2` schema.
+- `tone.requires_power` trusts ZoneState.power, which is False until the first poll.

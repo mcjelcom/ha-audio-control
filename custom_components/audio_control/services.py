@@ -180,71 +180,107 @@ async def async_setup_services(hass: HomeAssistant) -> None:
     async def _handle_tone(call: ServiceCall, command: str, service: str) -> None:
         """Send bass_set / treble_set to every targeted zone.
 
-        set_bass and set_treble were two copies of this; one copy also means the
-        checks below cannot drift between them.
+        Mirrors _broadcast: every valid zone is commanded before anything is
+        reported, then ONE error is raised. Raising from inside the loop left an
+        area target half-applied -- zones before the failing one changed, the
+        rest untouched -- with an error that named only one zone.
         """
         level = int(call.data["level"])
         entity_ids = _resolve_targets(hass, call)
+        if not entity_ids:
+            # An area/label/device with no Audio Control zones used to "succeed"
+            # silently, doing nothing.
+            raise HomeAssistantError(
+                translation_domain=DOMAIN,
+                translation_key="no_target_zones",
+            )
 
+        problems: list[HomeAssistantError] = []
+        capable = 0
         for entity_id in entity_ids:
             manager, zone_num = _get_manager_and_zone(hass, entity_id)
             if not manager or zone_num is None:
-                raise HomeAssistantError(
-                    translation_domain=DOMAIN,
-                    translation_key="not_valid_zone",
-                    translation_placeholders={"entity_id": entity_id},
+                problems.append(
+                    HomeAssistantError(
+                        translation_domain=DOMAIN,
+                        translation_key="not_valid_zone",
+                        translation_placeholders={"entity_id": entity_id},
+                    )
                 )
+                continue
             engine = manager.engine
             # Both the flag AND the command must be present. Ten of the 26
             # profiles declare has_tone_controls / has_group_mode / has_balance
             # without the matching command, so a flag-only gate let the call
             # through to send_command, which returned False and surfaced
             # "command failed -- check device connection" for a device that
-            # simply has no tone control.
+            # simply has no tone control. In a mixed area such devices are
+            # skipped; it is an error only if NO target supports tone.
             if not (
                 engine.features.get("has_tone_controls") and engine.has_command(command)
             ):
-                raise HomeAssistantError(
-                    translation_domain=DOMAIN,
-                    translation_key="feature_unsupported",
-                    translation_placeholders={"feature": "tone controls"},
-                )
+                continue
+            capable += 1
             # A level the device can never accept (AMC: no +/-2) is rejected
             # here rather than sent, so the user gets the valid list instead of
             # "check the device connection".
             allowed = engine.tone_levels
             if allowed is not None and level not in allowed:
-                raise HomeAssistantError(
-                    translation_domain=DOMAIN,
-                    translation_key="unsupported_tone_level",
-                    translation_placeholders={
-                        "level": f"{level:+d}" if level else "0",
-                        "allowed": ", ".join(f"{v:+d}" if v else "0" for v in allowed),
-                    },
+                problems.append(
+                    HomeAssistantError(
+                        translation_domain=DOMAIN,
+                        translation_key="unsupported_tone_level",
+                        translation_placeholders={
+                            "level": f"{level:+d}" if level else "0",
+                            "allowed": ", ".join(
+                                f"{v:+d}" if v else "0" for v in allowed
+                            ),
+                        },
+                    )
                 )
+                continue
             # Devices that refuse tone on an OFF zone (verified on the AMC X86i,
             # which answers "?") get a clear error instead of a failed send.
             zone_state = manager.zones.get(zone_num)
             if engine.tone_requires_power and zone_state and not zone_state.power:
-                raise HomeAssistantError(
-                    translation_domain=DOMAIN,
-                    translation_key="zone_off_tone",
-                    translation_placeholders={"zone": str(zone_num)},
+                problems.append(
+                    HomeAssistantError(
+                        translation_domain=DOMAIN,
+                        translation_key="zone_off_tone",
+                        translation_placeholders={"zone": str(zone_num)},
+                    )
                 )
+                continue
             # Pass the signed level through; the protocol engine encodes it for
             # the profile's template style (sign+magnitude, :+d, or offset).
-            success = await manager.async_send_command(
+            if not await manager.async_send_command(
                 command, zone=zone_num, level=level
-            )
-            if not success:
-                raise HomeAssistantError(
-                    translation_domain=DOMAIN,
-                    translation_key="command_failed",
-                    translation_placeholders={
-                        "command": service,
-                        "zone": str(zone_num),
-                    },
+            ):
+                problems.append(
+                    HomeAssistantError(
+                        translation_domain=DOMAIN,
+                        translation_key="command_failed",
+                        translation_placeholders={
+                            "command": service,
+                            "zone": str(zone_num),
+                        },
+                    )
                 )
+
+        if capable == 0 and not any(
+            p.translation_key == "not_valid_zone" for p in problems
+        ):
+            raise HomeAssistantError(
+                translation_domain=DOMAIN,
+                translation_key="feature_unsupported",
+                translation_placeholders={"feature": "tone controls"},
+            )
+        if problems:
+            # Every valid zone has already been commanded; report the first
+            # problem (the others are logged so none is lost).
+            for extra in problems[1:]:
+                _LOGGER.warning("%s also failed: %s", service, extra.translation_key)
+            raise problems[0]
 
     async def handle_set_bass(call: ServiceCall) -> None:
         """Handle set_bass service."""

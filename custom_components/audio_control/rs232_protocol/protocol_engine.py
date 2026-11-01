@@ -15,6 +15,14 @@ from .base import BaseProtocolEngine
 _LOGGER = logging.getLogger(__name__)
 
 
+def _same_number(raw: str, values: list[object]) -> bool:
+    """Whether `raw` ("00", "3") equals any of `values` numerically."""
+    try:
+        return int(raw) in {int(str(v)) for v in values}
+    except ValueError:
+        return raw in {str(v) for v in values}
+
+
 class ProtocolEngine(BaseProtocolEngine):
     """Formats commands and parses responses based on a device profile."""
 
@@ -426,6 +434,14 @@ class ProtocolEngine(BaseProtocolEngine):
             # X86i's tone reply omits ,GRP, and a bool mapping of None would
             # switch group mode OFF on every bass/treble change.
             if raw_value is None:
+                continue
+            # `skip_values`: raw values that carry no state for THIS key. AMC
+            # reports SRC00 for an off zone; storing it as source 0 showed
+            # "Source 0", which is not in source_list. Power still reads the
+            # same group (threshold), so off is detected; the last real source
+            # is kept.
+            skip = mapping.get("skip_values")
+            if skip and _same_number(raw_value, skip):
                 continue
             map_type = mapping.get("type", "int")
 

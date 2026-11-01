@@ -34,6 +34,15 @@ class _Unresolved:
 
 _UNRESOLVED = _Unresolved()
 
+
+def _positive_int(value: Any) -> bool:
+    """Whether a JSON value is an integer zone number above 0."""
+    try:
+        return int(value) > 0
+    except (TypeError, ValueError):
+        return False
+
+
 # ZoneState field types, for coercing values pulled through response.mappings.
 _BOOL_KEYS = frozenset({"power", "mute", "group"})
 _INT_KEYS = frozenset({"volume", "source", "bass", "treble", "balance"})
@@ -364,7 +373,11 @@ class JsonProtocolEngine(BaseProtocolEngine):
             elif isinstance(value, bool):
                 result["power"] = value
 
-        mapping = self._responses.get("mappings", {}).get(obj.get("type"))
+        # `type` is arbitrary JSON: a list/dict would raise TypeError from the
+        # dict lookup and count toward the read loop's consecutive-error bound.
+        msg_type = obj.get("type")
+        mappings = self._responses.get("mappings", {})
+        mapping = mappings.get(msg_type) if isinstance(msg_type, str) else None
         if isinstance(mapping, dict) and value is not None:
             self._apply_mapping(mapping, value, result)
 
@@ -387,25 +400,36 @@ class JsonProtocolEngine(BaseProtocolEngine):
 
         item: dict[str, Any] | None = None
         if isinstance(value, list):
+            candidates = [
+                v
+                for v in value
+                if isinstance(v, dict) and (zone_field is None or zone_field in v)
+            ]
+            # Prefer an item addressing a real zone (index 0 means "all zones").
             item = next(
                 (
                     v
-                    for v in value
-                    if isinstance(v, dict) and (zone_field is None or zone_field in v)
+                    for v in candidates
+                    if zone_field and _positive_int(v.get(zone_field))
                 ),
-                None,
+                candidates[0] if candidates else None,
             )
         elif isinstance(value, dict):
             item = value
 
-        # The generic scan above only knows "index"; honour a custom zone_field.
-        if item is not None and zone_field and "zone" not in result:
+        # The zone MUST come from the same item as the fields. The generic scan
+        # above leaves `zone` at the LAST indexed item, so a multi-item reply
+        # ([{index:1,value:40},{index:2,value:70}]) wrote zone 1's volume into
+        # zone 2. Override it from the chosen item.
+        if item is not None and zone_field:
             try:
                 zone = int(item[zone_field])
             except (KeyError, TypeError, ValueError):
                 zone = 0
             if zone > 0:
                 result["zone"] = zone
+                if "value" in item:
+                    result["raw_value"] = item["value"]
 
         for state_key, src_field in fields.items():
             if item is not None:
