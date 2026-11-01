@@ -259,13 +259,14 @@ class AudioControlZone(AudioControlEntity, MediaPlayerEntity):
             )
         z = zone_state
         prev_power, prev_mute, prev_vol = z.power, z.mute, z.volume
+        prev_known = z.power_known
         self._manager.set_zone_power(self._zone_num, True)
         success = await self._manager.async_send_command(
             "power_on", zone=self._zone_num
         )
         if not success:
             self._manager.rollback_zone_power(
-                self._zone_num, prev_power, prev_mute, prev_vol
+                self._zone_num, prev_power, prev_mute, prev_vol, prev_known
             )
 
     async def async_turn_off(self) -> None:
@@ -278,13 +279,14 @@ class AudioControlZone(AudioControlEntity, MediaPlayerEntity):
             )
         z = zone_state
         prev_power, prev_mute, prev_vol = z.power, z.mute, z.volume
+        prev_known = z.power_known
         self._manager.set_zone_power(self._zone_num, False)
         success = await self._manager.async_send_command(
             "power_off", zone=self._zone_num
         )
         if not success:
             self._manager.rollback_zone_power(
-                self._zone_num, prev_power, prev_mute, prev_vol
+                self._zone_num, prev_power, prev_mute, prev_vol, prev_known
             )
 
     async def async_set_volume_level(self, volume: float) -> None:

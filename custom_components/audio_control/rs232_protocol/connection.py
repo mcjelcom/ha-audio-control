@@ -206,14 +206,26 @@ class AsyncSerialConnection:
             self._notify_zone(zone)
 
     def rollback_zone_power(
-        self, zone: int, prev_power: bool, prev_mute: bool, prev_vol: int
+        self,
+        zone: int,
+        prev_power: bool,
+        prev_mute: bool,
+        prev_vol: int,
+        prev_power_known: bool | None = None,
     ) -> None:
-        """Rollback a failed power state change."""
+        """Rollback a failed power state change.
+
+        `prev_power_known` is restored too: set_zone_power marks power as known,
+        and leaving that after a FAILED command promoted the placeholder "off"
+        of a never-polled zone to "known off", which then refused tone changes.
+        """
         if zone in self._zones:
             state = self._zones[zone]
             state.power = prev_power
             state.mute = prev_mute
             state.volume = prev_vol
+            if prev_power_known is not None:
+                state.power_known = prev_power_known
             self._notify_zone(zone)
 
     # ─── Connection ──────────────────────────────────────────────────────────
@@ -604,6 +616,16 @@ class AsyncSerialConnection:
                 # rejected.
                 if "global" in parsed:
                     if expected_zone is None:
+                        return True
+                    # Exception: a device-wide POWER reply (RTI set_powerstate,
+                    # `scope: device`) is the only answer a power command on such a
+                    # unit ever gets. Rejecting it timed every turn_on/off out and
+                    # rolled the commanded zone back while _apply_global had already
+                    # set every other zone -- leaving the zones disagreeing.
+                    if (
+                        parsed["global"] == "power"
+                        and self._command_family(command_name) == "power"
+                    ):
                         return True
                     mismatches += 1
                     continue

@@ -79,10 +79,17 @@ class SerialManager:
         self._connection.set_zone_power(zone, power)
 
     def rollback_zone_power(
-        self, zone: int, prev_power: bool, prev_mute: bool, prev_vol: int
+        self,
+        zone: int,
+        prev_power: bool,
+        prev_mute: bool,
+        prev_vol: int,
+        prev_power_known: bool | None = None,
     ) -> None:
-        """Rollback a failed power state change."""
-        self._connection.rollback_zone_power(zone, prev_power, prev_mute, prev_vol)
+        """Rollback optimistic power state after a failed command."""
+        self._connection.rollback_zone_power(
+            zone, prev_power, prev_mute, prev_vol, prev_power_known
+        )
 
     # --- Listeners ----------------------------------------------------------
 

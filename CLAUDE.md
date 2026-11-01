@@ -19,7 +19,7 @@ custom_components/audio_control/
     ├── connection.py                      ← AsyncSerialConnection, _process_response → ZoneState
     ├── profile_loader.py                  ← load_builtin_profiles()
     └── profiles/*.yaml                    ← 27 device profiles
-tests/audio_control/                       ← pytest (960)
+tests/audio_control/                       ← pytest (968)
 ```
 
 ## Commands
@@ -81,6 +81,13 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
 - **Review with several models.** A 4-model review (Opus/Sonnet/Haiku/Fable) of
   v2.0.3..2.0.6 found the JSON zone mix-up, missing XO/XOir tone mappings and the
   half-applied tone service; each model caught things others missed.
+
+- **A device-wide reply needs a device-wide confirmation path.** v2.0.8 made RTI
+  power replies global, but `_wait_for_response` refused globals for zoned commands,
+  so every RTI turn_on/off timed out and rolled the clicked zone back (found by 3 of
+  4 reviewers; fixed 2.0.9). Test new reply shapes end to end through `send_command`,
+  not only `_process_response`.
+- **Anything an optimistic update sets, the rollback must restore** (`power_known`).
 
 ## Known gaps
 

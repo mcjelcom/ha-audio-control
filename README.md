@@ -184,7 +184,7 @@ make setup   # uv venv --python 3.12 + dev deps
 make ci      # ruff (ALL rules) + ruff format + mypy --strict + pytest
 ```
 
-960 tests, run against Home Assistant 2026.10.2. `ruff` runs with `select = ["ALL"]`, and `mypy --strict` covers the
+968 tests, run against Home Assistant 2026.10.2. `ruff` runs with `select = ["ALL"]`, and `mypy --strict` covers the
 whole integration including the vendored protocol library.
 
 ## Architecture
@@ -213,6 +213,7 @@ on a HACS install.
 
 | Version | Highlights |
 |---|---|
+| 2.0.9 | RTI power on/off now confirms (it timed out and rolled the zone back); every tone step on Monoprice 6-zone / Xantech MRC-88; a failed power command no longer leaves the zone marked as "known off" |
 | 2.0.8 | RTI unit-wide power and status polling now update every zone; AMC XOir absolute tone levels (per manual); every tone step on Monoprice/Xantech (±7); off-zone tone check waits until the zone's state is known |
 | 2.0.7 | Fixes from a four-model code review: RTI multi-zone replies no longer mix zones; bass/treble across several zones applies to all valid zones; AMC XO/XOir tone state updates; no "Source 0" for off AMC zones |
 | 2.0.5 / 2.0.6 | Verified on a real AMC X86i: accepted tone changes no longer report failure; muting no longer shows a zone as off; clear errors for off-zone tone and unsupported levels; manifest drops `pyserial` (hassfest) |
