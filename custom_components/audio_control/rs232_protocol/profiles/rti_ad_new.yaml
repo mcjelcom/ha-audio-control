@@ -63,8 +63,16 @@ response:
       fields:
         volume: value
     set_powerstate:
+      scope: device   # unit-wide power: applied to every zone
       fields:
         power: value
+    # Reply to the `status` poll (get_outputvol). Shape assumed to match
+    # set_outputvol -- unverified on hardware; if it differs, nothing matches and
+    # the poll is simply ignored, as before.
+    get_outputvol:
+      zone_field: index
+      fields:
+        volume: value
     set_muteoutput:
       zone_field: index
       fields:

@@ -32,8 +32,8 @@ commands:
   mute_on:     "{zp}{zone:02d}MUT01"
   mute_off:    "{zp}{zone:02d}MUT00"
   source_set:  "{zp}{zone:02d}SRC{source:02d}"
-  bass_set:    "{zp}{zone:02d}BAS{sign}{level}"
-  treble_set:  "{zp}{zone:02d}TRB{sign}{level}"
+  bass_set:   "{zp}{zone:02d}BAS{level:02d}"  # XOir: absolute nn (manual v3.3), UNVERIFIED on hardware
+  treble_set:   "{zp}{zone:02d}TRB{level:02d}"  # XOir: absolute nn (manual v3.3), UNVERIFIED on hardware
   all_off:     "ZALLPWR00"
   group_on:    "ZALLGRP{source:02d}"
   group_off:   "ZALLGRP00"
@@ -73,9 +73,16 @@ response:
     bass:
       field: "bass"
       type: "signed_int"
+      negative_base: 20  # XOir: 00-12 = 0..+12, 22-32 = -2..-12
     treble:
       field: "treble"
       type: "signed_int"
+      negative_base: 20  # XOir: 00-12 = 0..+12, 22-32 = -2..-12
+
+# Per the X-Series RS232 manual v3.3 the XOir SETS an absolute level: 00-12 for
+# flat/boost and 22-32 for -2..-12 dB (there is no -1). UNVERIFIED on hardware.
+tone:
+  levels: [-12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 volume:
   min: 0

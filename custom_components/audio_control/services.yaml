@@ -8,13 +8,13 @@ set_bass:
   fields:
     level:
       name: Level
-      description: "Bass level: +8, +6, +4, +2, 0 (flat), -2, -4, -6, -8"
+      description: "Bass level, 0 = flat. Most devices take even steps -8..+8; the device profile decides (AMC X86/XO - -8,-6,-4,0,+4,+6,+8; Monoprice/Xantech - every step -7..+7; AMC XOir - -12..+12)."
       required: true
       selector:
         number:
-          min: -8
-          max: 8
-          step: 2
+          min: -12
+          max: 12
+          step: 1
 
 set_treble:
   name: Set Treble
@@ -26,13 +26,13 @@ set_treble:
   fields:
     level:
       name: Level
-      description: "Treble level: +8, +6, +4, +2, 0 (flat), -2, -4, -6, -8"
+      description: "Treble level, 0 = flat. Most devices take even steps -8..+8; the device profile decides (AMC X86/XO - -8,-6,-4,0,+4,+6,+8; Monoprice/Xantech - every step -7..+7; AMC XOir - -12..+12)."
       required: true
       selector:
         number:
-          min: -8
-          max: 8
-          step: 2
+          min: -12
+          max: 12
+          step: 1
 
 all_zones_off:
   name: All Zones Off

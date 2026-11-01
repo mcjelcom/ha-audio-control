@@ -101,7 +101,7 @@ with `--device`.
 
 | Service | Target | Does |
 |---|---|---|
-| `audio_control.set_bass` | zone entities, devices, areas, floors, labels | Bass `-8`…`+8` (`0` = flat). Some devices accept fewer levels — the AMC X86/XO take only −8, −6, −4, 0, +4, +6, +8 — and the AMC X86 needs the zone **on** |
+| `audio_control.set_bass` | zone entities, devices, areas, floors, labels | Bass level (`0` = flat); the valid levels depend on the device — most take even steps −8…+8, the AMC X86/XO only −8, −6, −4, 0, +4, +6, +8, Monoprice/Xantech every step −7…+7, the AMC XOir −12…+12 — and the AMC X86 needs the zone **on** |
 | `audio_control.set_treble` | same | Treble, same scale |
 | `audio_control.all_zones_off` | **none — all Audio Control devices** that support it | Turns every zone off |
 | `audio_control.group_mode_on` | **none — all devices** with group support | All zones play `source` |
@@ -184,7 +184,7 @@ make setup   # uv venv --python 3.12 + dev deps
 make ci      # ruff (ALL rules) + ruff format + mypy --strict + pytest
 ```
 
-937 tests, run against Home Assistant 2026.10.2. `ruff` runs with `select = ["ALL"]`, and `mypy --strict` covers the
+960 tests, run against Home Assistant 2026.10.2. `ruff` runs with `select = ["ALL"]`, and `mypy --strict` covers the
 whole integration including the vendored protocol library.
 
 ## Architecture
@@ -213,6 +213,7 @@ on a HACS install.
 
 | Version | Highlights |
 |---|---|
+| 2.0.8 | RTI unit-wide power and status polling now update every zone; AMC XOir absolute tone levels (per manual); every tone step on Monoprice/Xantech (±7); off-zone tone check waits until the zone's state is known |
 | 2.0.7 | Fixes from a four-model code review: RTI multi-zone replies no longer mix zones; bass/treble across several zones applies to all valid zones; AMC XO/XOir tone state updates; no "Source 0" for off AMC zones |
 | 2.0.5 / 2.0.6 | Verified on a real AMC X86i: accepted tone changes no longer report failure; muting no longer shows a zone as off; clear errors for off-zone tone and unsupported levels; manifest drops `pyserial` (hassfest) |
 | 2.0.4 | Bass/treble fixed on Home Assistant 2026.x; ready for HA's move from voluptuous to probatio; tested against HA 2026.10.2 |

@@ -64,7 +64,12 @@ _FEATURE_LABELS = {
 }
 
 # Tone levels the devices accept, per the profiles' own step tables.
-_TONE_LEVEL = vol.All(vol.Coerce(int), vol.In([-8, -6, -4, -2, 0, 2, 4, 6, 8]))
+_TONE_LEVEL = vol.All(vol.Coerce(int), vol.Range(min=-12, max=12))
+# Levels for profiles that do not declare `tone: levels:` -- the even -8..+8
+# steps every profile accepted before per-profile levels existed. Profiles with
+# finer (Monoprice/Xantech: every step -7..+7) or wider (AMC XOir: -12..+12)
+# ranges declare their own.
+DEFAULT_TONE_LEVELS: tuple[int, ...] = (-8, -6, -4, -2, 0, 2, 4, 6, 8)
 
 # Service schemas. `cv.TARGET_SERVICE_FIELDS` admits area_id / device_id /
 # floor_id / label_id alongside entity_id: services.yaml advertises
@@ -224,8 +229,8 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             # A level the device can never accept (AMC: no +/-2) is rejected
             # here rather than sent, so the user gets the valid list instead of
             # "check the device connection".
-            allowed = engine.tone_levels
-            if allowed is not None and level not in allowed:
+            allowed = engine.tone_levels or DEFAULT_TONE_LEVELS
+            if level not in allowed:
                 problems.append(
                     HomeAssistantError(
                         translation_domain=DOMAIN,
@@ -242,7 +247,16 @@ async def async_setup_services(hass: HomeAssistant) -> None:
             # Devices that refuse tone on an OFF zone (verified on the AMC X86i,
             # which answers "?") get a clear error instead of a failed send.
             zone_state = manager.zones.get(zone_num)
-            if engine.tone_requires_power and zone_state and not zone_state.power:
+            # Only once power is actually KNOWN: before the first status poll the
+            # default power=False is a placeholder, and refusing then rejected
+            # tone on zones that were really on (the device would answer "?"
+            # for a truly off zone anyway).
+            if (
+                engine.tone_requires_power
+                and zone_state
+                and zone_state.power_known
+                and not zone_state.power
+            ):
                 problems.append(
                     HomeAssistantError(
                         translation_domain=DOMAIN,

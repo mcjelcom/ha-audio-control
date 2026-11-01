@@ -96,7 +96,7 @@ response:
 # Optional: tone limits the device enforces (rejected before sending, with a
 # clear message, instead of a failed command).
 tone:
-  levels: [-8, -6, -4, 0, 4, 6, 8]  # omit to allow any level the service accepts
+  levels: [-8, -6, -4, 0, 4, 6, 8]  # omit for the default even steps -8..+8; range -12..+12
   requires_power: true              # device refuses tone on an OFF zone
 
 volume:
@@ -140,6 +140,10 @@ features:
 | `string` | Keep as string | `"cd"` → `"cd"` |
 
 Add `offset: -7` to shift raw values (e.g., Xantech bass 0-14 → -7 to +7).
+
+Add `negative_base: 20` to a `signed_int` tone mapping for devices that encode a cut as base + magnitude (AMC XOir: `22` = −2 dB); the same key on the mapping drives encoding of `bass_set`/`treble_set` with a `{level:02d}` template.
+
+For JSON profiles, `scope: device` on a `response.mappings` entry marks a reply that describes the whole unit (RTI `set_powerstate`): it is applied to every zone.
 
 Add `skip_values: [0]` to ignore raw values that carry no state for that key — e.g. AMC reports `SRC00` for an OFF zone, which must not become "Source 0" (power still reads the same field via `threshold`).
 

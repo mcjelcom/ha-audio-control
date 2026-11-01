@@ -19,7 +19,7 @@ custom_components/audio_control/
     ├── connection.py                      ← AsyncSerialConnection, _process_response → ZoneState
     ├── profile_loader.py                  ← load_builtin_profiles()
     └── profiles/*.yaml                    ← 27 device profiles
-tests/audio_control/                       ← pytest (937)
+tests/audio_control/                       ← pytest (960)
 ```
 
 ## Commands
@@ -84,11 +84,7 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
 
 ## Known gaps
 
-- RTI `set_powerstate` replies carry no zone → dropped on the 10-zone profile (needs a
-  global power event).
-- RTI `get_outputvol` (status poll) reply has no mapping yet — add once a real reply is captured.
-- AMC XOir tone encoding: the manual gives XOir an absolute two-digit form (`ZNzzBASnn`,
-  00-12 / 22-32); the profile still uses the X86 `{sign}{level}` form. Unverified on hardware.
-- Offset-encoded tone devices (Monoprice/Xantech, ±7) only get even levels via the
-  service's global `-8..+8 step 2` schema.
-- `tone.requires_power` trusts ZoneState.power, which is False until the first poll.
+Closed in 2.0.8 (A-E): RTI device-wide power (`scope: device`), RTI `get_outputvol`
+mapping, XOir absolute tone (`negative_base: 20`), per-profile odd levels (schema
+-12..+12, default even -8..+8), `ZoneState.power_known` gating the off-zone check.
+Still **unverified on hardware**: everything RTI, and the AMC XOir tone encoding.

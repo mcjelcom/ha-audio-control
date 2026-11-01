@@ -76,11 +76,13 @@ def test_every_advertised_target_kind_validates(
 def test_level_is_still_validated(schema: vol.Schema) -> None:
     """Widening the target must not weaken the level check.
 
-    The devices accept a fixed step table; an out-of-range value would format
-    into a command the amplifier rejects.
+    The schema bounds the range (-12..+12, the widest any profile accepts); the
+    per-profile step table (`tone: levels:`, default even -8..+8) is enforced by
+    the service, which can tell the user the valid values.
     """
-    schema({"entity_id": ["media_player.a"], "level": -8})
-    for bad in (1, 3, 9, -9, 100):
+    for ok in (-12, -8, -7, 0, 3, 12):
+        schema({"entity_id": ["media_player.a"], "level": ok})
+    for bad in (13, -13, 100, "loud"):
         with pytest.raises(vol.Invalid):
             schema({"entity_id": ["media_player.a"], "level": bad})
 

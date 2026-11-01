@@ -119,7 +119,8 @@ class AsyncSerialConnection:
         # unnoticed -- but demo mode never polls, so a demo of an AMC or NAD
         # opened showing full volume.
         self._zones: dict[int, ZoneState] = {
-            i: ZoneState(volume=engine.ha_volume_to_device(0.0))
+            # Demo state is simulated and therefore authoritative from the start.
+            i: ZoneState(volume=engine.ha_volume_to_device(0.0), power_known=demo_mode)
             for i in range(1, engine.num_zones + 1)
         }
 
@@ -196,6 +197,7 @@ class AsyncSerialConnection:
         if zone in self._zones:
             state = self._zones[zone]
             state.power = power
+            state.power_known = True
             if not power:
                 state.mute = True
                 state.volume = (
@@ -788,6 +790,40 @@ class AsyncSerialConnection:
                     break
                 await asyncio.sleep(1)
 
+    def _apply_global(self, parsed: dict[str, Any]) -> None:
+        """Apply a device-wide reply (all_off, group_on, power, ...) to every zone."""
+        global_type = parsed["global"]
+        if global_type == "all_off":
+            for zn, zs in self._zones.items():
+                zs.power = False
+                zs.power_known = True
+                zs.mute = True
+                self._notify_zone(zn)
+        elif global_type == "power" and "power" in parsed:
+            # Device-wide power reply with no zone (RTI set_powerstate). It
+            # used to be dropped on multi-zone devices, so power changes made
+            # on the unit never reached Home Assistant.
+            for zn, zs in self._zones.items():
+                zs.power = bool(parsed["power"])
+                zs.power_known = True
+                self._notify_zone(zn)
+        elif global_type in ("mute_all_on",):
+            for zn, zs in self._zones.items():
+                zs.mute = True
+                self._notify_zone(zn)
+        elif global_type in ("mute_all_off",):
+            for zn, zs in self._zones.items():
+                zs.mute = False
+                self._notify_zone(zn)
+        elif global_type in ("group_off",):
+            for zn, zs in self._zones.items():
+                zs.group = False
+                self._notify_zone(zn)
+        elif global_type in ("group_on",):
+            for zn, zs in self._zones.items():
+                zs.group = True
+                self._notify_zone(zn)
+
     def _process_response(self, line: str | bytes) -> None:
         """Parse and apply a response frame to zone state.
 
@@ -808,30 +844,9 @@ class AsyncSerialConnection:
             self._enqueue_response("__ERROR__")
             return
 
-        # Global response (all_off, group_on, etc.)
+        # Global response (all_off, group_on, power, etc.)
         if "global" in parsed:
-            global_type = parsed["global"]
-            if global_type == "all_off":
-                for zn, zs in self._zones.items():
-                    zs.power = False
-                    zs.mute = True
-                    self._notify_zone(zn)
-            elif global_type in ("mute_all_on",):
-                for zn, zs in self._zones.items():
-                    zs.mute = True
-                    self._notify_zone(zn)
-            elif global_type in ("mute_all_off",):
-                for zn, zs in self._zones.items():
-                    zs.mute = False
-                    self._notify_zone(zn)
-            elif global_type in ("group_off",):
-                for zn, zs in self._zones.items():
-                    zs.group = False
-                    self._notify_zone(zn)
-            elif global_type in ("group_on",):
-                for zn, zs in self._zones.items():
-                    zs.group = True
-                    self._notify_zone(zn)
+            self._apply_global(parsed)
             self._enqueue_response(line)
             return
 
@@ -854,6 +869,7 @@ class AsyncSerialConnection:
             state = self._zones[zone_num]
             if "power" in parsed:
                 state.power = parsed["power"]
+                state.power_known = True
             if "mute" in parsed:
                 state.mute = parsed["mute"]
             if "volume" in parsed:

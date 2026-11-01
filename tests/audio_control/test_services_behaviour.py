@@ -344,9 +344,17 @@ async def test_level_out_of_range_is_rejected_by_schema(
 async def test_odd_level_is_rejected_by_schema(
     hass: HomeAssistant, tone_entry: MockConfigEntry
 ) -> None:
-    """Only even steps are valid (-8, -6, -4, -2, 0, 2, 4, 6, 8)."""
+    """Profiles without `tone: levels:` keep the even -8..+8 steps.
+
+    The check moved from the schema (which now admits -12..+12 for profiles
+    with finer or wider tables) to the service, which names the valid levels.
+    """
     entity_id = zone_entity(hass, 1)
-    with pytest.raises(vol.Invalid):
+    with pytest.raises(HomeAssistantError) as excinfo:
         await hass.services.async_call(
             DOMAIN, "set_bass", {"entity_id": entity_id, "level": 3}, blocking=True
         )
+    assert excinfo.value.translation_key == "unsupported_tone_level"
+    assert excinfo.value.translation_placeholders["allowed"] == (
+        "-8, -6, -4, -2, 0, +2, +4, +6, +8"
+    )

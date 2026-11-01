@@ -313,6 +313,14 @@ class ProtocolEngine(BaseProtocolEngine):
             result["level"] = abs(level)
             return result
 
+        # `negative_base`: cut is encoded as base + magnitude (AMC XOir per the
+        # RS232 manual v3.3: 00-12 = flat/boost, 22-32 = -2..-12 dB).
+        state_key = command_name.removesuffix("_set")
+        negative_base = (self._mapping.get(state_key) or {}).get("negative_base")
+        if negative_base is not None:
+            result["level"] = level if level >= 0 else int(negative_base) - level
+            return result
+
         # Python's :+d renders the sign itself, so pass the signed value through.
         if "{level:+d}" in template:
             result["level"] = level
@@ -321,7 +329,6 @@ class ProtocolEngine(BaseProtocolEngine):
         # Otherwise the device expects an unsigned, offset-encoded value. The
         # profile's response mapping already documents the offset it uses for
         # decoding, so reuse it rather than inventing a second convention.
-        state_key = command_name.removesuffix("_set")
         mapping = self._mapping.get(state_key) or {}
         offset = mapping.get("offset")
         if offset is None:
@@ -451,7 +458,11 @@ class ProtocolEngine(BaseProtocolEngine):
                     offset = mapping.get("offset", 0)
                     result[state_key] = value + offset
                 elif map_type == "signed_int":
-                    result[state_key] = int(raw_value)
+                    value = int(raw_value)
+                    negative_base = mapping.get("negative_base")
+                    if negative_base is not None and value >= int(negative_base):
+                        value = int(negative_base) - value  # 22 -> -2
+                    result[state_key] = value
                 elif map_type == "string":
                     result[state_key] = raw_value
                 elif map_type == "bool":

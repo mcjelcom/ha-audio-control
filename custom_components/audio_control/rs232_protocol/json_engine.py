@@ -397,6 +397,11 @@ class JsonProtocolEngine(BaseProtocolEngine):
         """
         fields: dict[str, str] = mapping.get("fields", {})
         zone_field: str | None = mapping.get("zone_field")
+        # `scope: device` -- the reply describes the whole unit (RTI
+        # set_powerstate), so it becomes a global event applied to every zone.
+        if mapping.get("scope") == "device":
+            result.pop("zone", None)
+            result["global"] = "power"
 
         item: dict[str, Any] | None = None
         if isinstance(value, list):
