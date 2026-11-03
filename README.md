@@ -7,7 +7,7 @@ Control RS232 and network-attached audio hardware from Home Assistant —
 multi-zone amplifiers, integrated amplifiers, receivers, CD players and power
 amplifiers — through one profile-driven integration.
 
-**26 device profiles covering 80 models from 12 manufacturers**, with no
+**26 device profiles covering 80 models from 11 brands**, with no
 per-device Python: a new device is a YAML file.
 
 ## 📖 Documentation
@@ -36,7 +36,7 @@ services → **Add integration** → *Audio Control*. New to HACS? Follow
 
 | Manufacturer | Profiles | Examples |
 |---|---|---|
-| AMC | 9 | X86/X86i, XO, XOi, XOir, XGi, X1616e, XAi, XIA100e/150e, XCDie |
+| AMC | 9 | X86/X86i, XO, XOir, XGi, X1616e, XAi, XIA, XIA100e/150e, XCDie |
 | Rotel | 4 | RA-1572/1592, RSP-1576/1582, RCD-1572, Michi M8/S5 |
 | Xantech | 3 | MRC-88, MX88/MX88a, ZPR68-10 |
 | Monoprice | 2 | 6-Zone (10761/10762), 31028 Commercial 70V |
