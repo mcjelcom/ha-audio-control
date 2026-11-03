@@ -94,4 +94,4 @@ on a HACS install.
 
 ## Licence
 
-[MIT](LICENSE) © John Lin
+[MIT](LICENSE) © McJEL, LLC

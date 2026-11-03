@@ -4,7 +4,7 @@ site_url: https://mcjelcom.github.io/ha-audio-control/
 repo_url: https://github.com/mcjelcom/ha-audio-control
 repo_name: mcjelcom/ha-audio-control
 edit_uri: edit/main/docs/
-copyright: MIT licence © John Lin
+copyright: MIT License © McJEL, LLC
 
 theme:
   name: material
