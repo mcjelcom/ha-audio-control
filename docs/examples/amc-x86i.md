@@ -12,7 +12,7 @@ Everything on this page was verified against a real X86i over RS-232.
 | Amplifier | **AMC X86i** with its RS-232 port (rear panel, item 8 in the AMC manual — a standard **DB9** connector; AMC lists RS-232 as an option on some units) |
 | Home Assistant machine | **Raspberry Pi 4 or 5** (2 GB+ RAM), A2 microSD 32 GB+ or USB SSD, official power supply, Home Assistant OS |
 | Adapter | **USB-to-RS232** (DB9 male, FTDI chip recommended) — not a USB-to-TTL adapter |
-| Cable | DB9 serial cable from the adapter to the X86i (see [straight-through vs null-modem](../getting-started/prerequisites.md#how-home-assistant-reaches-the-device)) |
+| Cable | **Straight-through** DB9 serial cable from the adapter to the X86i (tested; no null-modem adapter needed) |
 | Software | Home Assistant with HACS and Audio Control installed ([steps 2–4](../getting-started/install-home-assistant.md)) |
 
 Full details and alternatives: [Hardware requirements](../getting-started/prerequisites.md#hardware-requirements).
@@ -23,7 +23,8 @@ flow control**. You don't enter these anywhere — the *AMC X86 / X86i* profile 
 ## 1. Connect the cable
 
 1. Plug the USB adapter into the Home Assistant machine.
-2. Connect the serial cable from the adapter to the X86i's **RS232** port.
+2. Connect a **straight-through** DB9 serial cable from the adapter to the X86i's
+   **RS232** port.
 3. Power the X86i on.
 
 ## 2. Find the serial port
@@ -114,7 +115,7 @@ Example automation — warmer sound in the kitchen at dinner:
 
 | Symptom | Check |
 |---|---|
-| Connection sensor **off** | Adapter path, cable seated, amplifier powered. Try a null-modem adapter |
+| Connection sensor **off** | Adapter path, cable seated, amplifier powered. The X86i needs a **straight-through** cable — a null-modem cable or adapter will not work |
 | Sensor on, but zones never change | Wrong profile selected, or another program has the port open |
 | Older X86 firmware | Handled automatically — Audio Control falls back to the older `Z01…` command form if `ZN01…` is not accepted |
 

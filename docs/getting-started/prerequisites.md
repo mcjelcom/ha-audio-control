@@ -32,7 +32,7 @@ Pick one:
     RS-232 cables come in two wirings. If your device's manual does not say which it
     needs, start with a **straight-through** cable; if the device never answers, add a
     **null-modem adapter** (it swaps the transmit and receive pins). A wrong cable damages
-    nothing — it just gives no reply.
+    nothing — it just gives no reply. (The AMC X86i uses a straight-through cable.)
 
 ## Hardware requirements
 
