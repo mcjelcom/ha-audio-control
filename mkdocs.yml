@@ -1,0 +1,59 @@
+site_name: Audio Control for Home Assistant
+site_description: Control RS232 and network audio amplifiers from Home Assistant — installation, setup and reference.
+site_url: https://mcjelcom.github.io/ha-audio-control/
+repo_url: https://github.com/mcjelcom/ha-audio-control
+repo_name: mcjelcom/ha-audio-control
+edit_uri: edit/main/docs/
+copyright: MIT licence © John Lin
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+  features:
+    - navigation.sections
+    - navigation.footer
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - 1. Prerequisites: getting-started/prerequisites.md
+      - 2. Install Home Assistant: getting-started/install-home-assistant.md
+      - 3. Install HACS: getting-started/install-hacs.md
+      - 4. Install Audio Control: getting-started/install-audio-control.md
+  - "Example: AMC X86i": examples/amc-x86i.md
+  - Using it:
+      - Configuration: configuration.md
+      - Services & automations: services.md
+      - Troubleshooting: troubleshooting.md
+  - Reference:
+      - Adding a device: reference/adding-a-device.md
+      - Protocol types: reference/protocol-types.md
+      - Network transport: reference/network-transport.md

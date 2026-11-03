@@ -6,7 +6,7 @@ This guide shows how to add support for a new RS232 audio device. Most devices c
 
 **Using a device that isn't bundled (no code, survives updates):**
 
-1. Copy [`_template.yaml`](../custom_components/audio_control/rs232_protocol/profiles/_template.yaml)
+1. Copy [`_template.yaml`](https://github.com/mcjelcom/ha-audio-control/blob/main/custom_components/audio_control/rs232_protocol/profiles/_template.yaml)
    into your Home Assistant config as `config/audio_control/<manufacturer>_<model>.yaml`
    (create the `audio_control` folder if needed).
 2. Fill it in from the device's RS232 manual (format below).

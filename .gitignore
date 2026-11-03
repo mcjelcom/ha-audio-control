@@ -36,3 +36,5 @@ build.log
 
 # Vendor manuals used for profile authoring — reference only, not redistributable
 .amc-docs/
+.venv-docs/
+site/

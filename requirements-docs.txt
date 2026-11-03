@@ -1,0 +1,4 @@
+# Documentation site (MkDocs Material, published to GitHub Pages by .github/workflows/docs.yml).
+# Pinned like the dev tools: an unpinned theme can change the build between runs.
+mkdocs==1.6.1
+mkdocs-material==9.8.0
