@@ -29,6 +29,8 @@ and add a **Media control** or **Tile** card for each zone.
 
 ## Good to know
 
+![Changes in Home Assistant and on the keypad stay in sync](assets/diagrams/using-zones.svg)
+
 - **Changes made on the amplifier** (its keypads, remote or front panel) show up in Home
   Assistant too — at the latest within a minute.
 - **Volume** uses Home Assistant's normal 0–100 % slider, whatever scale your amplifier

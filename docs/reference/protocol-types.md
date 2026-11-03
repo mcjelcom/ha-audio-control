@@ -1,5 +1,7 @@
 # Protocol Types
 
+![Profiles, engines and the connection](../assets/diagrams/protocol-types.svg)
+
 The `rs232_protocol` library supports three protocol types. The `protocol_type` field in a YAML profile selects the engine.
 
 ## Text Protocol (default)

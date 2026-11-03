@@ -1,0 +1,14 @@
+@startuml
+!include _style.iuml
+start
+:Settings → Devices & services → **Audio Control**;
+split
+  :⚙ **Configure**;
+  :Rename zones and sources\n(Kitchen, Patio, TV...);
+split again
+  :⋮ → **Reconfigure**;
+  :Change the connection\n(new USB port, or demo → real);
+end split
+:Submit — dashboards and automations keep working;
+stop
+@enduml

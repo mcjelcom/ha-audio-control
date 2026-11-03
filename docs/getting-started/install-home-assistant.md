@@ -8,6 +8,8 @@ Home Assistant's own guide walks you through it with pictures — follow it exac
 
 In short, you will:
 
+![Installing Home Assistant](../assets/diagrams/install-ha.svg)
+
 1. Use the **Raspberry Pi Imager** app on your computer to put **Home Assistant OS**
    on the memory card.
 2. Put the card in the Raspberry Pi, connect the network cable and the power supply.

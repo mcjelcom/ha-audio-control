@@ -1,0 +1,13 @@
+@startuml
+!include _style.iuml
+left to right direction
+card "Official\npower supply" as psu
+rectangle "**Raspberry Pi 4 / 5**\nHome Assistant OS\nmicroSD 32 GB A2 or USB SSD" as pi
+card "Router" as router
+rectangle "**USB-RS232 adapter**\n(DB9, FTDI chip)" as usb
+rectangle "**Amplifier**\nRS-232 port (DB9)" as amp
+psu --> pi : USB-C
+router -- pi : Ethernet
+pi --> usb : USB
+usb --> amp : DB9 serial cable\n(straight-through or null-modem)
+@enduml

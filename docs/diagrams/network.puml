@@ -1,0 +1,13 @@
+@startuml
+!include _style.iuml
+left to right direction
+rectangle "Raspberry Pi\nHome Assistant" as ha
+card "Home network" as lan
+rectangle "**Serial-to-network adapter**\n(e.g. Elfin-EW10, Moxa NPort)\nnext to the amplifier" as gw
+rectangle "Amplifier\nRS-232 port" as amp
+rectangle "Amplifier with\nbuilt-in network control" as ipamp
+ha -- lan
+lan --> gw : socket://ADDRESS:PORT
+gw --> amp : short serial cable
+lan --> ipamp : socket://ADDRESS:PORT
+@enduml

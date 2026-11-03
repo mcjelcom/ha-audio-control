@@ -12,6 +12,8 @@ HACS has its own illustrated guide — follow it:
 
 In short, you will:
 
+![Installing HACS and linking GitHub](../assets/diagrams/install-hacs.svg)
+
 1. **Download HACS** into Home Assistant, the way the guide describes for
    *Home Assistant OS*. (Home Assistant calls extras like this **Apps** — they're under
    **Settings → Apps**. Older versions called them *add-ons*.)

@@ -1,0 +1,11 @@
+@startuml
+!include _style.iuml
+left to right direction
+card "**When**\n⏰ 00:00\n🚪 door opens\n👤 you leave" as trigger
+card "**If** (optional)\nzone is on" as cond
+rectangle "**Then do**\nAll zones off\nSet bass\nGroup mode on" as action
+rectangle "Amplifier" as amp
+trigger --> cond
+cond --> action
+action --> amp
+@enduml

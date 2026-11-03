@@ -9,6 +9,8 @@ detailed guide if you get stuck.
     - A **USB-to-RS232 adapter** and a **serial cable** (DB9)
     - About **1 hour**
 
+![The five steps](assets/diagrams/quickstart-steps.svg)
+
 ## Step 1 — Connect the hardware
 
 Plug the USB adapter into the Raspberry Pi, and the serial cable from the adapter

@@ -1,0 +1,11 @@
+@startuml
+!include _style.iuml
+start
+:**1** Connect the hardware\n<size:12>Pi → USB adapter → cable → amplifier</size>;
+:**2** Install Home Assistant\n<size:12>on the Raspberry Pi</size>;
+:**3** Install HACS\n<size:12>the community "app store"</size>;
+:**4** Install Audio Control\n<size:12>from HACS, then restart</size>;
+:**5** Add your amplifier\n<size:12>Settings → Devices & services</size>;
+:🔊 Control every zone;
+stop
+@enduml

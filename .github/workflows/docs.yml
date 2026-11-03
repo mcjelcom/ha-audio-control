@@ -10,12 +10,14 @@ on:
       - "docs/**"
       - "mkdocs.yml"
       - "requirements-docs.txt"
+      - "scripts/render-diagrams.sh"
       - ".github/workflows/docs.yml"
   pull_request:
     paths:
       - "docs/**"
       - "mkdocs.yml"
       - "requirements-docs.txt"
+      - "scripts/render-diagrams.sh"
   workflow_dispatch:
 
 permissions:
@@ -34,6 +36,16 @@ jobs:
         with:
           python-version: "3.14"
       - run: python -m pip install -r requirements-docs.txt
+      # Diagrams: PlantUML (pinned + checksum-verified) renders the .puml sources
+      # HERE, never as an external server at page-view time. Re-rendered on every
+      # build (not --check: font metrics differ between macOS and Linux, so the
+      # committed SVGs -- kept for github.com and local preview -- can't be
+      # compared byte for byte).
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: scripts/render-diagrams.sh
       # --strict: a broken link or missing page fails the build instead of shipping.
       - run: mkdocs build --strict
         env:

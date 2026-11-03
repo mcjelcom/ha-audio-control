@@ -1,0 +1,9 @@
+@startuml
+!include _style.iuml
+left to right direction
+rectangle "**Host computer**\n/dev/serial/by-id/usb-FTDI_..." as host
+rectangle "**Home Assistant container**\n/dev/ttyUSB0" as ctr
+rectangle "Audio Control\nConnection: /dev/ttyUSB0" as ac
+host --> ctr : devices:\nmapping
+ctr --> ac
+@enduml

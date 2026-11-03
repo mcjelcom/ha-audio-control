@@ -2,6 +2,8 @@
 
 ## Quick checks
 
+![Troubleshooting flow](assets/diagrams/troubleshooting.svg)
+
 Most problems are one of these:
 
 1. Is the amplifier **switched on**?

@@ -1,5 +1,7 @@
 # Adding a Device Profile
 
+![From device manual to working profile](../assets/diagrams/adding-a-device.svg)
+
 This guide shows how to add support for a new RS232 audio device. Most devices can be added with a single YAML file — no Python code required.
 
 ## Quick Start

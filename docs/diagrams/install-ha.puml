@@ -1,0 +1,10 @@
+@startuml
+!include _style.iuml
+start
+:On your computer: **Raspberry Pi Imager**\nwrites Home Assistant OS to the memory card;
+:Put the card in the Raspberry Pi,\nconnect network cable and power;
+:Wait about 20 minutes;
+:Open **http://homeassistant.local:8123**;
+:Create your account;
+stop
+@enduml

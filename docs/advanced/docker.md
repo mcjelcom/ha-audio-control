@@ -3,6 +3,8 @@
 If Home Assistant runs in Docker (*Home Assistant Container*), the USB adapter must be
 passed into the container. Home Assistant OS does this automatically.
 
+![Mapping the adapter into the container](../assets/diagrams/docker.svg)
+
 Find the adapter's stable path on the host:
 
 ```bash

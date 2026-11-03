@@ -2,6 +2,8 @@
 
 Everything is set up with clicks — there are no files to edit.
 
+![Configure and Reconfigure](assets/diagrams/names-settings.svg)
+
 ## Rename zones and sources
 
 Out of the box the zones are called *Zone 1, Zone 2…* and the sources *Source 1,

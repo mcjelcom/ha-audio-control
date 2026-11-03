@@ -1,0 +1,13 @@
+@startuml
+!include _style.iuml
+left to right direction
+card "📱 Phone app\n🖥 Web browser" as you
+rectangle "Raspberry Pi\n**Home Assistant**\n+ Audio Control" as ha
+rectangle "USB-RS232\nadapter" as usb
+rectangle "**Your amplifier**\n(RS-232 port)" as amp
+card "🔊 Zone 1\n🔊 Zone 2\n🔊 ..." as zones
+you --> ha : control
+ha --> usb : USB
+usb --> amp : serial cable
+amp --> zones : speakers
+@enduml

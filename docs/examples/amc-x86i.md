@@ -15,7 +15,7 @@ Everything on this page was verified against a real X86i over RS-232.
 | Cable | **Straight-through** DB9 serial cable from the adapter to the X86i (tested; no null-modem adapter needed) |
 | Software | Home Assistant with HACS and Audio Control installed ([steps 2–4](../getting-started/install-home-assistant.md)) |
 
-Full details and alternatives: [Hardware requirements](../getting-started/prerequisites.md#hardware-requirements).
+Full details and alternatives: [Hardware requirements](../getting-started/prerequisites.md#shopping-list).
 
 You don't need to set any serial settings — choosing *AMC X86 / X86i* takes care of them.
 
@@ -23,6 +23,8 @@ You don't need to set any serial settings — choosing *AMC X86 / X86i* takes ca
     38400 baud, 8 data bits, no parity, 1 stop bit, no flow control — from AMC's RS-232 manual.
 
 ## 1. Connect the cable
+
+![AMC X86i wiring](../assets/diagrams/x86i-wiring.svg)
 
 1. Plug the USB adapter into the Home Assistant machine.
 2. Connect a **straight-through** DB9 serial cable from the adapter to the X86i's

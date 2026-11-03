@@ -1,0 +1,13 @@
+@startuml
+!include _style.iuml
+left to right direction
+rectangle "**Raspberry Pi**\nHome Assistant" as pi
+rectangle "**USB-RS232 adapter**\nFTDI" as usb
+rectangle "**AMC X86i**\nRS232 port\n38400 8N1" as amp
+card "6 zones\n🔊 Kitchen  🔊 Patio\n🔊 Living  🔊 ..." as zones
+card "Keypads /\nIR remote" as keypads
+pi --> usb : USB
+usb --> amp : **straight-through**\nDB9 cable
+amp --> zones
+keypads --> amp
+@enduml

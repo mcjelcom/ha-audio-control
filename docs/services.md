@@ -3,6 +3,8 @@
 Besides the normal player controls, Audio Control adds a few **actions** you can use in
 automations, scripts and buttons.
 
+![An automation: when, if, then do](assets/diagrams/automations.svg)
+
 | Action | What it does |
 |---|---|
 | **Set bass** | Change a zone's bass (0 = flat) |

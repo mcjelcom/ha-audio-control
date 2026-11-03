@@ -1,0 +1,36 @@
+' Shared look for every docs diagram.
+!pragma layout smetana
+skinparam backgroundColor transparent
+skinparam defaultFontName "Helvetica"
+skinparam defaultFontSize 14
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam ArrowColor #1E88E5
+skinparam ArrowThickness 1.6
+skinparam rectangle {
+  BackgroundColor #E3F2FD
+  BorderColor #1E88E5
+}
+skinparam node {
+  BackgroundColor #E3F2FD
+  BorderColor #1E88E5
+}
+skinparam card {
+  BackgroundColor #FFFFFF
+  BorderColor #90A4AE
+}
+skinparam activity {
+  BackgroundColor #E3F2FD
+  BorderColor #1E88E5
+  DiamondBackgroundColor #FFF8E1
+  DiamondBorderColor #F9A825
+}
+skinparam sequence {
+  ParticipantBackgroundColor #E3F2FD
+  ParticipantBorderColor #1E88E5
+  LifeLineBorderColor #90A4AE
+}
+skinparam note {
+  BackgroundColor #FFF8E1
+  BorderColor #F9A825
+}

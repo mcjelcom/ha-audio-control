@@ -1,0 +1,12 @@
+@startuml
+!include _style.iuml
+left to right direction
+card "**Device manual**\nRS-232 command table" as manual
+rectangle "**Profile** (YAML file)\ncommands, replies,\nzones, sources" as profile
+rectangle "Audio Control\nprotocol engine" as engine
+rectangle "Amplifier" as amp
+manual --> profile : you write
+profile --> engine : loaded at start
+engine --> amp : commands
+amp --> engine : replies
+@enduml

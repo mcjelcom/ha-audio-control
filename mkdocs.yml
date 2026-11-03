@@ -44,6 +44,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Quickstart: quickstart.md
+  - Supported models: supported-models.md
   - Step-by-step guide:
       - 1. What you need: getting-started/prerequisites.md
       - 2. Install Home Assistant: getting-started/install-home-assistant.md
@@ -60,3 +61,10 @@ nav:
       - Network connections: reference/network-transport.md
       - Adding a new device: reference/adding-a-device.md
       - Protocol types: reference/protocol-types.md
+
+# Fail the (strict) build on broken links, including #anchors.
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn

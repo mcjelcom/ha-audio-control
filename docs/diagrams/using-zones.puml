@@ -1,0 +1,14 @@
+@startuml
+!include _style.iuml
+actor You
+participant "Home Assistant\n(Audio Control)" as HA
+participant "Amplifier" as AMP
+actor "Someone at\nthe keypad" as K
+You -> HA : turn on Kitchen, volume 40 %
+HA -> AMP : command
+AMP --> HA : confirms
+HA --> You : updated
+K -> AMP : changes source
+AMP --> HA : reports it\n(or the next check, within a minute)
+HA --> You : shows the new source
+@enduml

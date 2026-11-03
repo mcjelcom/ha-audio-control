@@ -1,0 +1,11 @@
+@startuml
+!include _style.iuml
+start
+:**HACS** → search **Audio Control** → Download;
+:Restart Home Assistant;
+:Settings → Devices & services → **Add integration**;
+:Choose **Device** (your model)\nand **Connection** (the adapter);
+:Submit;
+:Every zone appears in Home Assistant;
+stop
+@enduml

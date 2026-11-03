@@ -1,5 +1,7 @@
 # 4. Install Audio Control
 
+![Installing and adding Audio Control](../assets/diagrams/install-audio-control.svg)
+
 ## Download it from HACS
 
 1. Click **HACS** in the Home Assistant sidebar.

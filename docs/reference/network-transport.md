@@ -1,5 +1,7 @@
 # Network Transport (`socket://` and `rfc2217://`)
 
+![Network connection options](../assets/diagrams/network.svg)
+
 The integration's **Connection** field accepts a network URL as well as a local device
 path. No profile changes are needed: `pyserial-asyncio-fast` resolves URL
 schemes natively, so the protocol layer is unchanged and every bundled profile

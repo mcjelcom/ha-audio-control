@@ -2,6 +2,8 @@
 
 ## Shopping list
 
+![How the parts connect](../assets/diagrams/hardware-wiring.svg)
+
 | Item | What to get | Why |
 |---|---|---|
 | **Raspberry Pi** | **Raspberry Pi 5** or **Raspberry Pi 4**, with **2 GB of memory or more** | Runs Home Assistant |
