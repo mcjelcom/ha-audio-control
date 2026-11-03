@@ -4,10 +4,12 @@ site_url: https://mcjelcom.github.io/ha-audio-control/
 repo_url: https://github.com/mcjelcom/ha-audio-control
 repo_name: mcjelcom/ha-audio-control
 edit_uri: edit/main/docs/
-copyright: MIT License © McJEL, LLC
+copyright: A <a href="https://mcjel.com">McJEL, LLC</a> project · MIT License
 
 theme:
   name: material
+  logo: assets/logo.png
+  favicon: assets/logo.png
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -29,6 +31,15 @@ theme:
     - search.highlight
     - content.code.copy
     - content.action.edit
+
+extra:
+  social:
+    - icon: material/web
+      link: https://mcjel.com
+      name: McJEL
+    - icon: fontawesome/brands/github
+      link: https://github.com/mcjelcom/ha-audio-control
+      name: Source on GitHub
 
 markdown_extensions:
   - admonition
