@@ -16,10 +16,11 @@ per-device Python: a new device is a YAML file.
 
 | | |
 |---|---|
-| **Getting started** | [Prerequisites](https://mcjelcom.github.io/ha-audio-control/getting-started/prerequisites/) → [Install Home Assistant](https://mcjelcom.github.io/ha-audio-control/getting-started/install-home-assistant/) → [Install HACS](https://mcjelcom.github.io/ha-audio-control/getting-started/install-hacs/) → [Install Audio Control](https://mcjelcom.github.io/ha-audio-control/getting-started/install-audio-control/) |
-| **Worked example** | [AMC X86i, from cable to dashboard](https://mcjelcom.github.io/ha-audio-control/examples/amc-x86i/) |
-| **Using it** | [Configuration](https://mcjelcom.github.io/ha-audio-control/configuration/) · [Services & automations](https://mcjelcom.github.io/ha-audio-control/services/) · [Troubleshooting](https://mcjelcom.github.io/ha-audio-control/troubleshooting/) |
-| **Reference** | [Adding a device](https://mcjelcom.github.io/ha-audio-control/reference/adding-a-device/) · [Protocol types](https://mcjelcom.github.io/ha-audio-control/reference/protocol-types/) · [Network transport](https://mcjelcom.github.io/ha-audio-control/reference/network-transport/) |
+| **New here?** | **[Quickstart — five steps with pictures](https://mcjelcom.github.io/ha-audio-control/quickstart/)** |
+| **Step by step** | [What you need](https://mcjelcom.github.io/ha-audio-control/getting-started/prerequisites/) → [Install Home Assistant](https://mcjelcom.github.io/ha-audio-control/getting-started/install-home-assistant/) → [Install HACS](https://mcjelcom.github.io/ha-audio-control/getting-started/install-hacs/) → [Install Audio Control](https://mcjelcom.github.io/ha-audio-control/getting-started/install-audio-control/) |
+| **Example** | [AMC X86i, from cable to dashboard](https://mcjelcom.github.io/ha-audio-control/examples/amc-x86i/) |
+| **Everyday use** | [Using your zones](https://mcjelcom.github.io/ha-audio-control/using-zones/) · [Names & settings](https://mcjelcom.github.io/ha-audio-control/configuration/) · [Automations & extra controls](https://mcjelcom.github.io/ha-audio-control/services/) · [Help & troubleshooting](https://mcjelcom.github.io/ha-audio-control/troubleshooting/) |
+| **Advanced** | [Docker](https://mcjelcom.github.io/ha-audio-control/advanced/docker/) · [Network connections](https://mcjelcom.github.io/ha-audio-control/reference/network-transport/) · [Adding a device](https://mcjelcom.github.io/ha-audio-control/reference/adding-a-device/) · [Protocol types](https://mcjelcom.github.io/ha-audio-control/reference/protocol-types/) |
 
 ## Quick install
 

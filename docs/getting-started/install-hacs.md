@@ -1,34 +1,32 @@
 # 3. Install HACS
 
-[HACS](https://hacs.xyz) (Home Assistant Community Store) installs and updates
-community integrations such as Audio Control. Already have HACS? Skip to
-[Install Audio Control](install-audio-control.md).
+*Already have HACS in your Home Assistant sidebar? Skip to
+[4. Install Audio Control](install-audio-control.md).*
 
-HACS's own guide is authoritative and kept current:
+**HACS** is a free "app store" for things the Home Assistant community makes. Audio
+Control is one of them.
 
-**➜ [hacs.xyz/docs/use](https://hacs.xyz/docs/use/)**
+HACS has its own illustrated guide — follow it:
 
-## Summary
+**➜ [HACS installation guide](https://hacs.xyz/docs/use/)**
 
-1. **Download HACS** into Home Assistant, following the guide for your installation
-   type:
-    - *Home Assistant OS:* the guide offers an app (called *add-on* before Home Assistant
-      2026.10, under **Settings → Apps**), or a one-line command run from the
-      **Terminal & SSH** app.
-    - *Container:* run the guide's download command inside the Home Assistant container
-      (`docker exec -it homeassistant bash`).
-2. **Restart Home Assistant** (Settings → System → ⋮ → Restart).
-3. **Add the HACS integration:** Settings → Devices & services → **Add integration** →
-   search **HACS**. Tick the acknowledgements.
-4. **Link GitHub:** HACS shows a short code. Open
-   [github.com/login/device](https://github.com/login/device), enter the code and
-   authorise HACS.
-5. **HACS** now appears in the sidebar.
+In short, you will:
 
-!!! note
-    HACS only needs read access to public repositories. Audio Control itself makes no
-    internet connections — it talks only to your audio device.
+1. **Download HACS** into Home Assistant, the way the guide describes for
+   *Home Assistant OS*. (Home Assistant calls extras like this **Apps** — they're under
+   **Settings → Apps**. Older versions called them *add-ons*.)
+2. **Restart** Home Assistant: **Settings → System → ⏻ (top right) → Restart Home Assistant**.
+3. Go to **Settings → Devices & services → Add integration**, search **HACS**, and tick
+   the boxes.
+4. HACS shows a short **code**. Open [github.com/login/device](https://github.com/login/device),
+   type in the code, and click **Authorize**.
+
+**HACS** now appears in the Home Assistant sidebar.
+
+!!! info "Is this safe?"
+    HACS only reads public projects from GitHub. Audio Control itself never connects
+    to the internet — it only talks to your amplifier.
 
 ---
 
-Next: [Install Audio Control](install-audio-control.md)
+**Next:** [4. Install Audio Control](install-audio-control.md)

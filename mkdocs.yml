@@ -43,17 +43,20 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Getting started:
-      - 1. Prerequisites: getting-started/prerequisites.md
+  - Quickstart: quickstart.md
+  - Step-by-step guide:
+      - 1. What you need: getting-started/prerequisites.md
       - 2. Install Home Assistant: getting-started/install-home-assistant.md
       - 3. Install HACS: getting-started/install-hacs.md
       - 4. Install Audio Control: getting-started/install-audio-control.md
   - "Example: AMC X86i": examples/amc-x86i.md
-  - Using it:
-      - Configuration: configuration.md
-      - Services & automations: services.md
-      - Troubleshooting: troubleshooting.md
-  - Reference:
-      - Adding a device: reference/adding-a-device.md
+  - Everyday use:
+      - Using your zones: using-zones.md
+      - Names & settings: configuration.md
+      - Automations & extra controls: services.md
+      - Help & troubleshooting: troubleshooting.md
+  - For advanced users:
+      - Docker / Container installs: advanced/docker.md
+      - Network connections: reference/network-transport.md
+      - Adding a new device: reference/adding-a-device.md
       - Protocol types: reference/protocol-types.md
-      - Network transport: reference/network-transport.md

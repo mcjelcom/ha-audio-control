@@ -1,54 +1,27 @@
 # 2. Install Home Assistant
 
-Already running Home Assistant? Skip to [Install HACS](install-hacs.md).
+*Already have Home Assistant? Skip to [3. Install HACS](install-hacs.md).*
 
-Home Assistant's own installation guide is the authoritative source and covers every
-platform step by step:
+Home Assistant's own guide walks you through it with pictures — follow it exactly:
 
-**➜ [home-assistant.io/installation](https://www.home-assistant.io/installation/)**
+**➜ [Install Home Assistant on a Raspberry Pi](https://www.home-assistant.io/installation/raspberrypi)**
 
-## Which installation type?
+In short, you will:
 
-| Type | Use it when | Notes for Audio Control |
-|---|---|---|
-| **Home Assistant OS** (recommended) | A dedicated Raspberry Pi 4/5, mini PC or VM — see [hardware requirements](prerequisites.md#hardware-requirements) | USB serial adapters are available to Home Assistant automatically. Apps (Terminal, File editor; called *add-ons* before 2026.10) make HACS installation easy |
-| **Home Assistant Container** | You already run Docker and want HA as one container | You must pass the USB adapter into the container (below). No apps |
+1. Use the **Raspberry Pi Imager** app on your computer to put **Home Assistant OS**
+   on the memory card.
+2. Put the card in the Raspberry Pi, connect the network cable and the power supply.
+3. Wait about 20 minutes, then open **http://homeassistant.local:8123** in your web
+   browser.
+4. Create your account and follow the welcome screens.
 
-Home Assistant has deprecated the *Core* and *Supervised* installation methods; use one
-of the two above.
+When you can see the Home Assistant dashboard, you're ready for the next step.
 
-## Container only: pass the USB adapter in
-
-Find the adapter's stable path on the host:
-
-```bash
-ls -l /dev/serial/by-id/
-```
-
-Then give the container access to it.
-
-=== "docker compose"
-
-    ```yaml
-    services:
-      homeassistant:
-        image: ghcr.io/home-assistant/home-assistant:stable
-        devices:
-          - /dev/serial/by-id/usb-FTDI_FT232R_USB_UART_XXXXXXXX-if00-port0:/dev/ttyUSB0
-        # ... volumes, network_mode, etc. as in the HA guide
-    ```
-
-=== "docker run"
-
-    ```bash
-    docker run -d --name homeassistant \
-      --device /dev/serial/by-id/usb-FTDI_FT232R_USB_UART_XXXXXXXX-if00-port0:/dev/ttyUSB0 \
-      ...  # remaining options as in the HA guide
-      ghcr.io/home-assistant/home-assistant:stable
-    ```
-
-Inside the container the adapter is then `/dev/ttyUSB0`.
+!!! note "Using Docker instead?"
+    If you run Home Assistant in Docker (also called *Container*), see
+    [Docker / Container installs](../advanced/docker.md) — you'll need one extra setting
+    so Home Assistant can see the USB adapter.
 
 ---
 
-Next: [Install HACS](install-hacs.md)
+**Next:** [3. Install HACS](install-hacs.md)

@@ -1,30 +1,77 @@
-# Troubleshooting
+# Help & troubleshooting
 
-| Symptom | Check |
-|---|---|
-| Connection sensor **off** / entities unavailable | Port path, cable, and that nothing else holds the port. The integration reconnects with backoff on its own. |
-| Entities exist but never change state | Wrong profile or baud rate — the device is ignoring commands or the replies don't match. Try `demo` to confirm the entity layer, then compare the profile with your manual. |
-| Controls missing (e.g. no bass) | Intentional: controls appear only if the profile defines the command. |
-| Bass/treble fails with "zone is off" or "level not supported" | The device itself refuses it (e.g. the AMC X86 only changes tone on a powered-on zone). Turn the zone on, or pick one of the listed levels. |
-| Changes made on the device's keypad show up late | Devices that don't push state are polled — every zone every 60 s by default (a profile can shorten this with `serial.heartbeat_interval_s`). |
-| Re-authentication keeps appearing | Wrong username/password — set them under **Configure**. |
+## Quick checks
 
-Debug logging (protocol traffic included):
+Most problems are one of these:
 
-```yaml
-logger:
-  logs:
-    custom_components.audio_control: debug
-```
+1. Is the amplifier **switched on**?
+2. Is the cable **pushed in firmly** at both ends?
+3. Did you pick the **right model** in the *Device* list?
+4. Is it a **USB-to-RS232** adapter (not "TTL")?
+5. Did you **restart** Home Assistant after installing Audio Control?
 
-When opening an issue, attach **Download diagnostics** from the device page —
-the connection string and credentials are redacted automatically.
+## Common problems
 
-## Serial port problems
+### Connection shows *Disconnected*
 
-| Symptom | Fix |
-|---|---|
-| The port isn't offered during setup | *HA OS:* check **Settings → Connectivity → Serial** (older versions: Settings → System → Hardware → All hardware) for the adapter. Make sure it is a USB-to-**RS232** adapter, not USB-to-TTL. *Container:* the adapter must be passed in with `--device` / `devices:` ([how](getting-started/install-home-assistant.md#container-only-pass-the-usb-adapter-in)) |
-| `Permission denied` on the port (Container) | The container needs the device mapping above; running HA with `privileged: true` also works but grants far more than needed |
-| Works until a reboot, then not | Use the `/dev/serial/by-id/...` path, not `/dev/ttyUSBn` — the number can change |
-| Garbage or no reply from the device | Wrong baud rate (pick the right profile, or check it in a custom profile), wrong cable type (try a null-modem adapter), or a counterfeit adapter chip |
+- Check the quick checks above.
+- Try the other kind of cable: if you used straight-through, add a **null-modem
+  adapter** (or the other way round). The AMC X86i needs **straight-through**.
+- Unplug the USB adapter, plug it back in, and restart Home Assistant.
+
+### The adapter isn't listed
+
+Go to **Settings → Connectivity → Serial**. If your adapter isn't there:
+
+- Plug it into a different USB port on the Raspberry Pi.
+- Make sure it's a **USB-to-RS232** adapter. "USB-to-TTL" adapters show up differently
+  and won't work.
+- Cheap unbranded adapters sometimes don't work at all — an adapter with an **FTDI**
+  chip is the safe choice.
+- Running Home Assistant in Docker? See [Docker / Container installs](advanced/docker.md).
+
+### It worked, but stopped after a restart
+
+You probably used `/dev/ttyUSB0`. That name can change when Home Assistant restarts.
+Use the long **`/dev/serial/by-id/...`** name instead
+([how](configuration.md#change-the-connection)).
+
+### Zones never change, or show the wrong state
+
+- The wrong model may be selected — check the *Device* name on the amplifier's page.
+- Another program may be using the adapter at the same time.
+
+### A button or control is missing (e.g. no bass)
+
+That's on purpose: Audio Control only shows controls your amplifier really has.
+
+### "Zone is off" or "Tone level not supported"
+
+The amplifier refused it. Turn the zone on first, or use one of the levels shown in the
+message.
+
+### The Raspberry Pi keeps losing its connection
+
+Use the **official power supply**. A weak power supply causes random USB and Wi-Fi
+problems. An Ethernet cable is also more reliable than Wi-Fi.
+
+## Still stuck?
+
+Open an [issue on GitHub](https://github.com/mcjelcom/ha-audio-control/issues) and
+include:
+
+1. Your **amplifier model**.
+2. The **diagnostics file**: go to the amplifier's page and click **Download
+   diagnostics**. (Your connection details and passwords are removed automatically.)
+3. If you can, a **debug log**:
+
+    ??? note "How to turn on debug logging"
+        Go to **Settings → Devices & services → Audio Control → ⋮ → Enable debug
+        logging**, repeat the problem, then **Disable debug logging** — Home Assistant
+        downloads the log file. Or add this to `configuration.yaml`:
+
+        ```yaml
+        logger:
+          logs:
+            custom_components.audio_control: debug
+        ```

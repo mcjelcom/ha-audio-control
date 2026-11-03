@@ -1,42 +1,58 @@
 # 4. Install Audio Control
 
-Audio Control is in the **HACS default store** — no custom repository is needed.
+## Download it from HACS
+
+1. Click **HACS** in the Home Assistant sidebar.
+2. Search for **Audio Control** and open it.
+3. Click **Download**, then **Download** again to confirm.
+4. **Restart** Home Assistant: **Settings → System → ⏻ (top right) → Restart Home Assistant**.
+
+Or click this button to jump straight to it:
 
 [![Open in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=mcjelcom&repository=ha-audio-control&category=integration)
 
-1. Open **HACS** from the sidebar and search for **Audio Control**
-   (or use the button above).
-2. Open it and click **Download**, then confirm.
-3. **Restart Home Assistant** (Settings → System → ⋮ → Restart).
-4. Go to **Settings → Devices & services → Add integration** and search
-   **Audio Control**.
+## Add your amplifier
 
-The setup form opens:
+1. Go to **Settings**, then **Devices & services**.
 
-![Audio Control setup form](../assets/screenshots/setup-step1-default.png){ width="480" }
+    ![The Settings menu](../assets/screenshots/settings-menu.png){ width="560" }
 
-| Field | What to enter |
-|---|---|
-| **Device** | Your model's profile, or *>> Custom Device (define via UI)* |
-| **Connection** | Serial port (`/dev/serial/by-id/...`), `socket://host:port`, `rfc2217://host:port`, or `demo` |
+2. Click **Add integration** (bottom right), type **Audio Control**, and click it.
 
-!!! tip "Try `demo` first"
-    Entering `demo` as the connection simulates the device. You get the full set of zone
-    entities and can build dashboards and automations before the hardware is wired up.
-    Switch to the real port later with **Reconfigure** — entities and automations are
-    kept.
+    ![Searching for Audio Control](../assets/screenshots/add-integration-search.png){ width="420" }
 
-Not sure what to enter? The [AMC X86i example](../examples/amc-x86i.md) walks through
-a complete setup.
+3. Fill in the form:
 
-## Updating
+    ![The setup form](../assets/screenshots/setup-step1-x86i.png){ width="420" }
 
-HACS shows updates when a new release is published. Update from **HACS → Audio
-Control → Update**, then restart Home Assistant.
+    - **Device** — choose your amplifier's model from the list.
+    - **Connection** — the USB adapter. Home Assistant usually lists it for you under
+      *Detected locally*; it looks like `/dev/serial/by-id/usb-FTDI_...`.
+      [How to find it](#finding-the-connection).
 
-## Manual install (without HACS)
+4. Click **Submit**.
 
-Copy `custom_components/audio_control/` from the
-[latest release](https://github.com/mcjelcom/ha-audio-control/releases/latest) into
-your Home Assistant `config/custom_components/` directory and restart. You will not
-get update notifications this way.
+That's it — each zone now appears in Home Assistant. Next, give them proper names:
+[Names & settings](../configuration.md).
+
+!!! tip "Try it without the amplifier"
+    Type **`demo`** in **Connection** to get a pretend amplifier. Everything works the
+    same, so you can set up your dashboard first. Switch to the real connection later
+    ([how](../configuration.md#change-the-connection)).
+
+## Finding the connection
+
+Go to **Settings → Connectivity → Serial**. It lists the USB adapters Home Assistant
+can see. Copy the one that starts with **`/dev/serial/by-id/`**.
+
+![Settings → Connectivity](../assets/screenshots/connectivity.png){ width="560" }
+
+*(Older Home Assistant versions: **Settings → System → Hardware → ⋮ → All hardware**,
+then search for "serial".)*
+
+Nothing listed? See [Help & troubleshooting](../troubleshooting.md#the-adapter-isnt-listed).
+
+## Updates
+
+When a new version comes out, HACS shows an **update** for Audio Control. Click
+**Update**, then restart Home Assistant.
