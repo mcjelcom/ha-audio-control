@@ -24,7 +24,7 @@ the connection string and credentials are redacted automatically.
 
 | Symptom | Fix |
 |---|---|
-| The port isn't offered during setup | *HA OS:* check **Settings → System → Hardware → All hardware** for the adapter. *Container:* the adapter must be passed in with `--device` / `devices:` ([how](getting-started/install-home-assistant.md#container-only-pass-the-usb-adapter-in)) |
+| The port isn't offered during setup | *HA OS:* check **Settings → Connectivity → Serial** (older versions: Settings → System → Hardware → All hardware) for the adapter. Make sure it is a USB-to-**RS232** adapter, not USB-to-TTL. *Container:* the adapter must be passed in with `--device` / `devices:` ([how](getting-started/install-home-assistant.md#container-only-pass-the-usb-adapter-in)) |
 | `Permission denied` on the port (Container) | The container needs the device mapping above; running HA with `privileged: true` also works but grants far more than needed |
 | Works until a reboot, then not | Use the `/dev/serial/by-id/...` path, not `/dev/ttyUSBn` — the number can change |
 | Garbage or no reply from the device | Wrong baud rate (pick the right profile, or check it in a custom profile), wrong cable type (try a null-modem adapter), or a counterfeit adapter chip |

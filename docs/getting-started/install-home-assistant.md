@@ -11,8 +11,8 @@ platform step by step:
 
 | Type | Use it when | Notes for Audio Control |
 |---|---|---|
-| **Home Assistant OS** (recommended) | A dedicated Raspberry Pi, mini PC or VM | USB serial adapters are available to Home Assistant automatically. Add-ons (Terminal, File editor) make HACS installation easy |
-| **Home Assistant Container** | You already run Docker and want HA as one container | You must pass the USB adapter into the container (below). No add-ons |
+| **Home Assistant OS** (recommended) | A dedicated Raspberry Pi 4/5, mini PC or VM — see [hardware requirements](prerequisites.md#hardware-requirements) | USB serial adapters are available to Home Assistant automatically. Apps (Terminal, File editor; called *add-ons* before 2026.10) make HACS installation easy |
+| **Home Assistant Container** | You already run Docker and want HA as one container | You must pass the USB adapter into the container (below). No apps |
 
 Home Assistant has deprecated the *Core* and *Supervised* installation methods; use one
 of the two above.

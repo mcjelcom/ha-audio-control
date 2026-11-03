@@ -12,8 +12,9 @@ HACS's own guide is authoritative and kept current:
 
 1. **Download HACS** into Home Assistant, following the guide for your installation
    type:
-    - *Home Assistant OS:* the guide offers an add-on, or a one-line command run from the
-      **Terminal & SSH** add-on.
+    - *Home Assistant OS:* the guide offers an app (called *add-on* before Home Assistant
+      2026.10, under **Settings → Apps**), or a one-line command run from the
+      **Terminal & SSH** app.
     - *Container:* run the guide's download command inside the Home Assistant container
       (`docker exec -it homeassistant bash`).
 2. **Restart Home Assistant** (Settings → System → ⋮ → Restart).

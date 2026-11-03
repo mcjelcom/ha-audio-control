@@ -7,13 +7,15 @@ Everything on this page was verified against a real X86i over RS-232.
 
 ## What you need
 
-- An **AMC X86i** with its RS-232 port (rear panel, item 8 in the AMC manual — a
-  standard **DB9** connector; AMC lists RS-232 as an option on some units).
-- A **USB-to-RS232 adapter** (FTDI recommended) and a DB9 serial cable — see
-  [Prerequisites](../getting-started/prerequisites.md) for straight-through vs
-  null-modem.
-- Home Assistant with HACS and Audio Control installed
-  ([steps 2–4](../getting-started/install-home-assistant.md)).
+| Part | For this example |
+|---|---|
+| Amplifier | **AMC X86i** with its RS-232 port (rear panel, item 8 in the AMC manual — a standard **DB9** connector; AMC lists RS-232 as an option on some units) |
+| Home Assistant machine | **Raspberry Pi 4 or 5** (2 GB+ RAM), A2 microSD 32 GB+ or USB SSD, official power supply, Home Assistant OS |
+| Adapter | **USB-to-RS232** (DB9 male, FTDI chip recommended) — not a USB-to-TTL adapter |
+| Cable | DB9 serial cable from the adapter to the X86i (see [straight-through vs null-modem](../getting-started/prerequisites.md#how-home-assistant-reaches-the-device)) |
+| Software | Home Assistant with HACS and Audio Control installed ([steps 2–4](../getting-started/install-home-assistant.md)) |
+
+Full details and alternatives: [Hardware requirements](../getting-started/prerequisites.md#hardware-requirements).
 
 The X86i's serial settings are **38400 baud, 8 data bits, no parity, 1 stop bit, no
 flow control**. You don't enter these anywhere — the *AMC X86 / X86i* profile sets them.
@@ -28,8 +30,9 @@ flow control**. You don't enter these anywhere — the *AMC X86 / X86i* profile 
 
 === "Home Assistant OS"
 
-    **Settings → System → Hardware → ⋮ → All hardware**, then search for `serial`.
-    Use the path under **`/dev/serial/by-id/`**, e.g.
+    **Settings → Connectivity → Serial** lists the serial ports and which integrations
+    use them (on Home Assistant older than 2026.10: **Settings → System → Hardware → ⋮ →
+    All hardware**, search `serial`). Use the path under **`/dev/serial/by-id/`**, e.g.
 
     `/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A10XXXXX-if00-port0`
 
