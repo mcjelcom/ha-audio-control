@@ -45,6 +45,17 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
 - **Schemas:** import `vol` from `._schema` (probatio on HA 2026.10+, voluptuous before). Don't `import voluptuous` directly — HA no longer depends on it (it currently aliases it to probatio, but don't rely on that).
 - **Service targets:** build `TargetSelection(call.data)` for `async_extract_referenced_entity_ids` (HA 2026.x); fall back to passing the call on older HA.
 
+## Documentation site
+
+`docs/` → MkDocs Material → GitHub Pages: **https://mcjelcom.github.io/ha-audio-control/** (`.github/workflows/docs.yml`, strict
+build, runs on pushes to `main` touching docs; no release needed). Preview:
+`uv venv .venv-docs && uv pip install --python .venv-docs -r requirements-docs.txt &&
+.venv-docs/bin/mkdocs serve` (binds 127.0.0.1). Rules: public content only — no home
+IPs, hostnames, account names; screenshots crop to a dialog/panel (never sidebar or
+URL bar); after deploy, fetch pages anonymously and require 200. Screenshots come from
+a live HA via headless Playwright with an on-device token; open a config flow and
+cancel it (Escape) — check no flow is left in progress.
+
 ## Releasing
 
 - HACS installs **tagged GitHub Releases**, not `main`. Bump `manifest.json`, commit,
