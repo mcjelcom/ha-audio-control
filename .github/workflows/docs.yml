@@ -1,5 +1,5 @@
 # Builds the documentation site from docs/ with MkDocs Material and publishes it
-# to GitHub Pages (https://mcjelcom.github.io/ha-audio-control/). Public content:
+# to GitHub Pages (https://haac.mcjel.com/). Public content:
 # the site is meant to be read anonymously.
 name: Docs
 

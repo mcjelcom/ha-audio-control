@@ -47,7 +47,7 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
 
 ## Documentation site
 
-`docs/` → MkDocs Material → GitHub Pages: **https://mcjelcom.github.io/ha-audio-control/** (`.github/workflows/docs.yml`, strict
+`docs/` → MkDocs Material → GitHub Pages: **https://haac.mcjel.com/** (`.github/workflows/docs.yml`, strict
 build, runs on pushes to `main` touching docs; no release needed). Preview:
 `uv venv .venv-docs && uv pip install --python .venv-docs -r requirements-docs.txt &&
 .venv-docs/bin/mkdocs serve` (binds 127.0.0.1). Rules: public content only — no home

@@ -8,7 +8,7 @@
     "@mcjelcom"
   ],
   "config_flow": true,
-  "documentation": "https://github.com/mcjelcom/ha-audio-control",
+  "documentation": "https://haac.mcjel.com/",
   "integration_type": "hub",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/mcjelcom/ha-audio-control/issues",
@@ -32,5 +32,5 @@
       "description": "*rs232*"
     }
   ],
-  "version": "2.0.9"
+  "version": "2.0.10"
 }

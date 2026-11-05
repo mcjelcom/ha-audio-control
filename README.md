@@ -12,15 +12,15 @@ per-device Python: a new device is a YAML file.
 
 ## 📖 Documentation
 
-**[https://mcjelcom.github.io/ha-audio-control/](https://mcjelcom.github.io/ha-audio-control/)**
+**[https://haac.mcjel.com/](https://haac.mcjel.com/)**
 
 | | |
 |---|---|
-| **New here?** | **[Quickstart — five steps with pictures](https://mcjelcom.github.io/ha-audio-control/quickstart/)** |
-| **Step by step** | [What you need](https://mcjelcom.github.io/ha-audio-control/getting-started/prerequisites/) → [Install Home Assistant](https://mcjelcom.github.io/ha-audio-control/getting-started/install-home-assistant/) → [Install HACS](https://mcjelcom.github.io/ha-audio-control/getting-started/install-hacs/) → [Install Audio Control](https://mcjelcom.github.io/ha-audio-control/getting-started/install-audio-control/) |
-| **Example** | [AMC X86i, from cable to dashboard](https://mcjelcom.github.io/ha-audio-control/examples/amc-x86i/) |
-| **Everyday use** | [Using your zones](https://mcjelcom.github.io/ha-audio-control/using-zones/) · [Names & settings](https://mcjelcom.github.io/ha-audio-control/configuration/) · [Automations & extra controls](https://mcjelcom.github.io/ha-audio-control/services/) · [Help & troubleshooting](https://mcjelcom.github.io/ha-audio-control/troubleshooting/) |
-| **Advanced** | [Docker](https://mcjelcom.github.io/ha-audio-control/advanced/docker/) · [Network connections](https://mcjelcom.github.io/ha-audio-control/reference/network-transport/) · [Adding a device](https://mcjelcom.github.io/ha-audio-control/reference/adding-a-device/) · [Protocol types](https://mcjelcom.github.io/ha-audio-control/reference/protocol-types/) |
+| **New here?** | **[Quickstart — five steps with pictures](https://haac.mcjel.com/quickstart/)** |
+| **Step by step** | [What you need](https://haac.mcjel.com/getting-started/prerequisites/) → [Install Home Assistant](https://haac.mcjel.com/getting-started/install-home-assistant/) → [Install HACS](https://haac.mcjel.com/getting-started/install-hacs/) → [Install Audio Control](https://haac.mcjel.com/getting-started/install-audio-control/) |
+| **Example** | [AMC X86i, from cable to dashboard](https://haac.mcjel.com/examples/amc-x86i/) |
+| **Everyday use** | [Using your zones](https://haac.mcjel.com/using-zones/) · [Names & settings](https://haac.mcjel.com/configuration/) · [Automations & extra controls](https://haac.mcjel.com/services/) · [Help & troubleshooting](https://haac.mcjel.com/troubleshooting/) |
+| **Advanced** | [Docker](https://haac.mcjel.com/advanced/docker/) · [Network connections](https://haac.mcjel.com/reference/network-transport/) · [Adding a device](https://haac.mcjel.com/reference/adding-a-device/) · [Protocol types](https://haac.mcjel.com/reference/protocol-types/) |
 
 ## Quick install
 
@@ -30,7 +30,7 @@ Audio Control is in the **HACS default store**:
 
 HACS → search **Audio Control** → **Download** → restart → Settings → Devices &
 services → **Add integration** → *Audio Control*. New to HACS? Follow
-[Getting started](https://mcjelcom.github.io/ha-audio-control/getting-started/prerequisites/).
+[Getting started](https://haac.mcjel.com/getting-started/prerequisites/).
 
 ## Supported hardware
 
@@ -43,7 +43,7 @@ services → **Add integration** → *Audio Control*. New to HACS? Follow
 | Marantz · NAD · Oppo · RTI · Russound · SpeakerCraft · Yamaha | 1 each | PM7000N/SR, C 368/388, UDP-203/205, AD-4x/8x + AD-810, CAV/CAS/MCA (RNET), MZC-66/88, RX-A/RX-V |
 
 Not listed? The custom-device wizard builds a profile from the UI, or drop a
-YAML file into `config/audio_control/` — see [Adding a device](https://mcjelcom.github.io/ha-audio-control/reference/adding-a-device/).
+YAML file into `config/audio_control/` — see [Adding a device](https://haac.mcjel.com/reference/adding-a-device/).
 
 ## Development
 
@@ -85,6 +85,7 @@ on a HACS install.
 
 | Version | Highlights |
 |---|---|
+| 2.0.10 | Home Assistant's **Documentation** link now opens the user guide at [haac.mcjel.com](https://haac.mcjel.com/) |
 | 2.0.9 | RTI power on/off now confirms (it timed out and rolled the zone back); every tone step on Monoprice 6-zone / Xantech MRC-88; a failed power command no longer leaves the zone marked as "known off" |
 | 2.0.8 | RTI unit-wide power and status polling now update every zone; AMC XOir absolute tone levels (per manual); every tone step on Monoprice/Xantech (±7); off-zone tone check waits until the zone's state is known |
 | 2.0.7 | Fixes from a four-model code review: RTI multi-zone replies no longer mix zones; bass/treble across several zones applies to all valid zones; AMC XO/XOir tone state updates; no "Source 0" for off AMC zones |
