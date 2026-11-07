@@ -1,0 +1,11 @@
+@startuml
+!include _style.iuml
+start
+:Click **Deploy with balena**\n(free balenaCloud account);
+:balena builds Home Assistant\n+ Audio Control for your fleet;
+:**Add device**: download the image,\nwrite it with **balenaEtcher**;
+:Put the card in the Raspberry Pi,\nconnect network cable and power;
+:Wait until the device is **Online**\nand the update finishes (about 20–40 minutes);
+:Open the device's address\n**http://IP-address:8123** and create your account;
+stop
+@enduml

@@ -59,6 +59,12 @@ URL bar); after deploy, fetch pages anonymously and require 200. Screenshots com
 a live HA via headless Playwright with an on-device token; open a config flow and
 cancel it (Escape) — check no flow is left in progress.
 
+- **PlantUML eats `<...>` as markup** (`<device IP>` vanished from a diagram). Write
+  `IP-address`, and check the rendered SVG text (`grep` it) after adding a diagram.
+- **balena template** `mcjelcom/haac-balena` bundles a pinned Audio Control release
+  (tag + SHA-256 in `homeassistant/Dockerfile`; README states the versions, CI checks).
+  **Bump it after every integration release** and tag the template (`v1.x.y`).
+
 ## Releasing
 
 - HACS installs **tagged GitHub Releases**, not `main`. Bump `manifest.json`, commit,

@@ -18,6 +18,7 @@ per-device Python: a new device is a YAML file.
 |---|---|
 | **New here?** | **[Quickstart — five steps with pictures](https://haac.mcjel.com/quickstart/)** |
 | **Step by step** | [What you need](https://haac.mcjel.com/getting-started/prerequisites/) → [Install Home Assistant](https://haac.mcjel.com/getting-started/install-home-assistant/) → [Install HACS](https://haac.mcjel.com/getting-started/install-hacs/) → [Install Audio Control](https://haac.mcjel.com/getting-started/install-audio-control/) |
+| **Remote / several Pis** | [Choose how to install](https://haac.mcjel.com/getting-started/choose-install/) · [Install with balena (preview)](https://haac.mcjel.com/getting-started/install-balena/) — template: [mcjelcom/haac-balena](https://github.com/mcjelcom/haac-balena) |
 | **Example** | [AMC X86i, from cable to dashboard](https://haac.mcjel.com/examples/amc-x86i/) |
 | **Everyday use** | [Using your zones](https://haac.mcjel.com/using-zones/) · [Names & settings](https://haac.mcjel.com/configuration/) · [Automations & extra controls](https://haac.mcjel.com/services/) · [Help & troubleshooting](https://haac.mcjel.com/troubleshooting/) |
 | **Advanced** | [Docker](https://haac.mcjel.com/advanced/docker/) · [Network connections](https://haac.mcjel.com/reference/network-transport/) · [Adding a device](https://haac.mcjel.com/reference/adding-a-device/) · [Protocol types](https://haac.mcjel.com/reference/protocol-types/) |

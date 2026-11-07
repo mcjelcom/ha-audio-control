@@ -59,6 +59,7 @@ nav:
   - Supported models: supported-models.md
   - Step-by-step guide:
       - 1. What you need: getting-started/prerequisites.md
+      - Choose how to install: getting-started/choose-install.md
       - 2. Install Home Assistant: getting-started/install-home-assistant.md
       - 3. Install HACS: getting-started/install-hacs.md
       - 4. Install Audio Control: getting-started/install-audio-control.md
@@ -69,6 +70,7 @@ nav:
       - Automations & extra controls: services.md
       - Help & troubleshooting: troubleshooting.md
   - For advanced users:
+      - Install with balena (preview): getting-started/install-balena.md
       - Docker / Container installs: advanced/docker.md
       - Network connections: reference/network-transport.md
       - Adding a new device: reference/adding-a-device.md

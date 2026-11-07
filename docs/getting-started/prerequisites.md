@@ -48,4 +48,5 @@ Create one now if you don't have it.
 
 ---
 
-**Next:** [2. Install Home Assistant](install-home-assistant.md)
+**Next:** [2. Install Home Assistant](install-home-assistant.md) — or first see
+[Choose how to install](choose-install.md) if you want to manage the Pi remotely.

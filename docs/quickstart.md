@@ -25,6 +25,9 @@ When it's done you open Home Assistant in your web browser.
 
 [Install Home Assistant →](getting-started/install-home-assistant.md)
 
+*Want to manage the Pi remotely instead? See
+[Choose how to install](getting-started/choose-install.md).*
+
 ## Step 3 — Install HACS
 
 HACS is a free "app store" for Home Assistant add-ons made by the community. Audio
