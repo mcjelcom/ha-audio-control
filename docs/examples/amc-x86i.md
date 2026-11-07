@@ -1,7 +1,7 @@
 # Example: AMC X86i
 
 A complete setup for the **AMC X86i** 6-zone / 8-source amplifier, from cable to
-dashboard. The same steps apply to the AMC X86, XO and XOi (pick their profile instead).
+dashboard. The same steps apply to the AMC X86 and XO (pick their profile instead).
 
 Everything on this page was verified against a real X86i over RS-232.
 
@@ -15,7 +15,7 @@ Everything on this page was verified against a real X86i over RS-232.
 | Cable | **Straight-through** DB9 serial cable from the adapter to the X86i (tested; no null-modem adapter needed) |
 | Software | Home Assistant with HACS and Audio Control installed ([steps 2–4](../getting-started/install-home-assistant.md)) |
 
-Full details and alternatives: [Hardware requirements](../getting-started/prerequisites.md#shopping-list).
+Full details and alternatives: [Shopping list](../getting-started/prerequisites.md#shopping-list).
 
 You don't need to set any serial settings — choosing *AMC X86 / X86i* takes care of them.
 
