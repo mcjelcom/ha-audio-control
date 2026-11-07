@@ -87,6 +87,7 @@ on a HACS install.
 
 | Version | Highlights |
 |---|---|
+| 2.0.13 | The dashboard's **Group** button and the group-mode action show their icon (it referenced an icon that doesn't exist, so it was blank) |
 | 2.0.12 | AMC: a missed first reply at start-up no longer leaves the amplifier ignoring every command ("Check the device connection") until a reload — found on a real X86i |
 | 2.0.11 | The rename form (**Configure**) shows friendly labels — "Zone 1 name", "Source 1 name" — instead of `zone_1` / `source_1` |
 | 2.0.10 | Home Assistant's **Documentation** link now opens the user guide at [haac.mcjel.com](https://haac.mcjel.com/) |

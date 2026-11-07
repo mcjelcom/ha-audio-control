@@ -10,7 +10,7 @@
       "service": "mdi:power-off"
     },
     "group_mode_on": {
-      "service": "mdi:speaker-group"
+      "service": "mdi:speaker-multiple"
     },
     "group_mode_off": {
       "service": "mdi:speaker"

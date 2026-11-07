@@ -125,7 +125,7 @@ def _global_buttons(entry: ConfigEntry) -> list[dict[str, Any]]:
             {
                 "type": "button",
                 "name": "Group",
-                "icon": "mdi:speaker-group",
+                "icon": "mdi:speaker-multiple",
                 "icon_height": "40px",
                 "tap_action": {
                     "action": "perform-action",
