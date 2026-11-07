@@ -3,7 +3,8 @@
 *Not sure this is for you? See [Choose how to install](choose-install.md) — for one
 Raspberry Pi at home, [Home Assistant OS](install-home-assistant.md) is simpler.*
 
-This puts Home Assistant **with Audio Control already installed** on your Raspberry Pi,
+This puts Home Assistant **with Audio Control already installed** — and a ready-made
+**Audio Control dashboard** — on your Raspberry Pi,
 managed from the [balenaCloud](https://www.balena.io/cloud) dashboard. You skip the
 HACS and Audio Control steps.
 
@@ -52,6 +53,21 @@ Open **http://&lt;IP address&gt;:8123** in your web browser (for example
 Then add your amplifier exactly as in the main guide —
 [Add your amplifier](install-audio-control.md#add-your-amplifier). There is nothing to
 download first: Audio Control is already there.
+
+## Your Audio Control dashboard
+
+The template adds an **Audio Control** dashboard to the sidebar. As soon as you add your
+amplifier it fills in by itself — one card per zone, with your zone names, plus
+**All Off** and **Group** buttons. Rename a zone and the dashboard follows.
+
+![The Audio Control dashboard](../assets/screenshots/balena-dashboard.png)
+
+Want to change it yourself? Edit `dashboards/audio_control.yaml` and delete its first
+line (`# audio_control:managed`) — from then on it is yours and is never rewritten.
+
+Ready-made **automations** come with it too: **Settings → Automations & scenes →
+Blueprints** (all zones off at a time, turn a zone on at a set time, volume limit, …).
+They do nothing until you create an automation from one.
 
 ## Updates
 
