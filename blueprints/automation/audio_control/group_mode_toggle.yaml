@@ -1,0 +1,60 @@
+blueprint:
+  name: Audio Control - Group Mode Toggle
+  description: >-
+    Drive whole-house group mode from any toggle entity — an input_boolean
+    helper, a switch, or a schedule. Turning it on puts every zone on one
+    shared source; turning it off returns zones to independent control.
+
+    Unlike the other blueprints in this set, this one needs a toggle entity you
+    supply. Create one under Settings > Devices & Services > Helpers > Toggle
+    if you do not already have a suitable switch.
+  domain: automation
+  author: McJEL, LLC
+  source_url: https://github.com/mcjelcom/ha-audio-control/blob/main/blueprints/automation/audio_control/group_mode_toggle.yaml
+  input:
+    toggle_entity:
+      name: Toggle
+      description: The switch or helper that controls group mode.
+      selector:
+        entity:
+          filter:
+            - domain: input_boolean
+            - domain: switch
+    group_source:
+      name: Group source
+      description: Source number all zones share while grouped.
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 16
+          step: 1
+
+mode: single
+
+trigger:
+  - platform: state
+    entity_id: !input toggle_entity
+    to: "on"
+    id: enable
+  - platform: state
+    entity_id: !input toggle_entity
+    to: "off"
+    id: disable
+
+condition: []
+
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: enable
+        sequence:
+          - service: audio_control.group_mode_on
+            data:
+              source: !input group_source
+      - conditions:
+          - condition: trigger
+            id: disable
+        sequence:
+          - service: audio_control.group_mode_off

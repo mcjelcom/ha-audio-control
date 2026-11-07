@@ -1,0 +1,14 @@
+@startuml
+!include _style.iuml
+start
+if (Installed with balena?) then (yes)
+  :Nothing to do — the **Audio Control**\ndashboard is already in the sidebar;
+else (Home Assistant OS)
+  :Install the **File editor** app;
+  :Create **dashboards/audio_control.yaml**\nwith one line;
+  :Add the dashboard to **configuration.yaml**;
+  :Restart Home Assistant;
+endif
+:Audio Control fills it in:\none card per zone, with your names;
+stop
+@enduml

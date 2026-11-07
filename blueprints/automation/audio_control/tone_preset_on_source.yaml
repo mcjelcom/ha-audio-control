@@ -1,0 +1,115 @@
+blueprint:
+  name: Audio Control - Tone Preset on Source Change
+  description: >-
+    Apply a bass/treble preset when a zone switches to a chosen source, and
+    restore a second preset when it switches away — e.g. boost bass for a movie
+    input, then return to flat.
+
+    Requires an amplifier with tone controls (11 of the 26 bundled profiles
+    support them, including the AMC X-Series). On a device without tone support
+    the service call will fail and the automation will log an error.
+  domain: automation
+  author: McJEL, LLC
+  source_url: https://github.com/mcjelcom/ha-audio-control/blob/main/blueprints/automation/audio_control/tone_preset_on_source.yaml
+  input:
+    zone:
+      name: Zone
+      description: The zone whose tone should change.
+      selector:
+        entity:
+          filter:
+            integration: audio_control
+            domain: media_player
+    trigger_source:
+      name: Source
+      description: >-
+        The source name that activates the preset, exactly as shown in the
+        zone's source list (e.g. "Source 3").
+      selector:
+        text:
+    active_bass:
+      name: Bass (on this source)
+      default: 6
+      selector:
+        number:
+          min: -8
+          max: 8
+          step: 2
+    active_treble:
+      name: Treble (on this source)
+      default: 0
+      selector:
+        number:
+          min: -8
+          max: 8
+          step: 2
+    restore_bass:
+      name: Bass (other sources)
+      default: 0
+      selector:
+        number:
+          min: -8
+          max: 8
+          step: 2
+    restore_treble:
+      name: Treble (other sources)
+      default: 0
+      selector:
+        number:
+          min: -8
+          max: 8
+          step: 2
+
+mode: queued
+max: 5
+
+variables:
+  watch_source: !input trigger_source
+
+trigger:
+  - platform: state
+    entity_id: !input zone
+    attribute: source
+
+condition:
+  # Attribute triggers also fire on unrelated attribute updates (volume, mute),
+  # where from/to are equal. Ignore those.
+  - condition: template
+    value_template: >-
+      {{ trigger.from_state.attributes.source
+         != trigger.to_state.attributes.source }}
+
+action:
+  - choose:
+      # Switched TO the watched source -> apply the active preset.
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ trigger.to_state.attributes.source == watch_source }}
+        sequence:
+          - service: audio_control.set_bass
+            target:
+              entity_id: !input zone
+            data:
+              level: !input active_bass
+          - service: audio_control.set_treble
+            target:
+              entity_id: !input zone
+            data:
+              level: !input active_treble
+      # Switched AWAY from it -> restore.
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ trigger.from_state.attributes.source == watch_source }}
+        sequence:
+          - service: audio_control.set_bass
+            target:
+              entity_id: !input zone
+            data:
+              level: !input restore_bass
+          - service: audio_control.set_treble
+            target:
+              entity_id: !input zone
+            data:
+              level: !input restore_treble

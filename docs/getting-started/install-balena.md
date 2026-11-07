@@ -62,8 +62,7 @@ amplifier it fills in by itself — one card per zone, with your zone names, plu
 
 ![The Audio Control dashboard](../assets/screenshots/balena-dashboard.png)
 
-Want to change it yourself? Edit `dashboards/audio_control.yaml` and delete its first
-line (`# audio_control:managed`) — from then on it is yours and is never rewritten.
+Want to change it yourself? See [Make it your own](../dashboard.md#make-it-your-own).
 
 Ready-made **automations** come with it too: **Settings → Automations & scenes →
 Blueprints** (all zones off at a time, turn a zone on at a set time, volume limit, …).

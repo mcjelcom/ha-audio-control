@@ -1,0 +1,9 @@
+@startuml
+!include _style.iuml
+start
+:Install **Home Assistant** from the\nApp Store (iPhone) or Google Play (Android);
+:Open it at home: it finds\nyour Home Assistant automatically;
+:Sign in with your\nHome Assistant account;
+:Open **Audio Control**\n(or any dashboard with your zones);
+stop
+@enduml

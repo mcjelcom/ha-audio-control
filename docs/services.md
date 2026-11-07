@@ -19,6 +19,24 @@ automations, scripts and buttons.
     while the zone is **on**. If a value isn't allowed, Home Assistant tells you which
     ones are.
 
+## Ready-made automations (blueprints)
+
+Fill-in-the-blanks automations for Audio Control. Click **Import blueprint**, then in
+Home Assistant **Preview** → **Import**. To use one: **Settings → Automations & scenes →
+Blueprints**, click it, pick your zones and times, and **Save**. Imported blueprints do
+nothing until you create an automation from them.
+
+| Automation | What it does | |
+|---|---|---|
+| **All zones off at a time** | Turn every zone off at a set time, optionally only on some days | [![Import blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fmcjelcom%2Fha-audio-control%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Faudio_control%2Fall_zones_off_at_time.yaml) |
+| **Scheduled zone on** | Turn a zone on at a set time with a chosen source and volume | [![Import blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fmcjelcom%2Fha-audio-control%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Faudio_control%2Fscheduled_zone_on.yaml) |
+| **Auto off when forgotten** | Turn a zone off after it has been on for a while | [![Import blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fmcjelcom%2Fha-audio-control%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Faudio_control%2Fzone_auto_off_when_idle.yaml) |
+| **Volume limiter** | Pull a zone's volume back down if it goes above a limit — protects speakers | [![Import blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fmcjelcom%2Fha-audio-control%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Faudio_control%2Fvolume_limiter.yaml) |
+| **Group mode switch** | Turn whole-house group mode on and off from any toggle or schedule | [![Import blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fmcjelcom%2Fha-audio-control%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Faudio_control%2Fgroup_mode_toggle.yaml) |
+| **Tone preset per source** | Set bass/treble when a zone switches to a source, and restore it after | [![Import blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fmcjelcom%2Fha-audio-control%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Faudio_control%2Ftone_preset_on_source.yaml) |
+
+*balena installs already have these — look under **Blueprints**.*
+
 ## Use them in an automation
 
 1. **Settings → Automations & scenes → Create automation → Create new automation**.

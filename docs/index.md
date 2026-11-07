@@ -31,8 +31,13 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
 - **Stays in sync** — changes made on the amplifier's own keypads show up in Home
   Assistant too (on amplifiers that report them), and a **connection status** shows
   whether the amplifier is answering
+- **Phone app** — the free Home Assistant app for iPhone and Android, with home-screen
+  widgets ([Phone app](phone-app.md))
+- **Ready-made dashboard** — one card per zone, built and kept up to date for you
+  ([Ready-made dashboard](dashboard.md))
 - **Automations** — e.g. turn everything off at midnight, or start the patio speakers
-  when you get home
+  when you get home — with six ready-made ones to import in one click
+  ([list](services.md#ready-made-automations-blueprints))
 - **RS232 or network** — a USB-RS232 adapter, a serial-to-Ethernet gateway, or the
   amplifier's own IP control ([Network connections](reference/network-transport.md))
 - **Try it first** — `demo` mode gives you a pretend amplifier to set everything up

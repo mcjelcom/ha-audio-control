@@ -1,0 +1,53 @@
+blueprint:
+  name: Audio Control - Zone Auto Off When Idle
+  description: >-
+    Turn a zone off after it has been left on for a set duration, so a forgotten
+    zone does not run all day.
+
+    Idle here means "powered on for N minutes", based on the zone's own state.
+    It does not detect whether audio is actually playing — most RS232 amplifiers
+    report power and volume but not signal presence.
+  domain: automation
+  author: McJEL, LLC
+  source_url: https://github.com/mcjelcom/ha-audio-control/blob/main/blueprints/automation/audio_control/zone_auto_off_when_idle.yaml
+  input:
+    zone:
+      name: Zone
+      description: The zone to switch off.
+      selector:
+        entity:
+          filter:
+            integration: audio_control
+            domain: media_player
+    idle_minutes:
+      name: Idle timeout
+      description: How long the zone may stay on before being switched off.
+      default: 120
+      selector:
+        number:
+          min: 5
+          max: 720
+          step: 5
+          unit_of_measurement: minutes
+          mode: slider
+
+mode: single
+
+trigger:
+  # `for:` restarts whenever the state changes, so any interaction that flips
+  # the zone's state resets the countdown.
+  - platform: state
+    entity_id: !input zone
+    to: "on"
+    for:
+      minutes: !input idle_minutes
+
+condition:
+  - condition: state
+    entity_id: !input zone
+    state: "on"
+
+action:
+  - service: media_player.turn_off
+    target:
+      entity_id: !input zone

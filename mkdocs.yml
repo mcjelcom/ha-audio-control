@@ -66,6 +66,8 @@ nav:
   - "Example: AMC X86i": examples/amc-x86i.md
   - Everyday use:
       - Using your zones: using-zones.md
+      - Phone app: phone-app.md
+      - Ready-made dashboard: dashboard.md
       - Names & settings: configuration.md
       - Automations & extra controls: services.md
       - Apple Home, Google Home & Alexa: smart-home.md

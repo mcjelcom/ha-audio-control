@@ -1,0 +1,59 @@
+blueprint:
+  name: Audio Control - All Zones Off at Time
+  description: >-
+    Turn off every audio zone at a set time each day, optionally only on
+    selected weekdays. Uses the `audio_control.all_zones_off` service, which
+    sends a single all-off command to the amplifier rather than one command
+    per zone.
+  domain: automation
+  author: McJEL, LLC
+  source_url: https://github.com/mcjelcom/ha-audio-control/blob/main/blueprints/automation/audio_control/all_zones_off_at_time.yaml
+  input:
+    off_time:
+      name: Time
+      description: Time of day to switch everything off.
+      default: "00:00:00"
+      selector:
+        time:
+    weekdays:
+      name: Days
+      description: Days on which this runs. Leave all selected for every day.
+      default:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+        - sun
+      selector:
+        select:
+          multiple: true
+          options:
+            - label: Monday
+              value: mon
+            - label: Tuesday
+              value: tue
+            - label: Wednesday
+              value: wed
+            - label: Thursday
+              value: thu
+            - label: Friday
+              value: fri
+            - label: Saturday
+              value: sat
+            - label: Sunday
+              value: sun
+
+mode: single
+
+trigger:
+  - platform: time
+    at: !input off_time
+
+condition:
+  - condition: time
+    weekday: !input weekdays
+
+action:
+  - service: audio_control.all_zones_off

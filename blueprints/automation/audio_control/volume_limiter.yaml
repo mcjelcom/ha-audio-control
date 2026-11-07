@@ -1,0 +1,53 @@
+blueprint:
+  name: Audio Control - Volume Limiter
+  description: >-
+    Cap the volume on one or more zones to protect speakers. If a zone is set
+    above the limit — from the UI, a remote, or the amplifier's own front panel
+    — it is pulled straight back down.
+
+    Note this reacts after the fact rather than preventing the change, so a
+    brief loud moment is still possible. Set the limit with that in mind.
+  domain: automation
+  author: McJEL, LLC
+  source_url: https://github.com/mcjelcom/ha-audio-control/blob/main/blueprints/automation/audio_control/volume_limiter.yaml
+  input:
+    zones:
+      name: Zones
+      description: Zones to apply the limit to.
+      selector:
+        entity:
+          multiple: true
+          filter:
+            integration: audio_control
+            domain: media_player
+    max_volume:
+      name: Maximum volume
+      description: Volume level that must not be exceeded.
+      default: 0.8
+      selector:
+        number:
+          min: 0.1
+          max: 1
+          step: 0.05
+          mode: slider
+
+# Parallel so a burst of changes across several zones are all corrected,
+# rather than the automation being busy and skipping them.
+mode: parallel
+max: 10
+
+trigger:
+  - platform: numeric_state
+    entity_id: !input zones
+    attribute: volume_level
+    above: !input max_volume
+
+condition: []
+
+action:
+  - service: media_player.volume_set
+    target:
+      # Only the zone that tripped the trigger, not every selected zone.
+      entity_id: "{{ trigger.entity_id }}"
+    data:
+      volume_level: !input max_volume

@@ -10,7 +10,7 @@ guide uses.
 | **Setting up** | Write the memory card → install HACS → install Audio Control | Click **Deploy with balena** → write the memory card → done. Audio Control is already installed |
 | **Accounts** | None (HACS asks you to sign in with GitHub) | A free **balenaCloud** account (free for up to 10 devices) |
 | **Updates** | One click inside Home Assistant, for both Home Assistant and Audio Control | When a new release of the template comes out, you update the fleet in the balena dashboard. There is no update button in Home Assistant |
-| **Dashboard** | Add the zones to a dashboard yourself (a few clicks — [how](../using-zones.md#put-zones-on-a-dashboard)) | ✅ A ready-made **Audio Control** dashboard and automation blueprints, filled in automatically |
+| **Dashboard** | The same ready-made dashboard, switched on once by hand ([how](../dashboard.md#home-assistant-os)); the automations are one-click imports ([list](../services.md#ready-made-automations-blueprints)) | ✅ A ready-made **Audio Control** dashboard and automation blueprints, filled in automatically |
 | **Apps (add-ons)** | ✅ The full Apps store: backups, file editor, remote access… | ❌ None — balena runs Home Assistant without its Supervisor |
 | **Managing from far away** | Through Home Assistant itself (Home Assistant Cloud or a remote-access app) | ✅ The balena dashboard shows status and logs, opens a terminal and restarts the device from anywhere — even when Home Assistant is down |
 | **Several devices** | Each one is set up and updated on its own | ✅ All devices in a fleet update together |
