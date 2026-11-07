@@ -32,8 +32,8 @@ name: "Manufacturer Model Name"
 manufacturer: "Manufacturer"
 models: ["Model1", "Model2"]
 
-zones: 6
-sources: 8
+zones: 6      # up to 32 have friendly labels on the rename form
+sources: 8    # likewise up to 32
 
 serial:
   baud_rate: 9600

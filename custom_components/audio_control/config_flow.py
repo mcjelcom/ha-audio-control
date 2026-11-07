@@ -43,6 +43,14 @@ _LOGGER = logging.getLogger(__name__)
 
 CUSTOM_DEVICE_OPTION = ">> Custom Device (define via UI)"
 
+# Choices offered by the custom-device wizard. The options form labels fields
+# zone_1..zone_N / source_1..source_N from static translations (strings.json),
+# which cover 1..32 (LABELLED_MAX): raising a maximum here needs labels added there too
+# (tests/audio_control/test_options_flow_labels.py checks it).
+CUSTOM_ZONE_CHOICES = [2, 4, 6, 8, 12, 16]
+CUSTOM_SOURCE_CHOICES = [2, 4, 6, 8]
+LABELLED_MAX = 32
+
 
 def _resolve_sources(profile: dict[str, Any]) -> tuple[int, dict[int, str]]:
     """Return (count, names) from a profile's `sources`, which may be int or dict.
@@ -270,8 +278,8 @@ class AudioControlConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema(
                 {
                     vol.Required("device_name", default="My Device"): str,
-                    vol.Required("zones", default=6): vol.In([2, 4, 6, 8, 12, 16]),
-                    vol.Required("sources", default=4): vol.In([2, 4, 6, 8]),
+                    vol.Required("zones", default=6): vol.In(CUSTOM_ZONE_CHOICES),
+                    vol.Required("sources", default=4): vol.In(CUSTOM_SOURCE_CHOICES),
                     vol.Required("baud_rate", default=9600): vol.In(
                         [4800, 9600, 19200, 38400, 57600, 115200]
                     ),

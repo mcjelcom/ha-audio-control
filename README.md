@@ -86,6 +86,7 @@ on a HACS install.
 
 | Version | Highlights |
 |---|---|
+| 2.0.11 | The rename form (**Configure**) shows friendly labels — "Zone 1 name", "Source 1 name" — instead of `zone_1` / `source_1` |
 | 2.0.10 | Home Assistant's **Documentation** link now opens the user guide at [haac.mcjel.com](https://haac.mcjel.com/) |
 | 2.0.9 | RTI power on/off now confirms (it timed out and rolled the zone back); every tone step on Monoprice 6-zone / Xantech MRC-88; a failed power command no longer leaves the zone marked as "known off" |
 | 2.0.8 | RTI unit-wide power and status polling now update every zone; AMC XOir absolute tone levels (per manual); every tone step on Monoprice/Xantech (±7); off-zone tone check waits until the zone's state is known |
