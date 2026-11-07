@@ -55,9 +55,10 @@ make ci      # ruff (ALL rules) + ruff format + mypy --strict + pytest
 968 tests, run against Home Assistant 2026.10.2. `ruff` runs with `select = ["ALL"]`, and `mypy --strict` covers the
 whole integration including the vendored protocol library.
 
-The docs site is built from `docs/` with MkDocs Material (`pip install -r
-requirements-docs.txt && mkdocs serve` previews it on `127.0.0.1:8000`) and published to
-GitHub Pages by `.github/workflows/docs.yml` on every push to `main`.
+The docs site is built from `docs/` with [Zensical](https://zensical.org) (`pip install -r
+requirements-docs.txt && zensical serve` previews it on `localhost:8000`) and published to
+GitHub Pages at [haac.mcjel.com](https://haac.mcjel.com/) by `.github/workflows/docs.yml` on
+every push to `main`. Diagrams: edit `docs/diagrams/*.puml`, run `scripts/render-diagrams.sh`.
 
 ## Architecture
 

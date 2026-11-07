@@ -1,4 +1,4 @@
-# Builds the documentation site from docs/ with MkDocs Material and publishes it
+# Builds the documentation site from docs/ with Zensical and publishes it
 # to GitHub Pages (https://haac.mcjel.com/). Public content:
 # the site is meant to be read anonymously.
 name: Docs
@@ -46,10 +46,9 @@ jobs:
           distribution: temurin
           java-version: "21"
       - run: scripts/render-diagrams.sh
-      # --strict: a broken link or missing page fails the build instead of shipping.
-      - run: mkdocs build --strict
-        env:
-          NO_MKDOCS_2_WARNING: "1"
+      # --strict: a broken link, missing page or #anchor fails the build instead of
+      # shipping. --clean: no stale cache (Zensical advises against CI caching for now).
+      - run: zensical build --strict --clean
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
         with:

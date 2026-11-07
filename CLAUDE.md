@@ -47,10 +47,13 @@ make ci      # ruff check + ruff format --check + mypy --strict + pytest
 
 ## Documentation site
 
-`docs/` → MkDocs Material → GitHub Pages: **https://haac.mcjel.com/** (`.github/workflows/docs.yml`, strict
+`docs/` → **Zensical** (pinned, `variant: modern`; reads `mkdocs.yml`) → GitHub Pages: **https://haac.mcjel.com/** (`.github/workflows/docs.yml`, strict
 build, runs on pushes to `main` touching docs; no release needed). Preview:
 `uv venv .venv-docs && uv pip install --python .venv-docs -r requirements-docs.txt &&
-.venv-docs/bin/mkdocs serve` (binds 127.0.0.1). Rules: public content only — no home
+.venv-docs/bin/zensical serve` (binds localhost only — verified). Build: `zensical build --strict --clean`;
+validation keys are Zensical's (`invalid_links`, `invalid_link_anchors`). Switched from
+MkDocs + Material 2026-11-06: Material is maintenance-only until 2027-05-05 and MkDocs 1.x is
+unmaintained. `variant:` is NOT validated (a typo silently falls back to the default). Rules: public content only — no home
 IPs, hostnames, account names; screenshots crop to a dialog/panel (never sidebar or
 URL bar); after deploy, fetch pages anonymously and require 200. Screenshots come from
 a live HA via headless Playwright with an on-device token; open a config flow and

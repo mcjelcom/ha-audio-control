@@ -8,6 +8,7 @@ copyright: A <a href="https://mcjel.com">McJEL, LLC</a> project · MIT License
 
 theme:
   name: material
+  variant: modern
   logo: assets/logo.png
   favicon: assets/logo.png
   palette:
@@ -73,9 +74,8 @@ nav:
       - Adding a new device: reference/adding-a-device.md
       - Protocol types: reference/protocol-types.md
 
-# Fail the (strict) build on broken links, including #anchors.
+# Fail the (strict) build on broken links and #anchors (Zensical's keys; both
+# are on by default -- stated explicitly so the intent survives upgrades).
 validation:
-  omitted_files: warn
-  absolute_links: warn
-  unrecognized_links: warn
-  anchors: warn
+  invalid_links: true
+  invalid_link_anchors: true

@@ -1,4 +1,4 @@
-# Documentation site (MkDocs Material, published to GitHub Pages by .github/workflows/docs.yml).
-# Pinned like the dev tools: an unpinned theme can change the build between runs.
-mkdocs==1.6.1
-mkdocs-material==9.8.0
+# Documentation site: Zensical (successor to MkDocs + Material for MkDocs, same
+# authors), built and published to GitHub Pages by .github/workflows/docs.yml.
+# Pinned: Zensical is on its 0.x line and its interfaces may still change.
+zensical==0.1.0
