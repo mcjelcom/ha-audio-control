@@ -109,6 +109,14 @@ cancel it (Escape) — check no flow is left in progress.
   not only `_process_response`.
 - **Anything an optimistic update sets, the rollback must restore** (`power_known`).
 
+- **Auto-detection must keep detecting until it is confirmed.** AMC zone-prefix
+  detection ran only at connect; one missed `ZN` reply left an X86i on `Z` (answered
+  `?`) until a reload (haac-tw, 2.0.12). It now re-probes on every refresh while
+  unconfirmed, and locks only on a SECOND reply to the same prefix -- the status
+  pattern accepts `ZN01` and `Z01`, so a late reply would otherwise lock the wrong one.
+- **Fakes must match captured bytes exactly** (`?\r`, not `?`): an unterminated reply
+  silently tested the timeout path instead of the error path (caught in review).
+
 ## Known gaps
 
 Closed in 2.0.8 (A-E): RTI device-wide power (`scope: device`), RTI `get_outputvol`

@@ -110,6 +110,7 @@ class AsyncSerialConnection:
         # Set by connect() when a status probe actually got a parsed reply.
         # Distinct from _connected, which only means the port opened.
         self._device_responded: bool = False
+        self._probe_lock = asyncio.Lock()
 
         # Zone states. Volume starts at the profile's own QUIET end rather than a
         # bare 0: 0 is a raw device value whose meaning depends on the scale, so
@@ -281,18 +282,7 @@ class AsyncSerialConnection:
             await self._async_login()
 
             # Poll initial state (with zone prefix auto-detection)
-            from .protocol_engine import ProtocolEngine
-
-            first_success = await self.send_command("status", zone=1)
-            if (
-                not first_success
-                and isinstance(self._engine, ProtocolEngine)
-                and self._engine.has_zone_prefix_fallback
-            ):
-                self._engine.switch_to_fallback_prefix()
-                first_success = await self.send_command("status", zone=1)
-            if first_success and isinstance(self._engine, ProtocolEngine):
-                self._engine.lock_zone_prefix()
+            first_success = await self._probe_zone_prefix()
             # Record whether the device actually answered. _connected only
             # reflects "the port opened", and a status probe that times out is
             # swallowed by _wait_for_response, so _connected stays True on a
@@ -726,6 +716,49 @@ class AsyncSerialConnection:
             except Exception as err:
                 _LOGGER.warning("Reconnect %d failed: %s", attempt, err)
 
+    def _zone_prefix_unconfirmed(self) -> bool:
+        """Whether zone-prefix detection is still waiting for a parsed reply."""
+        from .protocol_engine import ProtocolEngine
+
+        return (
+            isinstance(self._engine, ProtocolEngine)
+            and self._engine.has_zone_prefix_fallback
+        )
+
+    async def _probe_zone_prefix(self) -> bool:
+        """Poll zone 1, running zone-prefix detection while it is unconfirmed.
+
+        Tries the active prefix, then the candidate; a parsed reply locks it.
+        If both fail the prefixes stay swapped, so the NEXT probe starts from
+        the other one. Called from connect() and -- until a prefix is locked --
+        from every periodic refresh: detection used to run only at connect, so
+        a missed first reply (the probe and its retry) left an AMC X86i on the
+        fallback `Z`, which it answers with `?`, until the entry was reloaded.
+        """
+        from .protocol_engine import ProtocolEngine
+
+        if not isinstance(self._engine, ProtocolEngine):
+            return await self.send_command("status", zone=1)
+        engine = self._engine
+        # connect() and the refresh loop must not probe at the same time: a
+        # frame built before the other probe swapped would confirm the wrong one.
+        async with self._probe_lock:
+            ok = await self.send_command("status", zone=1)
+            if not ok and engine.has_zone_prefix_fallback:
+                engine.switch_to_fallback_prefix()
+                ok = await self.send_command("status", zone=1)
+            if ok and engine.has_zone_prefix_fallback:
+                # Lock only on a SECOND reply to the same prefix. The status
+                # pattern accepts both forms, so a late reply to the previous
+                # prefix's probe, arriving during this one, would otherwise lock
+                # in a prefix the device rejects -- permanently.
+                ok = await self.send_command("status", zone=1)
+                if ok:
+                    engine.lock_zone_prefix()
+            if ok:
+                self._device_responded = True
+            return ok
+
     # ─── Periodic Refresh ────────────────────────────────────────────────────
 
     async def _periodic_refresh(self) -> None:
@@ -741,7 +774,10 @@ class AsyncSerialConnection:
                 for zone in range(1, self._engine.num_zones + 1):
                     if not self._connected:
                         break
-                    await self.send_command("status", zone=zone)
+                    if zone == 1 and self._zone_prefix_unconfirmed():
+                        await self._probe_zone_prefix()
+                    else:
+                        await self.send_command("status", zone=zone)
 
     # ─── Read Loop ───────────────────────────────────────────────────────────
 

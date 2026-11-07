@@ -214,7 +214,9 @@ class ProtocolEngine(BaseProtocolEngine):
         prefix permanently, leaving the device unusable until HA was reloaded.
         """
         if self._zone_prefix_fallback and not self._zone_prefix_locked:
-            _LOGGER.info(
+            # debug, not info: until a prefix is confirmed this runs on every
+            # poll, so a switched-off amplifier would log it every minute.
+            _LOGGER.debug(
                 "Zone prefix '%s' rejected, trying '%s'",
                 self._zone_prefix,
                 self._zone_prefix_fallback,
