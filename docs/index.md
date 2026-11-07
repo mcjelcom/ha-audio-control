@@ -16,6 +16,34 @@ the music source, all from Home Assistant.
 Home Assistant talks to your amplifier through its **RS-232 control port** (a small
 9-pin connector on the back). Every zone becomes its own player in Home Assistant.
 
+## What you can do
+
+- **Each zone on and off**, **volume**, **mute** and the **source** — from the
+  dashboard, the Home Assistant phone app, or by voice
+  ([Using your zones](using-zones.md))
+- **Bass and treble** on amplifiers that have them, **all zones off** with one tap, and
+  **group mode** (every room plays the same thing)
+  ([Automations & extra controls](services.md))
+- **Siri, Google and Alexa** — share your zones with Apple Home, Google Home and Alexa
+  ([how](smart-home.md))
+- **Your own names** for zones and sources — "Kitchen", "Radio"
+  ([Names & settings](configuration.md))
+- **Stays in sync** — changes made on the amplifier's own keypads show up in Home
+  Assistant too (on amplifiers that report them), and a **connection status** shows
+  whether the amplifier is answering
+- **Automations** — e.g. turn everything off at midnight, or start the patio speakers
+  when you get home
+- **RS232 or network** — a USB-RS232 adapter, a serial-to-Ethernet gateway, or the
+  amplifier's own IP control ([Network connections](reference/network-transport.md))
+- **Try it first** — `demo` mode gives you a pretend amplifier to set everything up
+  before it's connected
+- **Amplifier not listed?** Describe it in a few steps in the setup screen, or with a
+  small file ([Adding a device](reference/adding-a-device.md))
+- **Local and private** — Audio Control only talks to your amplifier, never to the
+  internet
+- **Two ways to install** — Home Assistant OS (recommended), or balena for managing
+  Raspberry Pis remotely ([Choose how to install](getting-started/choose-install.md))
+
 ## Works with
 
 **80 models from 11 brands** — including:
@@ -35,11 +63,3 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
 | [Yamaha](supported-models.md#yamaha) | 5 | RX-A1080, RX-A2080, RX-A3080, RX-V685… |
 
 **[See every supported model →](supported-models.md)**
-
-## What you can do
-
-- **Switch each zone on and off**, change **volume**, **mute**, and pick the **source**
-- **Bass and treble** on amplifiers that have them
-- **All zones off** with one tap, and **group mode** (every room plays the same thing)
-- Changes made on the amplifier's own keypads show up in Home Assistant too
-- Use your zones in **automations** — e.g. turn everything off at midnight
