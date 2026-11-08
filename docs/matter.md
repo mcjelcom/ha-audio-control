@@ -33,8 +33,9 @@ Alexa doesn't accept Matter speakers, so for Alexa you add one **"Music" switch*
 - **Nothing extra on the Raspberry Pi.** Matter here runs over your normal network
   (Ethernet is best). A Thread USB stick is only for Thread gadgets like sensors — not
   needed for Audio Control.
-- **Home Assistant OS** (for the Matter Hub app). On balena, Matter Hub isn't included
-  yet.
+- **Home Assistant OS** (the Matter Hub app, below) — or **balena**, where the template
+  includes Matter Hub, switched off until you turn it on
+  ([how](getting-started/install-balena.md#matter-optional)).
 
 ## 1. Install the Matter Hub app
 

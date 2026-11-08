@@ -49,7 +49,29 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
 - **Two ways to install** — Home Assistant OS (recommended), or balena for managing
   Raspberry Pis remotely ([Choose how to install](getting-started/choose-install.md))
 
-## Works with
+## Works with — apps, assistants and Matter
+
+| Where you control it | How | On/off | Volume | Mute | Source | Bass / treble | All off / group | Checked |
+|---|---|---|---|---|---|---|---|---|
+| **Home Assistant** dashboard & [phone app](phone-app.md) | built in | ✅ | ✅ | ✅ | ✅ | ✅ ¹ | ✅ | ✅ on a real AMC X86i |
+| **Automations** & [blueprints](services.md#ready-made-automations-blueprints) | built in | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ on a real AMC X86i |
+| **Apple Home / Siri** | [HomeKit Bridge](smart-home.md#apple-home-siri) — free, local | ✅ | ◐ ² | ✅ | ✅ | — | — | ◐ in Home Assistant ³ |
+| **Google Home** | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — subscription | ✅ | ✅ | ✅ | ◐ ⁴ | — | — | ❔ HA's docs |
+| **Google Home** | [Matter](matter.md) — free, local, needs a Google hub | ✅ | ✅ | — | ◐ ⁵ | — | — | ◐ Matter test controller |
+| **Alexa** | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — subscription | ✅ | ✅ | ✅ | ◐ ⁴ | — | — | ❔ HA's docs |
+| **Alexa** | [Matter](matter.md#alexa-add-a-music-switch-per-zone) — free, local, needs a Matter Echo | ✅ ⁶ | — | — | — | — | — | ◐ Matter test controller |
+| **SmartThings / Aqara** | [Matter](matter.md) — free, local | ✅ | ✅ | — | ◐ ⁵ | — | — | ◐ Matter test controller |
+
+✅ works · ◐ partly · — not available · ❔ expected, not yet tested by us
+
+1. On amplifiers with tone control, through the [bass and treble actions](services.md).
+2. Volume up/down from the Control Center remote; Apple offers no slider for TV-style accessories.
+3. What Home Assistant hands to Apple was checked; not yet on an iPhone.
+4. Depends on how the assistant classes the device.
+5. The zone's sources are sent over Matter by name (tested); whether the app shows them varies.
+6. Through one "Music" switch per zone — Alexa doesn't accept Matter speakers.
+
+## Supported amplifiers
 
 **80 models from 11 brands** — including:
 

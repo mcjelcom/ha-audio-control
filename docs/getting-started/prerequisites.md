@@ -34,7 +34,7 @@ amplifier's manual usually says which one it needs.
 ## Your amplifier
 
 Check that it has an **RS232** port (usually a 9-pin connector on the back) and that
-it's on the [list of supported models](../index.md#works-with).
+it's on the [list of supported models](../index.md#supported-amplifiers).
 
 !!! tip "Amplifier far from the Raspberry Pi?"
     Serial cables work up to about 15 m (50 ft). For longer distances you can use a

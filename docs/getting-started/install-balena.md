@@ -68,6 +68,24 @@ Ready-made **automations** come with it too: **Settings → Automations & scenes
 Blueprints** (all zones off at a time, turn a zone on at a set time, volume limit, …).
 They do nothing until you create an automation from one.
 
+## Matter (optional)
+
+The template includes **Matter Hub**, switched **off**. To share your zones with Google
+Home, Alexa or SmartThings over Matter ([what works](../matter.md)), add these **device
+variables** in the balena dashboard (your device → **Variables** → **Add**, service
+`matter-hub`):
+
+| Variable | Value |
+|---|---|
+| `HAAC_MATTER` | `1` |
+| `HAMH_HOME_ASSISTANT_ACCESS_TOKEN` | a long-lived token — Home Assistant → your profile (bottom left) → **Security** → **Create token** |
+| `HAMH_HTTP_AUTH_USERNAME` | a username of your choice |
+| `HAMH_HTTP_AUTH_PASSWORD` | a password, **at least 12 characters** |
+
+Then open **http://&lt;IP address&gt;:8482**, log in, and continue at
+[Create a bridge](../matter.md#2-create-a-bridge-for-your-zones). Until all four are set,
+Matter Hub stays off and opens nothing on your network.
+
 ## Updates
 
 Home Assistant and Audio Control are updated together, by new releases of the
