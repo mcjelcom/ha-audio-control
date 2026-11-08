@@ -72,6 +72,7 @@ nav:
       - Names & settings: configuration.md
       - Automations & extra controls: services.md
       - Apple Home, Google Home & Alexa: smart-home.md
+      - Matter (partial): matter.md
       - Help & troubleshooting: troubleshooting.md
   - For advanced users:
       - Install with balena (preview): getting-started/install-balena.md

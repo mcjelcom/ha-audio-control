@@ -62,9 +62,8 @@ account and some technical setup — see Home Assistant's guides for
     Alexa: based on Home Assistant's documentation, not yet tested with Audio Control.
     [Tell us](https://github.com/mcjelcom/ha-audio-control/issues) how it works for you.
 
-## What about Matter?
+## Matter
 
-Not recommended for amplifiers yet. Home Assistant's Matter support controls Matter
-devices; sharing Home Assistant devices *out* over Matter needs a community add-on,
-and Matter has no device type for a multi-zone amplifier — expect on/off at best, and
-no source selection. Use HomeKit Bridge or Home Assistant Cloud instead.
+Google Home, Alexa, SmartThings and Aqara can also reach your zones over **Matter** —
+locally and without a subscription, but with fewer controls (on/off and volume). See
+[Matter (partial)](matter.md).

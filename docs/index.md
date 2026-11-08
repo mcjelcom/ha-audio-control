@@ -25,7 +25,7 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
   **group mode** (every room plays the same thing)
   ([Automations & extra controls](services.md))
 - **Siri, Google and Alexa** — share your zones with Apple Home, Google Home and Alexa
-  ([how](smart-home.md))
+  ([how](smart-home.md)), or locally over **Matter** ([partial](matter.md))
 - **Your own names** for zones and sources — "Kitchen", "Radio"
   ([Names & settings](configuration.md))
 - **Stays in sync** — changes made on the amplifier's own keypads show up in Home
