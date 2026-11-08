@@ -20,10 +20,15 @@ Alexa doesn't accept Matter speakers, so for Alexa you add one **"Music" switch*
 — Alexa sees it as a plug ("Alexa, turn on the Kitchen Music").
 
 !!! info "Tested so far"
-    Checked on a demo Home Assistant with a Matter test controller (matter.js): pairing,
-    zone on/off, volume and choosing a source by name, and the Alexa-style switch — all
-    reached the amplifier. Pairing with the Google Home and Alexa apps themselves is not
-    yet tested. [Tell us](https://github.com/mcjelcom/ha-audio-control/issues) how it goes.
+    **Google Home app** (2026-11-08, Raspberry Pi with balena): pairing, zone on, zone
+    off, and volume — dragging the slider moved the zone's volume live (to 75 %) — plus
+    the "Music" switch turning a zone off. Also checked with a Matter test controller
+    (matter.js): choosing a source by name. **Alexa** not yet tested in the app.
+    [Tell us](https://github.com/mcjelcom/ha-audio-control/issues) how it goes.
+
+!!! tip "Turn the zone on first"
+    Moving the volume in Google Home doesn't switch a zone on. Tap its power button
+    first; a volume set while it's off is remembered and used when it comes on.
 
 ## What you need
 

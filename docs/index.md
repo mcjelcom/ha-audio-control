@@ -57,7 +57,7 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
 | **Automations** & [blueprints](services.md#ready-made-automations-blueprints) | built in | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ on a real AMC X86i |
 | **Apple Home / Siri** | [HomeKit Bridge](smart-home.md#apple-home-siri) — free, local | ✅ | ◐ ² | ✅ | ✅ | — | — | ◐ in Home Assistant ³ |
 | **Google Home** | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — subscription | ✅ | ✅ | ✅ | ◐ ⁴ | — | — | ❔ HA's docs |
-| **Google Home** | [Matter](matter.md) — free, local, needs a Google hub | ✅ | ✅ | — | ◐ ⁵ | — | — | ◐ Matter test controller |
+| **Google Home** | [Matter](matter.md) — free, local, needs a Google hub | ✅ | ✅ | — | ◐ ⁵ | — | — | ✅ in the Google Home app |
 | **Alexa** | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — subscription | ✅ | ✅ | ✅ | ◐ ⁴ | — | — | ❔ HA's docs |
 | **Alexa** | [Matter](matter.md#alexa-add-a-music-switch-per-zone) — free, local, needs a Matter Echo | ✅ ⁶ | — | — | — | — | — | ◐ Matter test controller |
 | **SmartThings / Aqara** | [Matter](matter.md) — free, local | ✅ | ✅ | — | ◐ ⁵ | — | — | ◐ Matter test controller |
