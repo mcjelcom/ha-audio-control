@@ -12,7 +12,7 @@ amplifier device type yet, so each zone appears as a simple **speaker**.
 |---|---|---|---|---|
 | Zone on/off | ✅ | ✅ through a "Music" switch ([below](#alexa-add-a-music-switch-per-zone)) | ✅ | use [HomeKit Bridge](smart-home.md#apple-home-siri) instead |
 | Volume | ✅ | — | ✅ | |
-| Source | sent, but the app may not show it | — | sent, the app may not show it | |
+| Source | ❌ listed, but picking one fails (*Something went wrong*) | — | sent; the app may not show it | |
 | Mute, bass/treble, group | — | — | — | |
 
 Each zone is shared as a Matter **Speaker** with power, volume and its list of sources.
@@ -23,7 +23,10 @@ Alexa doesn't accept Matter speakers, so for Alexa you add one **"Music" switch*
     **Google Home app** (2026-11-08, Raspberry Pi with balena): pairing, zone on, zone
     off, and volume — dragging the slider moved the zone's volume live (to 75 %) — plus
     the "Music" switch turning a zone off. Also checked with a Matter test controller
-    (matter.js): choosing a source by name. **Alexa** not yet tested in the app.
+    (matter.js): choosing a source by name works over Matter — but the **Google Home app**
+    lists the sources and then fails ("Something went wrong") without sending the
+    choice; Google supports input selection only for TVs. **Alexa** not yet tested in
+    the app.
     [Tell us](https://github.com/mcjelcom/ha-audio-control/issues) how it goes.
 
 !!! tip "Turn the zone on first"
