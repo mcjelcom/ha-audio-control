@@ -12,7 +12,7 @@ amplifier device type yet, so each zone appears as a simple **speaker**.
 |---|---|---|---|---|
 | Zone on/off | ✅ | ✅ through a "Music" switch ([below](#alexa-add-a-music-switch-per-zone)) | ✅ | use [HomeKit Bridge](smart-home.md#apple-home-siri) instead |
 | Volume | ✅ | — | ✅ | |
-| Source | ❌ listed, but picking one fails (*Something went wrong*) | — | sent; the app may not show it | |
+| Source | ❌ listed, but picking one fails — use [source switches](#choose-a-source-one-switch-per-favourite) | — ([source switches](#choose-a-source-one-switch-per-favourite)) | sent; the app may not show it | |
 | Mute, bass/treble, group | — | — | — | |
 
 Each zone is shared as a Matter **Speaker** with power, volume and its list of sources.
@@ -60,8 +60,8 @@ community-made app that shares Home Assistant devices over Matter.
 Open **Matter Hub** from the sidebar and create a bridge:
 
 - **Name:** e.g. *Audio Control*. **Port:** keep **5540** — Alexa only finds bridges on 5540.
-- **Include:** *platform* `audio_control` (all your zones). For Alexa also *pattern*
-  `switch.*_music` (the switches below).
+- **Include:** *platform* `audio_control` (all your zones), and *entity label* `matter`
+  (the extra switches below — you give them the **Matter** label).
 - **Exclude:** *domain* `binary_sensor` (the connection status isn't something to control).
 - Turn on **Prefer entity registry name**, so zones are called *Living Room* rather than
   *AMC X86 / X86i Living Room* — shorter to say. Do this **before pairing**: once an app
@@ -69,7 +69,7 @@ Open **Matter Hub** from the sidebar and create a bridge:
 
 ![The bridge filters](assets/screenshots/matter-hub-filters.png)
 
-The bridge then lists every zone as a **Speaker** (and each "Music" switch as a **Plug**):
+The bridge then lists every zone as a **Speaker**, and each labelled switch as a **Plug**:
 
 ![Zones and switches on the bridge](assets/screenshots/matter-hub-endpoints.png)
 
@@ -81,8 +81,30 @@ The bridge then lists every zone as a **Speaker** (and each "Music" switch as a 
    entity ID is on its settings page (⚙).
 4. **Actions on turn on:** *Media player: Turn on* → your zone. **Actions on turn off:**
    *Media player: Turn off* → your zone. **Submit.**
+5. Open the new switch's settings (⚙) and add the label **Matter** (create it the first
+   time).
 
 Repeat for each zone you want Alexa to switch.
+
+## Choose a source: one switch per favourite
+
+Google Home lists a zone's sources but can't select one, and Alexa can't at all — so
+make a switch for each combination you use, like **Kitchen Spotify** or **Patio Radio**.
+Turning it on switches the zone on *and* picks the source; works in Google Home and
+Alexa ("Hey Google, turn on Kitchen Spotify").
+
+1. **Create helper → Template → Switch**, name it e.g. `Kitchen Spotify`.
+2. **Value template** (on while that zone plays that source):
+   `{{ is_state('media_player.YOUR_ZONE', 'on') and is_state_attr('media_player.YOUR_ZONE', 'source', 'Spotify') }}`
+3. **Actions on turn on:** *Media player: Turn on* → your zone, then
+   *Media player: Select source* → your zone, source `Spotify`.
+   **Actions on turn off:** *Media player: Turn off* → your zone. **Submit.**
+4. Add the label **Matter** to the switch.
+
+!!! note "New switches appear after a bridge restart"
+    After adding or labelling switches, restart the bridge (on its page: **⋮ →
+    Restart**). The apps then show the new plugs; names you set later aren't
+    picked up by an already-paired app.
 
 ## 3. Pair with your app
 

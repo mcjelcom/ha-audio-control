@@ -70,7 +70,7 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
 4. Depends on how the assistant classes the device.
 5. The zone's sources are sent over Matter by name (tested); whether the app shows them varies.
 6. Through one "Music" switch per zone — Alexa doesn't accept Matter speakers.
-7. Google Home lists the sources but shows *Something went wrong* when you pick one — it never sends the choice (tested). Google only supports input selection for TVs.
+7. Google Home lists the sources but shows *Something went wrong* when you pick one — it never sends the choice (tested). Google only supports input selection for TVs. Workaround: [one switch per favourite source](matter.md#choose-a-source-one-switch-per-favourite).
 
 ## Supported amplifiers
 
