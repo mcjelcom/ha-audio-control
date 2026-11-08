@@ -58,7 +58,7 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
 | **Apple Home / Siri** | [HomeKit Bridge](smart-home.md#apple-home-siri) — free, local | ✅ | ◐ ² | ✅ | ✅ | — | — | ◐ in Home Assistant ³ |
 | **Google Home** | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — subscription | ✅ | ✅ | ✅ | ◐ ⁴ | — | — | ❔ HA's docs |
 | **Google Home** | [Matter](matter.md) — free, local, needs a Google hub | ✅ | ✅ | — | ❌ ⁷ | — | — | ✅ in the Google Home app |
-| **Alexa** | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — subscription | ✅ | ✅ | ✅ | ◐ ⁴ | — | — | ❔ HA's docs |
+| **Alexa** | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — subscription | ✅ | ✅ ⁸ | ✅ ⁸ | ◐ ⁹ | — | — | ✅ Alexa app + Alexa protocol test |
 | **Alexa** | [Matter](matter.md#alexa-add-a-music-switch-per-zone) — free, local, needs a Matter Echo | ✅ ⁶ | — | — | — | — | — | ◐ Matter test controller |
 | **SmartThings / Aqara** | [Matter](matter.md) — free, local | ✅ | ✅ | — | ◐ ⁵ | — | — | ◐ Matter test controller |
 
@@ -71,6 +71,8 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
 5. The zone's sources are sent over Matter by name (tested); whether the app shows them varies.
 6. Through one "Music" switch per zone — Alexa doesn't accept Matter speakers.
 7. Google Home lists the sources but shows *Something went wrong* when you pick one — it never sends the choice (tested). Google only supports input selection for TVs. Workaround: [one switch per favourite source](matter.md#choose-a-source-one-switch-per-favourite).
+8. By voice ("Alexa, set Kitchen volume to 6", "mute Kitchen") — the Alexa app itself shows no volume control for these devices.
+9. Only sources named with [Alexa's input names](smart-home.md#alexa-name-your-sources-so-alexa-can-pick-them) (TV, CD, Tuner, Phono, Aux 1, HDMI 1, …); others are hidden from Alexa.
 
 ## Supported amplifiers
 

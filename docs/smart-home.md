@@ -62,6 +62,27 @@ account and some technical setup — see Home Assistant's guides for
     Alexa: based on Home Assistant's documentation, not yet tested with Audio Control.
     [Tell us](https://github.com/mcjelcom/ha-audio-control/issues) how it works for you.
 
+### Alexa: name your sources so Alexa can pick them
+
+Alexa only knows a fixed list of input names. A source called *Spotify* or *Source 3*
+is hidden from Alexa; one called **TV**, **CD**, **Tuner**, **Phono**, **Aux 1**,
+**HDMI 1** or **Input 3** can be chosen ("Alexa, set Kitchen input to Tuner"). Rename
+your sources in [Names & settings](configuration.md) if you want Alexa to switch them.
+
+??? info "All names Alexa accepts"
+    AUX 1–7, BLURAY, CABLE, CD, COAX 1–2, COMPOSITE 1, DVD, GAME, HD RADIO, HDMI 1–10,
+    HDMI ARC, INPUT 1–10, IPOD, LINE 1–7, MEDIA PLAYER, OPTICAL 1–2, PHONO,
+    PLAYSTATION (3, 4), SATELLITE, SMARTCAST, TUNER, TV, USB DAC, VIDEO 1–3, XBOX.
+
+Volume and mute work **by voice** ("Alexa, set Kitchen volume to 6", "Alexa, mute
+Kitchen"); the Alexa app shows only power and input for these devices. You don't need
+an Echo to try it: tap the Alexa button in the app and speak.
+
+!!! info "Tested"
+    With Home Assistant Cloud and the Alexa app: discovery and turning a zone on. With the
+    Alexa Smart Home messages themselves (what Alexa sends to Home Assistant): on, set
+    volume, change volume, mute, unmute, choose an input, off — all reached the amplifier.
+
 ## Matter
 
 Google Home, Alexa, SmartThings and Aqara can also reach your zones over **Matter** —
