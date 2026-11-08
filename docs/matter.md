@@ -101,6 +101,13 @@ Alexa ("Hey Google, turn on Kitchen Spotify").
    **Actions on turn off:** *Media player: Turn off* → your zone. **Submit.**
 4. Add the label **Matter** to the switch.
 
+!!! tip "Make only the ones you'll use"
+    Every switch becomes a device in your app. A 6-zone, 8-source amplifier has 48
+    combinations — that works (tested: 6 zones + 48 source switches + 6 "Music"
+    switches = 60 devices on one bridge, all switching correctly), but it is a long
+    list, and Alexa stops accepting a bridge at roughly 80–100 devices. Pick your
+    favourites instead (*Kitchen Spotify*, *Patio Radio*).
+
 !!! note "New switches appear after a bridge restart"
     After adding or labelling switches, restart the bridge (on its page: **⋮ →
     Restart**). The apps then show the new plugs; names you set later aren't
