@@ -14,10 +14,15 @@ JAR="${PLANTUML_CACHE:-$HOME/.cache/plantuml}/plantuml-mit-$VERSION.jar"
 
 if [ ! -f "$JAR" ]; then
   mkdir -p "$(dirname "$JAR")"
-  curl -sSL -o "$JAR" \
-    "https://github.com/plantuml/plantuml/releases/download/v$VERSION/plantuml-mit-$VERSION.jar"
+  # -f: an HTTP error (e.g. GitHub's 504 on 2026-11-09) fails here as a download
+  # error instead of saving the error page and failing the checksum; retries ride
+  # out short outages.
+  curl -fsSL --retry 5 --retry-delay 15 --retry-all-errors -o "$JAR" \
+    "https://github.com/plantuml/plantuml/releases/download/v$VERSION/plantuml-mit-$VERSION.jar" \
+    || { rm -f "$JAR"; echo "PlantUML download failed (GitHub unavailable?) -- retry later" >&2; exit 1; }
 fi
-echo "$SHA256  $JAR" | shasum -a 256 -c - >/dev/null || { echo "PlantUML checksum mismatch" >&2; exit 1; }
+echo "$SHA256  $JAR" | shasum -a 256 -c - >/dev/null \
+  || { rm -f "$JAR"; echo "PlantUML checksum mismatch -- the downloaded file is not the pinned release" >&2; exit 1; }
 
 OUT=docs/assets/diagrams
 if [ "${1:-}" = "--check" ]; then
