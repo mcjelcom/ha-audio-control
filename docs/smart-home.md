@@ -68,6 +68,7 @@ Alexa only knows a fixed list of input names. A source called *Spotify* or *Sour
 is hidden from Alexa; one called **TV**, **CD**, **Tuner**, **Phono**, **Aux 1**,
 **HDMI 1** or **Input 3** can be chosen ("Alexa, set Kitchen input to Tuner"). Rename
 your sources in [Names & settings](configuration.md) if you want Alexa to switch them.
+Then, in the Alexa app, run **Devices → Discover devices** again so Alexa learns the new inputs.
 
 ??? info "All names Alexa accepts"
     AUX 1–7, BLURAY, CABLE, CD, COAX 1–2, COMPOSITE 1, DVD, GAME, HD RADIO, HDMI 1–10,

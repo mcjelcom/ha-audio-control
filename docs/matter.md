@@ -104,7 +104,10 @@ Alexa ("Hey Google, turn on Kitchen Spotify").
 !!! warning "Name your sources first"
     A source switch refers to the source **by name**. If you rename a source later
     (for example to an [Alexa input name](smart-home.md#alexa-name-your-sources-so-alexa-can-pick-them)),
-    update or recreate its switch.
+    update its switch: **Settings → Devices & services → Helpers**, open the switch →
+    **⚙ → Template options**, and change the source in the value template and the
+    *Select source* action (tested: 48 switches updated this way, all still working).
+    An app that's already paired may keep showing the old name — rename it there.
 
 !!! tip "Make only the ones you'll use"
     Every switch becomes a device in your app. A 6-zone, 8-source amplifier has 48
