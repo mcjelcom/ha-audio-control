@@ -65,6 +65,17 @@ cancel it (Escape) — check no flow is left in progress.
   (tag + SHA-256 in `homeassistant/Dockerfile`; README states the versions, CI checks).
   **Bump it after every integration release** and tag the template (`v1.x.y`).
 
+- **Docs writing style: Google developer documentation style guide**
+  (developers.google.com/style/highlights): second person, active voice, conditions before
+  instructions, descriptive link text (never a bare "how"/"here"/"list"), "and" not "&" in
+  headings (but keep HA's own UI labels such as **Devices & services**), American
+  spelling, numbered steps, one idea per sentence (max 28 words). `test_docs_style.py`
+  checks the mechanical rules. Say each fact once: test results live on
+  `compatibility.md`, other pages link there.
+- **Docs tables and diagrams:** at most 3-5 table columns, plain words in cells, no
+  footnote numbers; the "partly" symbol is 🟡 (◐ doesn't render). Diagrams: <=4 boxes in a
+  row, one icon per box, everyday words, flows top-to-bottom so they stay large on phones.
+
 ## Releasing
 
 - HACS installs **tagged GitHub Releases**, not `main`. Bump `manifest.json`, commit,
