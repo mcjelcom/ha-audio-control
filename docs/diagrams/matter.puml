@@ -1,15 +1,12 @@
 @startuml
 !include _style.iuml
-left to right direction
-rectangle "Your amplifier" as amp
-rectangle "Home Assistant\n+ Audio Control" as ha
-rectangle "**Matter Hub** app\n(a Matter bridge)" as hub
-rectangle "**Google Home**\n(needs a Google hub)" as google
-rectangle "**Alexa**\n(needs a Matter Echo)" as alexa
-rectangle "**SmartThings / Aqara**" as st
-amp <--> ha : RS232
-ha --> hub : zones + "Music" switches
-hub --> google : Matter, home network
-hub --> alexa : Matter, home network
-hub --> st : Matter, home network
+rectangle "🏠\n**Home Assistant**\n+ Audio Control" as ha
+rectangle "🧩\n**Matter Hub**\napp" as hub
+rectangle "🟢 **Google Home**" as google
+rectangle "🔵 **Alexa**" as alexa
+rectangle "⚪ **SmartThings**\n**/ Aqara**" as st
+ha --> hub
+hub --> google
+hub --> alexa
+hub --> st
 @enduml

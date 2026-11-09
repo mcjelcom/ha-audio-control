@@ -1,20 +1,20 @@
 @startuml
 !include _style.iuml
 start
-if (Connection says **Connected**?) then (no)
-  if (Adapter listed in\nSettings → Connectivity → Serial?) then (no)
-    :Use a **USB-RS232** adapter (not TTL),\ntry another USB port, use the official PSU;
+if (Status says **Connected**?) then (no)
+  if (Adapter listed under\nSettings → Connectivity → Serial?) then (no)
+    :Use an **RS232** adapter (not TTL)\nand another USB port;
     stop
   else (yes)
-    :Check amplifier power and cable,\ntry the other cable type (null-modem),\ncheck the right model is selected;
+    :Check the amplifier is on,\nthe cable, and the model chosen;
     stop
   endif
 else (yes)
-  if (Zones follow changes?) then (no)
-    :Wrong model selected, or another\nprogram is using the adapter;
+  if (Zones follow what you do?) then (no)
+    :Check the model chosen —\nor another program uses the adapter;
     stop
   else (yes)
-    :All good 🎉;
+    :✅ All good;
     stop
   endif
 endif

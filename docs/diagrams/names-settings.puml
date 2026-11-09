@@ -3,12 +3,10 @@
 start
 :Settings → Devices & services → **Audio Control**;
 split
-  :⚙ **Configure**;
-  :Rename zones and sources\n(Kitchen, Patio, TV...);
+  :⚙ **Configure**\nrename zones and sources;
 split again
-  :⋮ → **Reconfigure**;
-  :Change the connection\n(new USB port, or demo → real);
+  :⋮ **Reconfigure**\nchange the connection;
 end split
-:Submit — dashboards and automations keep working;
+:Dashboards and automations keep working;
 stop
 @enduml

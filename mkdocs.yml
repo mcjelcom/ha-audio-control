@@ -58,6 +58,7 @@ nav:
   - Home: index.md
   - Quickstart: quickstart.md
   - Supported models: supported-models.md
+  - Compatibility: compatibility.md
   - Step-by-step guide:
       - 1. What you need: getting-started/prerequisites.md
       - Choose how to install: getting-started/choose-install.md

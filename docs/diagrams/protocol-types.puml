@@ -1,15 +1,11 @@
 @startuml
 !include _style.iuml
 left to right direction
-rectangle "Device profile\n(YAML)" as p
-rectangle "**Text** engine\nASCII + patterns" as text
-rectangle "**Binary** engine\nframes + checksums" as bin
-rectangle "**JSON** engine\nlogin + templates" as json
-rectangle "Serial / network\nconnection" as conn
+rectangle "📝\n**Profile**" as p
+rectangle "**Text**\ncommands" as text
+rectangle "**Binary**\nframes" as bin
+rectangle "**JSON**\nmessages" as json
 p --> text
 p --> bin
 p --> json
-text --> conn
-bin --> conn
-json --> conn
 @enduml

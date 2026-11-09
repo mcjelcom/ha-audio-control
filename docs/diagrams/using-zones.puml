@@ -1,14 +1,10 @@
 @startuml
 !include _style.iuml
-actor You
-participant "Home Assistant\n(Audio Control)" as HA
-participant "Amplifier" as AMP
-actor "Someone at\nthe keypad" as K
-You -> HA : turn on Kitchen, volume 40 %
-HA -> AMP : command
-AMP --> HA : confirms
-HA --> You : updated
-K -> AMP : changes source
-AMP --> HA : reports it\n(or the next check, within a minute)
-HA --> You : shows the new source
+card "📱 **You** change a zone\nin Home Assistant" as you
+rectangle "🔊\n**Amplifier**" as amp
+card "🎛 Someone uses\nthe **keypad**" as k
+rectangle "🏠\n**Home Assistant**\nshows the change" as ha
+you --> amp : instantly
+k --> amp
+amp --> ha : keypad changes show\nwithin a minute
 @enduml

@@ -49,30 +49,17 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
 - **Two ways to install** — Home Assistant OS (recommended), or balena for managing
   Raspberry Pis remotely ([Choose how to install](getting-started/choose-install.md))
 
-## Works with — apps, assistants and Matter
+## Works with
 
-| Where you control it | How | On/off | Volume | Mute | Source | Bass / treble | All off / group | Checked |
-|---|---|---|---|---|---|---|---|---|
-| **Home Assistant** dashboard & [phone app](phone-app.md) | built in | ✅ | ✅ | ✅ | ✅ | ✅ ¹ | ✅ | ✅ on a real AMC X86i |
-| **Automations** & [blueprints](services.md#ready-made-automations-blueprints) | built in | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ on a real AMC X86i |
-| **Apple Home / Siri** | [HomeKit Bridge](smart-home.md#apple-home-siri) — free, local | ✅ | ◐ ² | ✅ | ✅ | — | — | ◐ in Home Assistant ³ |
-| **Google Home** | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — subscription | ✅ | ✅ | ✅ | ◐ ⁴ | — | — | ❔ HA's docs |
-| **Google Home** | [Matter](matter.md) — free, local, needs a Google hub | ✅ | ✅ | — | ❌ ⁷ | — | — | ✅ in the Google Home app |
-| **Alexa** | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — subscription | ✅ | ✅ ⁸ | ✅ ⁸ | ◐ ⁹ | — | — | ✅ Alexa app + Alexa protocol test |
-| **Alexa** | [Matter](matter.md#alexa-add-a-music-switch-per-zone) — free, local, needs a Matter Echo | ✅ ⁶ | — | — | — | — | — | ◐ Matter test controller |
-| **SmartThings / Aqara** | [Matter](matter.md) — free, local | ✅ | ✅ | — | ◐ ⁵ | — | — | ◐ Matter test controller |
+| App or assistant | What you can do | How it connects |
+|---|---|---|
+| 🏠 **Home Assistant** app & dashboard | Everything — on/off, volume, mute, source, bass & treble, all off, group | Built in |
+| 🍎 **Apple Home** & Siri | On/off, volume, mute, source | [HomeKit Bridge](smart-home.md#apple-home-siri) — free |
+| 🟢 **Google Home** | On/off, volume — source with a [shortcut switch](matter.md#choose-a-source-one-switch-per-favourite) | [Matter](matter.md) — free |
+| 🔵 **Alexa** | On/off, source — volume and mute by voice | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — paid |
+| ⚪ **SmartThings / Aqara** | On/off, volume | [Matter](matter.md) — free |
 
-✅ works · ◐ partly · — not available · ❔ expected, not yet tested by us
-
-1. On amplifiers with tone control, through the [bass and treble actions](services.md).
-2. Volume up/down from the Control Center remote; Apple offers no slider for TV-style accessories.
-3. What Home Assistant hands to Apple was checked; not yet on an iPhone.
-4. Depends on how the assistant classes the device.
-5. The zone's sources are sent over Matter by name (tested); whether the app shows them varies.
-6. Through one "Music" switch per zone — Alexa doesn't accept Matter speakers.
-7. Google Home lists the sources but shows *Something went wrong* when you pick one — it never sends the choice (tested). Google only supports input selection for TVs. Workaround: [one switch per favourite source](matter.md#choose-a-source-one-switch-per-favourite).
-8. By voice ("Alexa, set Kitchen volume to 6", "mute Kitchen") — the Alexa app itself shows no volume control for these devices.
-9. Only sources named with [Alexa's input names](smart-home.md#alexa-name-your-sources-so-alexa-can-pick-them) (TV, CD, Tuner, Phono, Aux 1, HDMI 1, …); others are hidden from Alexa.
+**[See every detail and what we tested →](compatibility.md)**
 
 ## Supported amplifiers
 

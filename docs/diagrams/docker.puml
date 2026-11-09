@@ -1,9 +1,8 @@
 @startuml
 !include _style.iuml
-left to right direction
-rectangle "**Host computer**\n/dev/serial/by-id/usb-FTDI_..." as host
-rectangle "**Home Assistant container**\n/dev/ttyUSB0" as ctr
-rectangle "Audio Control\nConnection: /dev/ttyUSB0" as ac
-host --> ctr : devices:\nmapping
+rectangle "💻\n**Your computer**\nUSB adapter plugged in" as host
+rectangle "📦\n**Home Assistant**\ncontainer" as ctr
+rectangle "🔊\nAudio Control" as ac
+host --> ctr : pass the device in
 ctr --> ac
 @enduml

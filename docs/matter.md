@@ -8,12 +8,12 @@ amplifier device type yet, so each zone appears as a simple **speaker**.
 
 ## What works where
 
-| | Google Home | Alexa | SmartThings / Aqara | Apple Home |
-|---|---|---|---|---|
-| Zone on/off | ✅ | ✅ through a "Music" switch ([below](#alexa-add-a-music-switch-per-zone)) | ✅ | use [HomeKit Bridge](smart-home.md#apple-home-siri) instead |
-| Volume | ✅ | — | ✅ | |
-| Source | ❌ listed, but picking one fails — use [source switches](#choose-a-source-one-switch-per-favourite) | — ([source switches](#choose-a-source-one-switch-per-favourite)) | sent; the app may not show it | |
-| Mute, bass/treble, group | — | — | — | |
+| App | Works | Not over Matter |
+|---|---|---|
+| 🟢 **Google Home** | On/off, volume · source with a [shortcut switch](#choose-a-source-one-switch-per-favourite) | Choosing a source directly, mute |
+| 🔵 **Alexa** | On/off with a ["Music" switch](#alexa-add-a-music-switch-per-zone) · source with a shortcut switch | Volume, mute |
+| ⚪ **SmartThings / Aqara** | On/off, volume | Mute |
+| 🍎 **Apple Home** | — use [HomeKit Bridge](smart-home.md#apple-home-siri) instead | |
 
 Each zone is shared as a Matter **Speaker** with power, volume and its list of sources.
 Alexa doesn't accept Matter speakers, so for Alexa you add one **"Music" switch** per zone

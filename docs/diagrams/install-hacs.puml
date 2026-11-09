@@ -1,15 +1,10 @@
 @startuml
 !include _style.iuml
-actor You
-participant "Home Assistant" as HA
-participant "HACS" as HACS
-participant "GitHub" as GH
-You -> HA : download HACS\n(guide at hacs.xyz)
-You -> HA : restart
-You -> HA : Add integration → **HACS**
-HA -> HACS : start
-HACS --> You : shows a short code
-You -> GH : github.com/login/device\nenter code → **Authorize**
-GH --> HACS : authorised
-HACS --> You : **HACS** appears in the sidebar
+start
+:Download HACS into Home Assistant\n(follow the guide at hacs.xyz);
+:Restart Home Assistant;
+:Add the **HACS** integration;
+:Enter the code it shows at\n**github.com/login/device**;
+:🎉 **HACS** appears in the sidebar;
+stop
 @enduml

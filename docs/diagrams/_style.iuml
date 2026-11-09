@@ -2,7 +2,7 @@
 !pragma layout smetana
 skinparam backgroundColor transparent
 skinparam defaultFontName "Helvetica"
-skinparam defaultFontSize 14
+skinparam defaultFontSize 16
 skinparam shadowing false
 skinparam roundCorner 12
 skinparam ArrowColor #1E88E5
@@ -34,3 +34,10 @@ skinparam note {
   BackgroundColor #FFF8E1
   BorderColor #F9A825
 }
+' Readability: roomy boxes, wider gaps, bold step titles.
+skinparam padding 6
+skinparam nodesep 40
+skinparam ranksep 50
+skinparam ArrowFontSize 14
+skinparam ArrowFontColor #546E7A
+skinparam defaultTextAlignment center

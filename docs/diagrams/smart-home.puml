@@ -1,13 +1,12 @@
 @startuml
 !include _style.iuml
-left to right direction
-rectangle "Your amplifier" as amp
-rectangle "Home Assistant\n+ Audio Control" as ha
-rectangle "**Apple Home**\n(Siri, Home app)" as apple
-rectangle "**Google Home**\n(Assistant, Home app)" as google
-rectangle "**Alexa**" as alexa
-amp <--> ha : RS232
-ha --> apple : HomeKit Bridge\n(home network)
-ha --> google : Home Assistant Cloud
-ha --> alexa : Home Assistant Cloud
+rectangle "🔊\nAmplifier" as amp
+rectangle "🏠\n**Home Assistant**" as ha
+rectangle "🍎 **Apple Home**" as apple
+rectangle "🟢 **Google Home**" as google
+rectangle "🔵 **Alexa**" as alexa
+amp <--> ha
+ha --> apple : free
+ha --> google : Cloud or Matter
+ha --> alexa : Cloud
 @enduml
