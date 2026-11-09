@@ -1,8 +1,7 @@
 # Audio Control for Home Assistant
 
-Turn your **multi-room amplifier** into something you can control from your phone,
-your dashboard and your automations — switch zones on and off, change the volume and
-the music source, all from Home Assistant.
+Control your **multi-room amplifier** from Home Assistant: your phone, your dashboard,
+and your automations. Switch zones on and off, and change the volume and the music source.
 
 [Quickstart →](quickstart.md){ .md-button .md-button--primary }
 [Full step-by-step guide](getting-started/prerequisites.md){ .md-button }
@@ -13,41 +12,22 @@ the music source, all from Home Assistant.
 
 ![How it works: phone or browser, Raspberry Pi with Home Assistant, USB-RS232 adapter, serial cable, amplifier, zones](assets/diagrams/how-it-works.svg)
 
-Home Assistant talks to your amplifier through its **RS-232 control port** (a small
-9-pin connector on the back). Every zone becomes its own player in Home Assistant.
+Home Assistant talks to your amplifier through its **RS-232 control port**, a small
+9-pin connector on the back. Each zone becomes its own player in Home Assistant.
 
 ## What you can do
 
-- **Each zone on and off**, **volume**, **mute** and the **source** — from the
-  dashboard, the Home Assistant phone app, or by voice
-  ([Using your zones](using-zones.md))
-- **Bass and treble** on amplifiers that have them, **all zones off** with one tap, and
-  **group mode** (every room plays the same thing)
-  ([Automations & extra controls](services.md))
-- **Siri, Google and Alexa** — share your zones with Apple Home, Google Home and Alexa
-  ([how](smart-home.md)), or locally over **Matter** ([partial](matter.md))
-- **Your own names** for zones and sources — "Kitchen", "Radio"
-  ([Names & settings](configuration.md))
-- **Stays in sync** — changes made on the amplifier's own keypads show up in Home
-  Assistant too (on amplifiers that report them), and a **connection status** shows
-  whether the amplifier is answering
-- **Phone app** — the free Home Assistant app for iPhone and Android, with home-screen
-  widgets ([Phone app](phone-app.md))
-- **Ready-made dashboard** — one card per zone, built and kept up to date for you
-  ([Ready-made dashboard](dashboard.md))
-- **Automations** — e.g. turn everything off at midnight, or start the patio speakers
-  when you get home — with six ready-made ones to import in one click
-  ([list](services.md#ready-made-automations-blueprints))
-- **RS232 or network** — a USB-RS232 adapter, a serial-to-Ethernet gateway, or the
-  amplifier's own IP control ([Network connections](reference/network-transport.md))
-- **Try it first** — `demo` mode gives you a pretend amplifier to set everything up
-  before it's connected
-- **Amplifier not listed?** Describe it in a few steps in the setup screen, or with a
-  small file ([Adding a device](reference/adding-a-device.md))
-- **Local and private** — Audio Control only talks to your amplifier, never to the
-  internet
-- **Two ways to install** — Home Assistant OS (recommended), or balena for managing
-  Raspberry Pis remotely ([Choose how to install](getting-started/choose-install.md))
+- **Control each zone**: power, volume, mute, and source. See [Use your zones](using-zones.md).
+- **Adjust tone and groups**: set bass and treble, turn all zones off, or play one source everywhere. See [Automations and extra controls](services.md).
+- **Use your favorite app**: the [Home Assistant phone app](phone-app.md), [Apple Home, Google Home, or Alexa](smart-home.md), or [Matter](matter.md).
+- **Name zones and sources**, such as *Kitchen* and *Radio*. See [Names and settings](configuration.md).
+- **Stay in sync**: changes made on the amplifier's keypads appear in Home Assistant.
+- **Start with a ready-made dashboard and automations**. See [Ready-made dashboard](dashboard.md) and [ready-made automations](services.md#ready-made-automations-blueprints).
+- **Connect by RS232 or your network**. See [Network connections](reference/network-transport.md).
+- **Try it first** with a pretend amplifier: type `demo` as the connection.
+- **Add an amplifier that isn't listed**. See [Adding a device](reference/adding-a-device.md).
+- **Keep it local**: Audio Control talks only to your amplifier, never to the internet.
+- **Install your way**: Home Assistant OS or balena. See [Choose how to install](getting-started/choose-install.md).
 
 ## Works with
 
@@ -55,7 +35,7 @@ Home Assistant talks to your amplifier through its **RS-232 control port** (a sm
 |---|---|---|
 | 🏠 **Home Assistant** app & dashboard | Everything — on/off, volume, mute, source, bass & treble, all off, group | Built in |
 | 🍎 **Apple Home** & Siri | On/off, volume, mute, source | [HomeKit Bridge](smart-home.md#apple-home-siri) — free |
-| 🟢 **Google Home** | On/off, volume — source with a [shortcut switch](matter.md#choose-a-source-one-switch-per-favourite) | [Matter](matter.md) — free |
+| 🟢 **Google Home** | On/off, volume — source with a [shortcut switch](matter.md#choose-a-source-one-switch-per-favorite) | [Matter](matter.md) — free |
 | 🔵 **Alexa** | On/off, source — volume and mute by voice | [Home Assistant Cloud](smart-home.md#google-home-and-alexa) — paid |
 | ⚪ **SmartThings / Aqara** | On/off, volume | [Matter](matter.md) — free |
 

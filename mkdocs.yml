@@ -70,11 +70,11 @@ nav:
       - Using your zones: using-zones.md
       - Phone app: phone-app.md
       - Ready-made dashboard: dashboard.md
-      - Names & settings: configuration.md
-      - Automations & extra controls: services.md
-      - Apple Home, Google Home & Alexa: smart-home.md
+      - Names and settings: configuration.md
+      - Automations and extra controls: services.md
+      - Apple Home, Google Home, and Alexa: smart-home.md
       - Matter (partial): matter.md
-      - Help & troubleshooting: troubleshooting.md
+      - Help and troubleshooting: troubleshooting.md
   - For advanced users:
       - Install with balena (preview): getting-started/install-balena.md
       - Docker / Container installs: advanced/docker.md

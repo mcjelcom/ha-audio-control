@@ -143,7 +143,7 @@ features:
 
 Add `offset: -7` to shift raw values (e.g., Xantech bass 0-14 → -7 to +7).
 
-Add `negative_base: 20` to a `signed_int` tone mapping for devices that encode a cut as base + magnitude (AMC XOir: `22` = −2 dB); the same key on the mapping drives encoding of `bass_set`/`treble_set` with a `{level:02d}` template.
+Some devices encode a cut as base + magnitude (AMC XOir: `22` = −2 dB). For them, add `negative_base: 20` to the `signed_int` tone mapping. The same key also encodes `bass_set`/`treble_set` with a `{level:02d}` template.
 
 For JSON profiles, `scope: device` on a `response.mappings` entry marks a reply that describes the whole unit (RTI `set_powerstate`): it is applied to every zone.
 

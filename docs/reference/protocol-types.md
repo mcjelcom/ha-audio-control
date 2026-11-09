@@ -130,7 +130,7 @@ response:
 - Authentication: engine provides `format_login()` and tracks `logged_in` state
 - Responses are parsed as JSON; status code checked against `success_codes`
 - Unsolicited broadcasts (status 901) are treated as state updates
-- `response.mappings` translate a reply's fields into zone state, keyed by the reply `type`: `zone_field` names the zone key inside an array item, and `fields` maps a state key (`volume`, `source`, `mute`, `power`, `bass`, `treble`, `balance`, `group`) to the reply field. Numbers are coerced to int and on/off keys must be JSON booleans. Without a mapping, a reply carries no state the integration can apply
+- `response.mappings` translate a reply's fields into zone state, keyed by the reply `type`. `zone_field` names the zone key inside an array item. `fields` maps a state key (`volume`, `source`, `mute`, `power`, `bass`, `treble`, `balance`, `group`) to the reply field. Numbers are coerced to int and on/off keys must be JSON booleans. Without a mapping, a reply carries no state the integration can apply
 - Frame extraction splits on the delimiter (typically `\n`)
 
 **Devices:** RTI AD-46-100, AD-810-100, AD-1616

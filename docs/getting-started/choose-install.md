@@ -1,26 +1,25 @@
 # Choose how to install
 
-There are two ways to put Home Assistant and Audio Control on your Raspberry Pi.
-**If you are not sure, choose Home Assistant OS** — it is what the rest of this
-guide uses.
+You can put Home Assistant and Audio Control on your Raspberry Pi in two ways.
+**If you're not sure, choose Home Assistant OS.** The rest of this guide uses it.
 
 | | 🏠 **Home Assistant OS** (recommended) | ☁️ **balena** (preview) |
 |---|---|---|
-| **Best for** | One home, one Raspberry Pi | Looking after Pis far away, or several |
+| **Best for** | One home, one Raspberry Pi | Several Pis, or Pis far away |
 | **Setting up** | Memory card → HACS → Audio Control | One click, then the memory card |
 | **Updates** | One click in Home Assistant | Deploy a new release in balena |
 | **Extra apps** (backups, file editor…) | ✅ Yes | ❌ No |
 | **Remote management** | Through Home Assistant | ✅ balena dashboard: logs, restart, terminal |
 | **Accounts** | None | Free balenaCloud account |
 
-Both get the same Audio Control, [dashboard](../dashboard.md) and
-[ready-made automations](../services.md#ready-made-automations-blueprints) — balena
-sets them up for you; on Home Assistant OS you switch the dashboard on once.
+Both get the same Audio Control, [dashboard](../dashboard.md), and
+[ready-made automations](../services.md#ready-made-automations-blueprints). balena sets
+them up for you. On Home Assistant OS, you switch the dashboard on once.
 
 !!! note "balena is a preview"
-    The balena template is built and tested automatically, but it is new. Choose it if
-    remote management matters to you, and [tell us](https://github.com/mcjelcom/haac-balena/issues)
-    how it went.
+    The balena template is built and tested automatically, but it's new. Choose it if
+    remote management matters to you. Then
+    [tell us how it went](https://github.com/mcjelcom/haac-balena/issues).
 
 **Next:**
 
