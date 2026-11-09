@@ -101,6 +101,11 @@ Alexa ("Hey Google, turn on Kitchen Spotify").
    **Actions on turn off:** *Media player: Turn off* → your zone. **Submit.**
 4. Add the label **Matter** to the switch.
 
+!!! warning "Name your sources first"
+    A source switch refers to the source **by name**. If you rename a source later
+    (for example to an [Alexa input name](smart-home.md#alexa-name-your-sources-so-alexa-can-pick-them)),
+    update or recreate its switch.
+
 !!! tip "Make only the ones you'll use"
     Every switch becomes a device in your app. A 6-zone, 8-source amplifier has 48
     combinations — that works (tested: 6 zones + 48 source switches + 6 "Music"
