@@ -6,7 +6,7 @@
 
 | Item | What to get | Why |
 |---|---|---|
-| **Raspberry Pi** | **Pi 5** or **Pi 4**, **2 GB+ memory** | Runs Home Assistant |
+| **Raspberry Pi** | **Pi 5** or **Pi 4**, **2 GB+ memory** (recommended). A **Pi 3 B/B+** also works: slower, and updates take longer | Runs Home Assistant |
 | **Memory card** | microSD, **32 GB+**, marked **A2** | Holds Home Assistant. A USB SSD lasts longer |
 | **Power supply** | **Official Raspberry Pi power supply** (Pi 5: 27 W, Pi 4: 15 W) | Phone chargers are often too weak |
 | **USB-to-RS232 adapter** | USB to **RS232 (DB9)**, ideally **FTDI** chip | Talks to the amplifier |

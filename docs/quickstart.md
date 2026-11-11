@@ -4,7 +4,7 @@ Set up Audio Control in five steps, each linked to a detailed guide.
 
 !!! abstract "You'll need"
     - Your amplifier, such as an **AMC X86i**
-    - A **Raspberry Pi 4 or 5** with its official power supply
+    - A **Raspberry Pi 4 or 5** (a Pi 3 also works) with its official power supply
     - A **USB-to-RS232 adapter** and a **serial cable** (DB9)
     - About **1 hour**
 

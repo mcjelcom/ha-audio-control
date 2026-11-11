@@ -11,7 +11,7 @@ In short:
 ![Installing Home Assistant](../assets/diagrams/install-ha.svg)
 
 1. On your computer, use the **Raspberry Pi Imager** app to put **Home Assistant OS**
-   on the memory card.
+   on the memory card. Pick the image for your model (Pi 5, Pi 4, or Pi 3).
 2. Put the card in the Raspberry Pi. Connect the network cable and the power supply.
 3. Wait about 20 minutes. Then open **http://homeassistant.local:8123** in your web
    browser.

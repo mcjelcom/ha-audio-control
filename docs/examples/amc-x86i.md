@@ -8,7 +8,7 @@ for the AMC X86 and XO with their own profile. Everything here was tested on a r
 | Part | For this example |
 |---|---|
 | Amplifier | **AMC X86i** with an RS-232 (**DB9**) port, rear panel item 8. On some units it's an option. |
-| Home Assistant machine | **Raspberry Pi 4 or 5** (2 GB+ RAM), A2 microSD 32 GB+ or USB SSD, official power supply |
+| Home Assistant machine | **Raspberry Pi 4 or 5** (2 GB+ RAM) recommended; this example was tested on a **Pi 3**. A2 microSD 32 GB+ or USB SSD, official power supply |
 | Adapter | **USB-to-RS232** (DB9 male, FTDI chip recommended), not USB-to-TTL |
 | Cable | **Straight-through** DB9 serial cable (tested; no null-modem needed) |
 | Software | Home Assistant with HACS and Audio Control installed ([steps 2–4](../getting-started/install-home-assistant.md)) |
