@@ -19,6 +19,23 @@ Already run Home Assistant? You need only the **adapter** and **cable**.
     "USB to TTL" adapters with loose pins look similar but **won't work**. Look for
     **RS232** and a **DB9 plug** (9 pins in two rows).
 
+## Other hardware
+
+Home Assistant OS also runs on other boards. Audio Control works on any of them that
+has a USB port for the adapter.
+
+| Hardware | Audio Control |
+|---|---|
+| **Raspberry Pi 4** | ✅ Tested |
+| **Raspberry Pi 3** | ✅ Tested (slower) |
+| **Home Assistant Green** or **Yellow** — ready-made boxes from the Home Assistant team | Should work; not yet tested |
+| **ODROID** (C2, C4, N2, M1, M1S) or **Khadas VIM3** | Should work; not yet tested |
+| **Mini PC** or old laptop (64-bit Intel or AMD) | Should work; not yet tested |
+| **Virtual machine** (Proxmox, VirtualBox, VMware, Hyper-V) | Needs USB passthrough for the adapter, or a [serial-to-network adapter](../reference/network-transport.md) |
+| **Docker** on any computer | ✅ Tested. See [Docker installs](../advanced/docker.md) |
+
+For the full list, see [Home Assistant's installation page](https://www.home-assistant.io/installation/).
+
 ## Which cable?
 
 Serial cables are **straight-through** or **null-modem**; your amplifier's manual
